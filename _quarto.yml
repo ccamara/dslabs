@@ -6,6 +6,7 @@ website:
   description:  "A lab for experimenting with Data Science and Data visualisation"
   navbar:
     right:
+      - blog.qmd
       - about.qmd
       - icon: github
         href: https://github.com/ccamara
@@ -13,7 +14,7 @@ website:
         href: https://scholar.social/users/ccamara
 format:
   html:
-    theme: journal
+    theme: journal #sandstone or pulse are also good
     css: styles.css
 
 editor: visual
