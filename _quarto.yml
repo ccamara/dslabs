@@ -3,16 +3,17 @@ project:
 
 website:
   title: "DS Labs"
+  description:  "A lab for experimenting with Data Science and Data visualisation"
   navbar:
     right:
       - about.qmd
       - icon: github
-        href: https://github.com/
-      - icon: twitter
-        href: https://twitter.com
+        href: https://github.com/ccamara
+      - icon: mastodon
+        href: https://scholar.social/users/ccamara
 format:
   html:
-    theme: cosmo
+    theme: journal
     css: styles.css
 
 editor: visual

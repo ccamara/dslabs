@@ -1,5 +1,5 @@
 ---
-title: "DS Labs"
+title: "Blog"
 listing:
   contents: posts
   sort: "date desc"
