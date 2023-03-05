@@ -2,7 +2,7 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "DS Labs",
+    "title": "Blog",
     "section": "",
     "text": "Post With Code\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nMar 5, 2023\n\n\nHarlow Malloc\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nMar 2, 2023\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
   },
@@ -11,7 +11,28 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this blog"
+    "text": "Hi, I’m Carlos Cámara-Menoyo! I am a versatile, transdisciplinary, and passionate person with a mixed technical and sociological background. I work as a Senior Research Software Engineer, at the University of Warwick’s Centre for Interdisciplinary Methodologies, where I am responsible to support research and teaching by using and developing research software while promoting an open, reproducible research culture and outputs."
+  },
+  {
+    "objectID": "about.html#academic-profile",
+    "href": "about.html#academic-profile",
+    "title": "About",
+    "section": "Academic Profile",
+    "text": "Academic Profile\nPrior to joining CIM as Senior Research Software Engineer, I have worked in the private sector as an architect, drupal developer, product owner, GIS technician, as well as in Higher Education. It is in that field where I have extensive teaching experience as a Lecturer at the School of Architecture and Technology at Universidad San Jorge (Spain), Associate Lecturer at the MSc on Cities and Urbanism at Universitat Oberta de Catalunya (Spain), and Associate Lecturer at the School of the Built Environment at Oxford Brookes University, amongst others. As a researcher, I have worked as a Research Fellow at Warwick’s IGSD, studiying the role visual representations to understand and engage with abstract concepts like the Food-Energy-Water nexus; as a research associate at Urban Transformation and Global Change Laboratory (Universitat Oberta de Catalunya), exploring the geographies of digital capitalism and bottom-up alternatives through their research areas on urbanization processes and co-creation; and at the Open Source Architectures Research Group at Universidad San Jorge, contributing in the projects \"Zaragoza's Social Risk Map\" and \"Accessible Zaragoza\", as a PI."
+  },
+  {
+    "objectID": "about.html#activism",
+    "href": "about.html#activism",
+    "title": "About",
+    "section": "Activism",
+    "text": "Activism\nAs an activist, I contribute to open and alternative projects and initiatives such as OpenStreetMap, Wikipedia, or QGIS, I a member of several cooperatives of the social economy, and I am one of the co-founders of Collaborative Mapping, an action-research group to promote the tools and knowledge to make open and alternative cartographies available to the general public. I have also taken part in several mapathons and hackathons, such as Médecins Sans Frontières' Humanitarian mapathons (organizer), Meta-decidim's Participatory Science's workshop of data on tourist accommodationLink opens in a new window, or Tabakalera's Summerlab on Data Literacy (invited), amongst others."
+  },
+  {
+    "objectID": "about.html#research-profile",
+    "href": "about.html#research-profile",
+    "title": "About",
+    "section": "Research Profile",
+    "text": "Research Profile\nThe combination of such diverse experiences, interests, and skills has articulated my research agenda within the Urban Studies, structured around two pillars: 1) the commodifications between cities, technology, and society, and 2) co-production and collective-action. So far, I have applied a spatial reading with a social perspective to the topic of urban, spatial inequities, and, more specifically, on urban mobility for disabled people and urban commons to find ways in which cities can be more resilient and egalitarian.\nWorking at CIM as Senior Research Software Engineer has given me the opportunity of bridging my passions by applying technology and software through an social perspective and within a collaborative setting to the existing diverse and interdisciplinar research culture and teaching of the Centre.\nAreas of Interest: Urban Studies, Open Science, Commons, Co-production, Data Visualisation, Spatial Justice"
   },
   {
     "objectID": "posts/welcome/index.html",
