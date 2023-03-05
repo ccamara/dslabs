@@ -18,57 +18,20 @@ about:
       href: http://orcid.org/0000-0002-9378-0549
 ---
 
-**Hi, I'm Carlos Cámara-Menoyo!** I am a versatile, transdisciplinary, and passionate person with a mixed technical and sociological background. I work as a Senior Research Software Engineer, at the University of Warwick's [Centre for Interdisciplinary Methodologies](https://warwick.ac.uk/fac/cross_fac/cim), where I am responsible to support research and teaching by using and developing research software while promoting an open,
-reproducible research culture and outputs.
+**Hi, I'm Carlos Cámara-Menoyo!** I am a versatile, transdisciplinary, and passionate person with a mixed technical and sociological background. I work as a Senior Research Software Engineer, at the University of Warwick's [Centre for Interdisciplinary Methodologies](https://warwick.ac.uk/fac/cross_fac/cim), where I am responsible to support research and teaching by using and developing research software while promoting an open, reproducible research culture and outputs.
 
 ## Academic Profile
 
-Prior
-to joining CIM as Senior Research Software Engineer, I have worked in
-the private sector as an architect, drupal developer, product owner, GIS
-technician, as well as in Higher Education. It is in that field where I
-have extensive teaching experience as a Lecturer at the School of
-Architecture and Technology at Universidad San Jorge (Spain), Associate
-Lecturer at the MSc on Cities and Urbanism at Universitat Oberta de
-Catalunya (Spain), and Associate Lecturer at the School of the Built
-Environment at Oxford Brookes University, amongst others. As a
-researcher, I have worked as a Research Fellow at [Warwick's IGSD](https://warwick.ac.uk/igsd),
-studiying the role visual representations to understand and engage with
-abstract concepts like the Food-Energy-Water nexus; as a research
-associate at [Urban Transformation and Global Change Laboratory](https://www.uoc.edu/portal/en/in3/recerca/grups/urban_transformation_and)
-(Universitat Oberta de Catalunya), exploring the geographies of digital
-capitalism and bottom-up alternatives through their research areas on
-urbanization processes and co-creation; and at the Open Source
-Architectures Research Group at Universidad San Jorge, contributing in
-the projects \"Zaragoza\'s Social Risk Map\" and \"Accessible Zaragoza\", as a
-PI.
+Prior to joining CIM as Senior Research Software Engineer, I have worked in the private sector as an architect, drupal developer, product owner, GIS technician, as well as in Higher Education. It is in that field where I have extensive teaching experience as a Lecturer at the School of Architecture and Technology at Universidad San Jorge (Spain), Associate Lecturer at the MSc on Cities and Urbanism at Universitat Oberta de Catalunya (Spain), and Associate Lecturer at the School of the Built Environment at Oxford Brookes University, amongst others. As a researcher, I have worked as a Research Fellow at [Warwick's IGSD](https://warwick.ac.uk/igsd), studiying the role visual representations to understand and engage with abstract concepts like the Food-Energy-Water nexus; as a research associate at [Urban Transformation and Global Change Laboratory](https://www.uoc.edu/portal/en/in3/recerca/grups/urban_transformation_and) (Universitat Oberta de Catalunya), exploring the geographies of digital capitalism and bottom-up alternatives through their research areas on urbanization processes and co-creation; and at the Open Source Architectures Research Group at Universidad San Jorge, contributing in the projects "Zaragoza's Social Risk Map" and "Accessible Zaragoza", as a PI.
 
 ## Activism
 
-As an activist, I contribute to open and alternative
-projects and initiatives such as OpenStreetMap, Wikipedia, or QGIS, I a
-member of several cooperatives of the social economy, and I am one of
-the co-founders of [*Collaborative Mapping*](https://mapcolabora.org/),
-an action-research group to promote the tools and knowledge to make
-open and alternative cartographies available to the general public. I
-have also taken part in several mapathons and hackathons, such as Médecins Sans Frontières\' Humanitarian mapathons (organizer), [Meta-decidim\'s Participatory Science\'s workshop of data on tourist accommodationLink opens in a new window](https://meta.decidim.org/assemblies/eix-lab/f/130/meetings/1135?locale=en), or Tabakalera\'s [Summerlab on Data Literacy](https://www.tabakalera.eus/en/node/32918) (invited), amongst others.
+As an activist, I contribute to open and alternative projects and initiatives such as OpenStreetMap, Wikipedia, or QGIS, I a member of several cooperatives of the social economy, and I am one of the co-founders of [*Collaborative Mapping*](https://mapcolabora.org/), an action-research group to promote the tools and knowledge to make open and alternative cartographies available to the general public. I have also taken part in several mapathons and hackathons, such as Médecins Sans Frontières' Humanitarian mapathons (organizer), [Meta-decidim's Participatory Science's workshop of data on tourist accommodationLink opens in a new window](https://meta.decidim.org/assemblies/eix-lab/f/130/meetings/1135?locale=en), or Tabakalera's [Summerlab on Data Literacy](https://www.tabakalera.eus/en/node/32918) (invited), amongst others.
 
 ## Research Profile
 
-The
-combination of such diverse experiences, interests, and skills has
-articulated my research agenda within the Urban Studies, structured
-around two pillars: 1) the commodifications between cities, technology,
-and society, and 2) co-production and collective-action. So far, I have
-applied a spatial reading with a social perspective to the topic of
-urban, spatial inequities, and, more specifically, on urban mobility for
-disabled people and urban commons to find ways in which cities can be
-more resilient and egalitarian.
+The combination of such diverse experiences, interests, and skills has articulated my research agenda within the Urban Studies, structured around two pillars: 1) the commodifications between cities, technology, and society, and 2) co-production and collective-action. So far, I have applied a spatial reading with a social perspective to the topic of urban, spatial inequities, and, more specifically, on urban mobility for disabled people and urban commons to find ways in which cities can be more resilient and egalitarian.
 
-Working at CIM as Senior Research
-Software Engineer has given me the opportunity of bridging my passions
-by applying technology and software through an social perspective and
-within a collaborative setting to the existing diverse and
-interdisciplinar research culture and teaching of the Centre.
+Working at CIM as Senior Research Software Engineer has given me the opportunity of bridging my passions by applying technology and software through an social perspective and within a collaborative setting to the existing diverse and interdisciplinar research culture and teaching of the Centre.
 
 **Areas of Interest:** Urban Studies, Open Science, Commons, Co-production, Data Visualisation, Spatial Justice
