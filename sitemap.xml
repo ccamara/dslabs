@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ccamara.github.io/dslabs/index.html</loc>
-    <lastmod>2023-03-05T20:15:58.551Z</lastmod>
+    <loc>https://ds-labs.carloscamara.es/posts/welcome/index.html</loc>
+    <lastmod>2023-03-07T13:45:11.772Z</lastmod>
   </url>
   <url>
-    <loc>https://ccamara.github.io/dslabs/about.html</loc>
-    <lastmod>2023-03-05T20:15:59.719Z</lastmod>
+    <loc>https://ds-labs.carloscamara.es/posts/2023-03-02_matrix-effect/index.html</loc>
+    <lastmod>2023-03-07T13:45:13.039Z</lastmod>
   </url>
   <url>
-    <loc>https://ccamara.github.io/dslabs/posts/welcome/index.html</loc>
-    <lastmod>2023-03-05T20:16:00.775Z</lastmod>
+    <loc>https://ds-labs.carloscamara.es/index.html</loc>
+    <lastmod>2023-03-07T13:45:13.377Z</lastmod>
   </url>
   <url>
-    <loc>https://ccamara.github.io/dslabs/posts/post-with-code/index.html</loc>
-    <lastmod>2023-03-05T20:16:02.499Z</lastmod>
+    <loc>https://ds-labs.carloscamara.es/about.html</loc>
+    <lastmod>2023-03-07T13:45:13.713Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ds-labs.carloscamara.es/blog.html</loc>
+    <lastmod>2023-03-07T13:45:14.040Z</lastmod>
   </url>
 </urlset>

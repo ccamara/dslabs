@@ -1,1 +1,1 @@
-Sitemap: https://ccamara.github.io/dslabs/sitemap.xml
+Sitemap: https://ds-labs.carloscamara.es/sitemap.xml

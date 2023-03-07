@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Carlos Cámara">
+<meta name="dcterms.date" content="2023-03-05">
+<meta name="description" content="In this tutorial I’m using R and Imagemagik to produce a Matrix-like image just using code.">
+
+<title>DS Labs - Matrix effect using Imagemagick</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script type="application/json" class="js-hypothesis-config">
+{
+  "theme": "clean",
+  "openSidebar": false
+}
+</script>
+<script async="" src="https://hypothes.is/embed.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">DS Labs</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/ccamara"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.social/users/ccamara"><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://pixelfed.social/datasaurus"><i class="bi bi-instagram" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Matrix effect using Imagemagick</h1>
+                  <div>
+        <div class="description">
+          In this tutorial I’m using R and Imagemagik to produce a Matrix-like image just using code.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">tutorial</div>
+                <div class="quarto-category">image manipulation</div>
+                <div class="quarto-category">ImageMagick</div>
+                <div class="quarto-category">Magick</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div class="quarto-title-meta-author">
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-heading">Affiliation</div>
+    
+      <div class="quarto-title-meta-contents">
+      Carlos Cámara <a href="https://orcid.org/0000-0002-9378-0549" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a>
+    </div>
+      <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              University of Warwick
+            </p>
+        </div>
+      </div>
+
+  <div class="quarto-title-meta">
+
+        
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 5, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  <div>
+    <div class="abstract">
+      <div class="abstract-title">Abstract</div>
+      <p>This tutorial provides a detailed step-by-step process that demonstrates how to use R and Imagemagik to produce a Matrix-like image as well as highlights some key take away lessons I learnt from this experiencefrom doing that.</p>
+    </div>
+  </div>
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#why-would-we-want-to-do-this-using-r" id="toc-why-would-we-want-to-do-this-using-r" class="nav-link active" data-scroll-target="#why-would-we-want-to-do-this-using-r">Why would we want to do this using R?</a></li>
+  <li><a href="#why-this-image" id="toc-why-this-image" class="nav-link" data-scroll-target="#why-this-image">Why this image?</a></li>
+  <li><a href="#step-by-step" id="toc-step-by-step" class="nav-link" data-scroll-target="#step-by-step">Step by step</a>
+  <ul class="collapse">
+  <li><a href="#loading-dependencies" id="toc-loading-dependencies" class="nav-link" data-scroll-target="#loading-dependencies">Loading dependencies</a></li>
+  <li><a href="#load-images" id="toc-load-images" class="nav-link" data-scroll-target="#load-images">Load images</a></li>
+  <li><a href="#scaling-images" id="toc-scaling-images" class="nav-link" data-scroll-target="#scaling-images">Scaling images</a></li>
+  <li><a href="#combining-images-first-attempt" id="toc-combining-images-first-attempt" class="nav-link" data-scroll-target="#combining-images-first-attempt">Combining images (first attempt)</a></li>
+  <li><a href="#color-dessaturation" id="toc-color-dessaturation" class="nav-link" data-scroll-target="#color-dessaturation">Color dessaturation</a></li>
+  <li><a href="#adding-code-texture-to-the-dinosaur" id="toc-adding-code-texture-to-the-dinosaur" class="nav-link" data-scroll-target="#adding-code-texture-to-the-dinosaur">Adding code texture to the dinosaur</a></li>
+  <li><a href="#modifying-the-background" id="toc-modifying-the-background" class="nav-link" data-scroll-target="#modifying-the-background">Modifying the background</a></li>
+  <li><a href="#glow-effect" id="toc-glow-effect" class="nav-link" data-scroll-target="#glow-effect">Glow effect</a></li>
+  <li><a href="#adding-text" id="toc-adding-text" class="nav-link" data-scroll-target="#adding-text">Adding text</a></li>
+  <li><a href="#sec-putting-everything-together" id="toc-sec-putting-everything-together" class="nav-link" data-scroll-target="#sec-putting-everything-together">Putting everything together</a></li>
+  <li><a href="#sec-animated-gif" id="toc-sec-animated-gif" class="nav-link" data-scroll-target="#sec-animated-gif">Bonus: Animated GIF</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources">Resources</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+<div class="page-columns page-full"><p>The iconic film series “The Matrix” (and sequels) can be recognized by a number of technical and aesthetical features, but probably, the most unique one is their green cascading code<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> that is present throughout the films and also its promotional imagery and fanart.</p><div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;Actually, I have to admit that I find this resource as an excellent metaphor about how coding works. In those films, the Matrix (i.e., the software ruling the virtual world where humans are trapped) is often represented as a series of illegible combinations of green symbols (<a href="#fig-code">Figure&nbsp;1 (a)</a>). This is, Matrix’s binary code. In a crucial moment of the first film, the main character has a revelation-like moment where he can suddenly understand (de-compile) the code and he can not only “see” what the code does (<a href="#fig-corridor">Figure&nbsp;1 (b)</a>), but also become extremely powerful: by manipulating the rules (compiling) he can do things no other human can.</p></li></div></div>
+<p>It is no wonder, then, that the Internet is flooded by a number of tutorials or even web tools aimed at reproducing those aesthetics. However, all of them require Image Editing software such as Photoshop, like <a href="https://design.tutsplus.com/tutorials/how-to-make-a-matrix-effect-in-photoshop--cms-36383">this excellent tutorial</a> from Abbey Esparza which was an inspiration for me.</p>
+<div id="fig-matrix" class="quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-code" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="img/matrix_code_1.jpg" class="img-fluid figure-img" data-ref-parent="fig-matrix"></p>
+<p></p><figcaption class="figure-caption">(a) The inscrutable source code</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-corridor" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="img/matrix_corridor.jpg" class="img-fluid figure-img" data-ref-parent="fig-matrix"></p>
+<p></p><figcaption class="figure-caption">(b) The source code, decyphered</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: <a href="https://en.wikipedia.org/wiki/The_Matrix">The Matrix</a> (1999) © Warner Bros.&nbsp;Entertainment</figcaption><p></p>
+</figure>
+</div>
+<p>In this case, however, I will not be using any editing software. Instead, I will be solely using code to produce a Matrix-like image like the one below (<a href="#fig-final-result">Figure&nbsp;2</a>), and some bonus output, too. Specifically, I’m going to use R and <a href="https://docs.ropensci.org/magick/index.html"><code>{magick}</code></a>, which is an R interface for <a href="https://imagemagick.org/">Imagemagik</a> developed by the <a href="https://ropensci.org/">rOpensCi</a> community.</p>
+<div class="column-page">
+<div id="fig-final-result" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="img/datasaurus_matrix.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2: That’s what we will be creating</figcaption><p></p>
+</figure>
+</div>
+</div>
+<section id="why-would-we-want-to-do-this-using-r" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="why-would-we-want-to-do-this-using-r">Why would we want to do this using R?</h2>
+<div class="page-columns page-full"><p>Before starting with the tutorial, though, I need to be crystal clear. <strong>I do not think that R and any of their image-manipulation packages or, more generally, a programming language, can fully replace an image editing software such as Photoshop or <a href="https://gimp.org">GIMP</a></strong><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. After all, they are made for different purposes and with different audiences in mind.</p><div class="no-row-height column-margin column-container"><li id="fn2"><p><sup>2</sup>&nbsp;GIMP is an excellent Free/Libre OpenSource software for image manipulation, very similar (feature-wise) to Photoshop. You can visit the official website <a href="https://gimp.org" class="uri">https://gimp.org</a><br>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/The_GIMP_icon_-_gnome.svg/240px-The_GIMP_icon_-_gnome.svg.png" class="img-fluid" alt="GIMP’s mascot: Wilbert"></p></li></div></div>
+<p>However, that doesn’t mean that using R for handling images doesn’t make sense at all. On the contrary! There are a number of cases where manipulating images from code makes a lot of sense:</p>
+<ol type="1">
+<li>Batch manipulation</li>
+<li>Image transformation based on some kind of data (either metadata or linked data)</li>
+<li>Including images as part of our data visualisation workflow/outputs</li>
+<li>…</li>
+</ol>
+<div class="page-columns page-full"><p>Therefore, this tutorial is a proof of concept and a demonstration about how can R be used for creative tasks and manipulation. It is also an exploration of the limits<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn3"><p><sup>3</sup>&nbsp;Given my background as an architect, I’ve used Photoshop and GIMP extensively in the past, with a great deal of success. However, as someone who is interested in coding, I could see how destructive and non-reproducible the workflows can be. So, this is also a selfish exercise where I wanted to see how far I could go using R in a creative context and understanding their limits.</p></li></div></div>
+</section>
+<section id="why-this-image" class="level2">
+<h2 class="anchored" data-anchor-id="why-this-image">Why this image?</h2>
+<p>When thinking about the first image for my pixelfed account on data visualisation, it was clear to me that I had to start with a mention to the work of Justin Matejka and George Fitzmaurice with their Datasaurus Dozen <span class="citation" data-cites="matejka2017">(<a href="#ref-matejka2017" role="doc-biblioref">Matejka and Fitzmaurice 2017</a>)</span> to demonstrate the importance of Data Visualisation to detect patterns in data that summary statistics cannot reveal. But because I was also aware that this is a well-known topic within the field, which has received quite a lot of attention, I wanted to find a different image to those illustrating the blog posts accompanying an explanation.</p>
+<div id="fig-datasaurus" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="img/same-stats-different-graphs-image-1920x1000.gif" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3: Graphical explanation of the Datasaurus Dozen by their authors (<a href="https://www.autodesk.com/research/publications/same-stats-different-graphs">Matejka &amp; Fitzmaurice</a>)</figcaption><p></p>
+</figure>
+</div>
+<p>So when reflecting on how to represent a dinosaur hidden in data, or images appearing out of a messy dataset, I suddenly remembered the Matrix scene where Neo learns how the Matrix works and how, immediately, what used to be inscrutable code turns into recognizable images.</p>
+<p>I was immediately seduced by the idea of creating a Dinosaur (ideally similar to that in the datasaurus) emerging from what could be a Matrix-like dataset, and using data visualisation tools for that seemed the most logic (and most meta) thing to do. The text describing that (with a pun) just emphasizes that idea.</p>
+</section>
+<section id="step-by-step" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="step-by-step">Step by step</h2>
+<p>I started the process with the following outline in mind:</p>
+<ol type="1">
+<li>we need to combine a background image and a dinosaur (ideally with little or no colors)</li>
+<li>we need to add some effects to the dinosaur</li>
+<li>we need to add some text to it</li>
+</ol>
+<div class="page-columns page-full"><p>As you will see, it turned out to be more complex (I needed to create more intermediate steps), but the essence is the same. The GIF<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> below is probably the best description of what we are going to do.</p><div class="no-row-height column-margin column-container"><li id="fn4"><p><sup>4</sup>&nbsp;This GIF has also been generated with R, refer to <a href="#sec-animated-gif">Section&nbsp;3.11</a> for details.</p></li></div></div>
+<div id="fig-process-overview" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="img/dino-matrix-process.gif" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;4: Graphic overview of what we will be doing in this tutorial.</figcaption><p></p>
+</figure>
+</div>
+<section id="loading-dependencies" class="level3">
+<h3 class="anchored" data-anchor-id="loading-dependencies">Loading dependencies</h3>
+<p>in this case, we will only be using a single library: <a href="https://docs.ropensci.org/magick/index.html"><code>{magick}</code></a>, developed by <a href="https://github.com/jeroen">Jeroen Ooms</a>. According to its website, [Magick provides]:</p>
+<blockquote class="blockquote">
+<p>Bindings to ImageMagick: the most comprehensive open-source image processing library available. Supports many common formats (png, jpeg, tiff, pdf, etc) and manipulations (rotate, scale, crop, trim, flip, blur, etc). All operations are vectorized via the Magick++ STL meaning they operate either on a single frame or a series of frames for working with layers, collages, or animation. In RStudio images are automatically previewed when printed to the console, resulting in an interactive editing environment.</p>
+</blockquote>
+<p>So the only thing we need to do is installing the package normally and then adding a call to <code>library()</code> at the beginning of our document:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magick)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to ImageMagick 6.9.12.3
+Enabled features: cairo, fontconfig, freetype, heic, lcms, pango, raw, rsvg, webp
+Disabled features: fftw, ghostscript, x11</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Also save some variables.</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>col_matrix <span class="ot">&lt;-</span> <span class="st">"#00dc00"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Important
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<p>Note that because <code>magick</code> is just an interface, we need to have ImageMagick library installed in our system if it’s not already installed (i.e., in Linux Machines). <code>magick</code>’s Readme file covers that <a href="https://docs.ropensci.org/magick/articles/intro.html#installing-magick" class="uri">https://docs.ropensci.org/magick/articles/intro.html#installing-magick</a></p>
+</div>
+</div>
+</div>
+</section>
+<section id="load-images" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="load-images">Load images</h3>
+<div class="page-columns page-full"><p>Only two images are needed for this tutorial: a background image and a dinousaur with a transparent background<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. I downloaded the T-Rex image <a href="https://unsplash.com/photos/SByb8Ch9XcQ">from Unsplash</a> (thanks to the author, Amy-Leigh Barnard, for releasing it under the <a href="https://unsplash.com/license">Unsplash License</a>), and I fond the matrix-like background using DuckDuckGo’s search for Images under Creative Commons, which pointed me towards <a href="https://peterdehaas.net/matrix-background">Peter DeHaas’ website</a>.</p><div class="no-row-height column-margin column-container"><li id="fn5"><p><sup>5</sup>&nbsp;Actually, <strong>the dinousar image is the only image I failed to generate using R</strong>. I used GIMP to create an alpha channel and remove the background from the original Photo by <a href="https://unsplash.com/@amyb99?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Amy-Leigh Barnard</a> on <a href="https://unsplash.com/images/nature/dinosaur?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a>:<img src="img/amy-leigh-barnard-SByb8Ch9XcQ-unsplash.jpg" class="img-fluid" alt="Photo by Amy-Leigh Barnard on Unsplash"><br>
+<br>
+You can read a tutorial on how to do that using GIMP here: <a href="https://www.guidingtech.com/remove-background-gimp-layer-mask/" class="uri">https://www.guidingtech.com/remove-background-gimp-layer-mask/</a></p></li></div></div>
+<p>So, once we get the images stored in a folder within our project, we need to load them to R’s environment:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load images</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>dino <span class="ot">&lt;-</span> <span class="fu">image_read</span>(<span class="st">"img/amy-leigh-barnard-SByb8Ch9XcQ-unsplash.png"</span>) </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>matrix_bg <span class="ot">&lt;-</span> <span class="fu">image_read</span>(<span class="st">"img/matrix01.webp"</span>) </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Put them together in a vector</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>images_clips <span class="ot">&lt;-</span> <span class="fu">c</span>(dino, matrix_bg)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the images side by side</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">image_append</span>(<span class="fu">image_scale</span>(images_clips, <span class="st">"x200"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid"></p>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display images' properties</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(images_clips)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  format width height colorspace matte filesize density
+1    PNG  4608   3072       sRGB  TRUE  8293810   72x72
+2   WEBP  2000   1000       sRGB FALSE   373842   72x72</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Note the different output from calling the images directly or using <code>print()</code>: the first one displays the image, whereas the later will show the image’s properties as well as the image. There are two things that it’s worth paying attention to judging from the images’ properties:</p>
+<ol type="1">
+<li>They have different sizes. This would be an issue when combining images, so we need to scale them to similar sizes before doing that.</li>
+<li>Dinousaur is stored in a PNG format. These type of formats are usually used because they have an alpha channel (in this case, a transparent background), which is extremely useful for our purposes.</li>
+</ol>
+</section>
+<section id="scaling-images" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="scaling-images">Scaling images</h3>
+<div class="page-columns page-full"><p>Due to the dinosaur being considerable larger than the background, we need to resize the image before combining them. There are a number of ways to alter the size of an image (with or without distortions)<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>, but we will be using <code>image_scale()</code>:</p><div class="no-row-height column-margin column-container"><li id="fn6"><p><sup>6</sup>&nbsp;For an explanation of the available options, refer to <a href="https://docs.ropensci.org/magick/reference/transform.html" class="uri">https://docs.ropensci.org/magick/reference/transform.html</a></p></li></div></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the extra background.</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dino <span class="ot">&lt;-</span> <span class="fu">image_trim</span>(dino) </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Scale proportionally to a height of 800px.</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>dino <span class="ot">&lt;-</span> <span class="fu">image_scale</span>(dino, <span class="st">"x800"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="combining-images-first-attempt" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="combining-images-first-attempt">Combining images (first attempt)</h3>
+<p>Because the dinosaur doesn’t have any background, we can combine them by overlying it on top of the background using <code>image_composite()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image_composite</span>(matrix_bg, dino)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-composite-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-composite-1-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;5: First attempt at compositing two images</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout-caution callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Order matters!
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Pay attention to the order of the images, as it does matter! The first one will be placed on top of the second.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image_composite</span>(dino, matrix_bg) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-composite-order" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-composite-order-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;6: Resuling image with wrong order: the background is completely covering the dinousaur</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Actually, this output is very similar to something we will want to achieve at a latter point.</p>
+</div>
+</div>
+</div>
+<div class="page-columns page-full"><p>As you can see, by default composite image gets the size of the first image and adds a second one aligned from its top left position. Because both images have different sizes, the dinosaur seems to be floating. We can control the alignment using the <code>gravity</code> pattern, which accepts several strings<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn7"><p><sup>7</sup>&nbsp;For the full list of accepted strings refer to this page at ImageMagick’s documentation <a href="https://www.imagemagick.org/Magick++/Enumerations.html#GravityType" class="uri">https://www.imagemagick.org/Magick++/Enumerations.html#GravityType</a></p></li></div></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We can use gravity to control alignment</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">image_composite</span>(matrix_bg, dino, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-composite-alignment" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-composite-alignment-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;7: Controlling images alignment with gravity parameter</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now it’s slightly better, but the dinosaur stands out too much, and it is clear that there are two juxtaposed images that have nothing to do one with each other. We will try to address that by:</p>
+<ol type="1">
+<li>Dessaturating / coloring it</li>
+<li>Adding the code on top of it</li>
+</ol>
+</section>
+<section id="color-dessaturation" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="color-dessaturation">Color dessaturation</h3>
+<p>One of the outstanding features of The Matrix imagery is by the absence of colors except for green and black. This effect has been accentuated over time (see <a href="#fig-matrix-posters-evolution">Figure&nbsp;8</a> ), and has often implied using dessaturated images (the clearer examples are <a href="#fig-poster-2023b">Figure&nbsp;8 (c)</a> and <a href="#fig-poster-2019">Figure&nbsp;8 (d)</a>). We are going to try to achieve that with our dinosaur.</p>
+<div id="fig-matrix-posters-evolution" class="quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-poster-1999" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="img/Screenshot 2023-03-04 at 11-40-51 The Matrix (1999).png" class="img-fluid figure-img" data-ref-parent="fig-matrix-posters-evolution"></p>
+<p></p><figcaption class="figure-caption">(a) The Matrix (1999)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-poster-2003" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="img/Screenshot 2023-03-04 at 11-41-20 The Matrix Reloaded (2003).png" class="img-fluid figure-img" data-ref-parent="fig-matrix-posters-evolution"></p>
+<p></p><figcaption class="figure-caption">(b) The Matrix Reloaded (2003)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-poster-2023b" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="img/Screenshot 2023-03-04 at 11-41-44 The Matrix Revolutions (2003).png" class="img-fluid figure-img" data-ref-parent="fig-matrix-posters-evolution"></p>
+<p></p><figcaption class="figure-caption">(c) The Matrix Revolutions (2003)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-poster-2019" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="img/promo-20-anniversary-matrix.jpg" class="img-fluid figure-img" data-ref-parent="fig-matrix-posters-evolution"></p>
+<p></p><figcaption class="figure-caption">(d) 20th Anniversary poster (2019)</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 20.0%;justify-content: center;">
+<div id="fig-poster-2021" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="img/Screenshot 2023-03-04 at 11-42-37 The Matrix Resurrections (2021).png" class="img-fluid figure-img" data-ref-parent="fig-matrix-posters-evolution"></p>
+<p></p><figcaption class="figure-caption">(e) The Matrix Ressurrections (2021)</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;8: Evolution of The Matrix series’ graphic image through its posters (1999) © Warner Bros.&nbsp;Entertainment</figcaption><p></p>
+</figure>
+</div>
+<p>The most immediate way to remove the colours from an image is to convert it to a grayscale image:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to grayscale</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>dino_grey <span class="ot">&lt;-</span> <span class="fu">image_quantize</span>(dino, <span class="at">colorspace =</span> <span class="st">'gray'</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>dino_grey</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Dessaturation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>An alternative that gives more control is to change saturation. Moving the saturation somewhere between 100 (maximum value: all colors) and 1 (minimum value: grayscale) gives more control and interesting results.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Or better, partially dessaturate the image</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>dino_grey2 <span class="ot">&lt;-</span> <span class="fu">image_modulate</span>(dino, <span class="at">saturation =</span> <span class="dv">20</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>dino_grey2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid"></p>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image_modulate</span>(dino, <span class="at">saturation =</span> <span class="dv">20</span>, <span class="at">brightness =</span> <span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>This result is probably more similar to <a href="#fig-poster-2019">Figure&nbsp;8 (d)</a></p>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We can use gravity to control alignment</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">image_composite</span>(matrix_bg, dino_grey, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-composite-grey" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-composite-grey-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;9: Composition with greyscale dino</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This is getting better, but probably, it would be even better if the dinosaur was greener (something similar to <a href="#fig-poster-2023b">Figure&nbsp;8 (c)</a> . One way to do that could be by colorizing the image:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We can use image colorize with low opacity values</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>dino_green <span class="ot">&lt;-</span> <span class="fu">image_colorize</span>(dino_grey2, <span class="at">opacity =</span> <span class="dv">40</span>, <span class="at">color =</span>  <span class="st">"#379b47"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>dino_green</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-colorize" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-colorize-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10: Colorized image, with low opacity</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Let’s see how it looks when combined with our background.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image_composite</span>(matrix_bg, dino_green, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-composite-green" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-composite-green-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;11: Composition with coloured dino</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Regretfully, this doesn’t look particularly good: the dinosaur’s details seemed veiled (actually, that’s what we did: we covered the dinosaur with a thin, green veil).</p>
+<div class="page-columns page-full"><p>We are going to use a slightly different approach now. This time we will be combining a greyscale version with a green image, but using <code>multiply</code> as the blend mode. Multiply will keep the same details of the original image, but will result in a darker image (which in this case, is also desired!)<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> . Also, because we do not have a green image, we will need to create one from scratch using <code>image_blank()</code>:</p><div class="no-row-height column-margin column-container"><li id="fn8"><p><sup>8</sup>&nbsp;For more information about <code>multiply</code> blend mode, refer to this tutorial <a href="https://digital-photography-school.com/multiply-blend-mode/" class="uri">https://digital-photography-school.com/multiply-blend-mode/</a> . Also, the wikipedia has information about different blend modes, including, but not limited to, multiply: <a href="https://en.wikipedia.org/wiki/Blend_modes" class="uri">https://en.wikipedia.org/wiki/Blend_modes</a></p></li></div></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We need to create an image of the same size with just colour green.</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>green_img <span class="ot">&lt;-</span>  <span class="fu">image_blank</span>(<span class="dv">2000</span>, <span class="dv">1000</span>, <span class="at">color =</span> col_matrix)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine two images using Multiply blend mode.</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>dino_green2 <span class="ot">&lt;-</span> <span class="fu">image_composite</span>(dino_grey2, green_img, <span class="at">operator =</span> <span class="st">"Multiply"</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>dino_green2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-mulitply-green" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-mulitply-green-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;12: Multiply produces a sharper green dino, but transparency is lost.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As you can see, this dinosaur is darker and their details (shades) don’t look so washed away as the previous one (<a href="#fig-colorize">Figure&nbsp;10</a>). Regretfully, the colour is also added to the background, which used to be transparent, so we will need to restore the alpha channel. We will do that by creating yet another composite, but using <code>copyopacity</code> operator this time to copy the alpha channel from the original dinosaur.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Restoring alpha channel.</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>dino_green2 <span class="ot">&lt;-</span> <span class="fu">image_composite</span>(dino_green2, dino, <span class="at">operator =</span> <span class="st">'copyopacity'</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare results</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">image_append</span>(<span class="fu">image_scale</span>(<span class="fu">c</span>(dino_green, dino_green2), <span class="st">"x250"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-green-dinos-compared" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-green-dinos-compared-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;13: Green dinos’ comparison: colorised (left) and mulitplied (right)</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And now, we can combine the green dinosaur with the background:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image_composite</span>(matrix_bg, dino_green2, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-composite-green2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-composite-green2-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;14: Composition with coloured dino (multiply version)</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="adding-code-texture-to-the-dinosaur" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="adding-code-texture-to-the-dinosaur">Adding code texture to the dinosaur</h3>
+<p>Because we wanted to recreate the effect on <a href="#fig-corridor">Figure&nbsp;1 (b)</a> that suggests that the dinosaur is also made of code, we will need to over impress the source code over the T-Rex. To do that, we could apply the same technique we used for <a href="#fig-green-dinos-compared">Figure&nbsp;13</a> and merge the background with the dinosaur using the <code>copyopacity</code> operator.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>dino_matrix <span class="ot">&lt;-</span> <span class="fu">image_composite</span>(matrix_bg, dino_green2, <span class="at">operator =</span> <span class="st">'copyopacity'</span>, </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">gravity =</span> <span class="st">"SouthEast"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>dino_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-dino-matrix" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-dino-matrix-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;15: Matrix code within the dinosaur silhouette.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We are almost there! We have the code applied to the dinosaur, but the texture and details have been lost, only its silhouette has been preserved! We will combine two images, but using the <code>dissolve</code> blend mode:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>dino_matrix <span class="ot">&lt;-</span> <span class="fu">image_composite</span>(dino_matrix, dino_green2, <span class="at">compose_args =</span> <span class="st">"60%"</span>, </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">operator =</span> <span class="st">"dissolve"</span>, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>dino_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-dino-matrix2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-dino-matrix2-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;16: A green dinosaur with the Matrix code and its texture applied.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="page-columns page-full"><p>This looks nice<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>, so now we can combine that with the background:</p><div class="no-row-height column-margin column-container"><li id="fn9"><p><sup>9</sup>&nbsp;Probably, the dinosaur is too green now. If that’s the case, we could try to overlay the code on top of the grey dinosaur or the slightly dessaturated version, instead of the green T-Rex. However, for the sake of better illustrating the next step, I will be using this version.</p></li></div></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image_composite</span>(matrix_bg, dino_matrix, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-composite-matrix" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-composite-matrix-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;17: Composition with the dino with code. Not nice.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The resulting image is way less impressive that what he had imagined, right? Why isn’t it looking as good as the previous compositions if the dinosaur with the code looked even better than the previous ones? Basically, the problem is that because we have used the same image for the background and as a texture over the dinosaur, the background and foreground are matching and it seems we just added it on top of a green dinosaur, which is not what we wanted to achieve (it seems that there’s a dinosaur behind a curtain of raining letters).</p>
+<p>There are different ways to overcome that issue:</p>
+<ol type="1">
+<li>Use different (but similar) images for the background and the code texture (that would be ideal, but I didn’t have much time to find images, also, it will be good for teaching purposes)</li>
+<li>Modify the background so it looks slightly different.</li>
+</ol>
+</section>
+<section id="modifying-the-background" class="level3">
+<h3 class="anchored" data-anchor-id="modifying-the-background">Modifying the background</h3>
+<p>In order to make the background look like a different image than the code from the foreground, we are going to do these two transformations:</p>
+<ol type="1">
+<li>Displace it</li>
+<li>Blur it</li>
+</ol>
+<p>Because this is getting long, I’m becoming lazier, and in this case I will use the pipe operator to chain several transformations and I will also use <code>image_flop()</code> instead of moving the background using some of the <a href="https://docs.ropensci.org/magick/reference/transform.html">image transformations</a> provided by <code>{magick}</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>matrix_bg2 <span class="ot">&lt;-</span> matrix_bg <span class="sc">%&gt;%</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_flop</span>() <span class="sc">%&gt;%</span> <span class="co"># This creates a vertical mirror, which is a lazy way to move the background</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_blur</span>(<span class="dv">10</span>, <span class="dv">10</span>) </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">image_composite</span>(matrix_bg2, dino_matrix, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-composite-matrix2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-composite-matrix2-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;18: Composition with the dino with code, after altering the background</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now we can see that dinosaur! However, I realised that in some recent posters, the images are not completely green, but have some greyish texture. We could try to do the same, but instead of having an entirely green dinosaur, using one of the grey versions with code overlayed on them.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>dino_matrix2 <span class="ot">&lt;-</span> <span class="fu">image_composite</span>(dino_matrix, dino_grey2, <span class="at">compose_args =</span> <span class="st">"40%"</span>, </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>                                <span class="at">operator =</span> <span class="st">"dissolve"</span>, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">image_composite</span>(matrix_bg2, dino_matrix2, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-composite-matrix3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-composite-matrix3-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;19: Same composition, but the dino is not completely green.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Way better now! We can see that the dinosaur now stands out against the background, but we could do better: we could add a light green glow around the dinosaur, just like the original imagery does.</p>
+</section>
+<section id="glow-effect" class="level3">
+<h3 class="anchored" data-anchor-id="glow-effect">Glow effect</h3>
+<p>This is probably one of the trickiest parts of this tutorial. Imagemagik (and therefore, <code>{magick}</code>) allow a limited range of effects (<a href="https://docs.ropensci.org/magick/reference/effects.html">check all of them here</a>), but none of them consists of projecting an <em>inner</em> or <em>outer glow</em>, which is what you’d do in Photoshop or GIMP. For a while I played with the idea of projecting an outer shadow using <code>image_shadow()</code> (but it would only project square shadows) or <code>image_shadow_mask()</code> but only seems to work for vector images.</p>
+<p>So, instead, we will be achieving that in several steps:</p>
+<ol type="1">
+<li>Create a light green silhouette</li>
+<li>Scale it to make it slightly bigger than the original, so it seems like a contour</li>
+<li>Blur the contour image</li>
+<li>Add it below the dinosaur</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a glow effect</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>dino_glow_tmp1 <span class="ot">&lt;-</span> dino_green <span class="sc">%&gt;%</span> </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_colorize</span>(<span class="at">color =</span> <span class="st">"#00dc00"</span>, <span class="at">opacity =</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_blur</span>(<span class="dv">200</span>, <span class="at">sigma =</span> <span class="dv">20</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># We are ready to add the dino on top of it!</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>dino_glow_tmp2 <span class="ot">&lt;-</span> dino_glow_tmp1 <span class="sc">%&gt;%</span> </span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_composite</span>(dino_grey2, <span class="at">gravity =</span> <span class="st">"southeast"</span>) <span class="co"># Using grey version to highlight the effect.</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare results</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="fu">image_append</span>(<span class="fu">image_scale</span>(<span class="fu">c</span>(dino_glow_tmp1, dino_glow_tmp2), <span class="st">"x250"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-glowing-dino" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-glowing-dino-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;20: Glowing silouetthe (left) and glowing dino (right). First attempt.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure on the left shows a perfectly green T-Rex with blurry contour, so wen we overlay a dinosaur on top of it, it looks like if it was glowing. It looks pretty neat, right? Well… except that there is an issue. Look at the upper border and left side of the image: the glow looks trimmed! Actually, because the glow exceeds the size of the original image, the glow also exceeds the canvas and it is not shown on those areas.</p>
+<p>To fix this we will need to make the canvas (not the image) a little bit bigger, making room for the glow to grow without being trimmed. We will do that using <code>image_extent()</code>, paying attention to make the canvas grow from the bottom right corner (because that’s the point we are using to align the dino within the background). Once we are done with that, we can then remove any extra white space using <code>image_trim()</code> and proceed to add the dinosaur with the code on top of it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>dino_matrix_glow <span class="ot">&lt;-</span> dino_green <span class="sc">%&gt;%</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_colorize</span>(<span class="at">color =</span> <span class="st">"#00dc00"</span>, <span class="at">opacity =</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_extent</span>(<span class="st">"1200x900"</span>, <span class="at">gravity =</span> <span class="st">"southeast"</span>) <span class="sc">%&gt;%</span> <span class="co"># Increase the canvas' size.</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_blur</span>(<span class="dv">200</span>, <span class="at">sigma =</span> <span class="dv">20</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_trim</span>() <span class="sc">%&gt;%</span>  <span class="co"># Remove the extra canvas space</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_composite</span>(<span class="fu">image_trim</span>(dino_matrix2), <span class="at">gravity =</span> <span class="st">"southeast"</span>)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>dino_matrix_glow</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-glowing-dino2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-glowing-dino2-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;21: Glowing T-Rex, now without trimmed glows.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And this is how the the final composition would look like when we add the glowing dinosaur to the background (compare it to <a href="#fig-composite-matrix3">Figure&nbsp;19</a>)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image_composite</span>(matrix_bg2, dino_matrix_glow, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-composite-matrix4" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-composite-matrix4-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;22: Adding the glowing dinosaur to the composition</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And we are almost done, now! We could add some text on top of the image, and that would be it.</p>
+</section>
+<section id="adding-text" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="adding-text">Adding text</h3>
+<p>Adding text over images is pretty straightforward using <code>image_annotate()</code>, but there are some considerations to be made for this particular case:</p>
+<ol type="1">
+<li>We have a dark image, so we will need to give the text a light color, as opposed to the default black color</li>
+<li>The image is quite big, so we will have to either scale it down or use big fonts</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>annotated_dino <span class="ot">&lt;-</span> <span class="fu">image_composite</span>(matrix_bg2, dino_matrix_glow, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_annotate</span>(</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="st">"This text is shown in the top left corner"</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">30</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>annotated_dino</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-adding-text1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-adding-text1-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;23: Adding our first text.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As you can see, the text is positioned on the top left corner of the image, but we can control that with the parameters <code>gravity</code> and <code>location</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>annotated_dino2 <span class="ot">&lt;-</span> <span class="fu">image_composite</span>(matrix_bg2, dino_matrix_glow, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_annotate</span>(</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="st">"This text is shown in the top left corner (with padding)"</span>,</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">30</span>,</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">location =</span> <span class="st">"+100+100"</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_annotate</span>(</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="st">"This text is shown in the center, slightly rotated"</span>,</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">30</span>,</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">gravity =</span> <span class="st">"center"</span>,</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">degrees =</span> <span class="dv">20</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_annotate</span>(</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="st">"This text is shown in the bottom right"</span>,</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">30</span>,</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">gravity =</span> <span class="st">"southeast"</span>,</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">location =</span> <span class="st">"+100+100"</span></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>annotated_dino2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-adding-text2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-adding-text2-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;24: Combining several text strings and controlling their position</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>These are the basics, but there are other interesting parameters we can use with <code>image_annotate()</code> to control the font family, text rotation, style, decoration, kerning… but I’m sure you get the idea.</p>
+<p>In the example below, I’m using two custom font types that are Matrix-theme inspired and are also free to use:</p>
+<ol type="1">
+<li><a href="https://www.1001fonts.com/miltown-ii-font.html">Miltown II</a> by Apostrophic Labs</li>
+<li><a href="https://www.1001fonts.com/white-rabbit-font.html">White rabbit</a> by Matthew Welch</li>
+</ol>
+<div class="cell page-columns page-full">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>final_image <span class="ot">&lt;-</span> <span class="fu">image_composite</span>(matrix_bg2, dino_matrix_glow, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>)  <span class="sc">%&gt;%</span> </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_annotate</span>(</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="st">"Data visualisation use cases:"</span>,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">font =</span> <span class="st">"white rabbit"</span>,</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">strokecolor =</span> <span class="st">"#A7F4A7"</span>,</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">30</span>,</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">weight =</span> <span class="dv">700</span>,</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">location =</span> <span class="st">"+90+90"</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_annotate</span>(</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="st">"#1: to find dinosaurs"</span>, </span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">font =</span> <span class="st">"miltown ii"</span>,</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">strokecolor =</span> <span class="st">"#A7F4A7"</span>,</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">70</span>, </span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">weight =</span> <span class="dv">700</span>,</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">location =</span><span class="st">"+90+120"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_annotate</span>(</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="st">"Data can contain hidden </span><span class="sc">\n</span><span class="st">and suprising patterns </span><span class="sc">\n</span><span class="st">that only visualisations </span><span class="sc">\n</span><span class="st">can reveal"</span>,</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">font =</span> <span class="st">"white rabbit"</span>,</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">strokecolor =</span> <span class="st">"#A7F4A7"</span>,</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">40</span>,</span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">location =</span> <span class="st">"+90+400"</span></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_annotate</span>(</span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="st">"Great examples of this are the Anscombe quartet </span><span class="sc">\n</span><span class="st">or the Datasaurus Dozen (Matejka &amp; Fitzmaurice, 2017)"</span>,</span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">font =</span> <span class="st">"white rabbit"</span>,</span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a>     <span class="at">strokecolor =</span> <span class="st">"#A7F4A7"</span>,</span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">28</span>,</span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">gravity =</span> <span class="st">"southwest"</span>,</span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">location =</span> <span class="st">"+90+90"</span></span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_annotate</span>(</span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="st">"Source: datasaurus@pixelfed.social"</span>,</span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">gravity =</span> <span class="st">"southeast"</span>,</span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">location =</span> <span class="st">"+50+50"</span>,</span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">18</span></span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a>final_image</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display column-page">
+<div id="fig-final1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-final1-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;25: The final image</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>So this is it! We made it! Now we only need to save the image and start using it!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image_write</span>(final_image, <span class="st">"img/datasaurus_matrix.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="sec-putting-everything-together" class="level3">
+<h3 class="anchored" data-anchor-id="sec-putting-everything-together">Putting everything together</h3>
+<p>We could try to replicate the same image in a more compressed way:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>col_matrix <span class="ot">&lt;-</span> <span class="st">"#00dc00"</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a></span>
+<span id="cb32-3"><a href="#cb32-3"></a>matrix_bg <span class="ot">&lt;-</span> <span class="fu">image_read</span>(<span class="st">"img/matrix01.webp"</span>) </span>
+<span id="cb32-4"><a href="#cb32-4"></a></span>
+<span id="cb32-5"><a href="#cb32-5"></a>dino <span class="ot">&lt;-</span> <span class="fu">image_read</span>(<span class="st">"img/amy-leigh-barnard-SByb8Ch9XcQ-unsplash.png"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-6"><a href="#cb32-6"></a>  <span class="fu">image_trim</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb32-7"><a href="#cb32-7"></a>  <span class="fu">image_scale</span>(<span class="st">"x800"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-8"><a href="#cb32-8"></a>  <span class="fu">image_modulate</span>(<span class="at">saturation =</span> <span class="dv">15</span>)</span>
+<span id="cb32-9"><a href="#cb32-9"></a></span>
+<span id="cb32-10"><a href="#cb32-10"></a>dino_matrix <span class="ot">&lt;-</span> <span class="fu">image_composite</span>(matrix_bg, dino, <span class="at">operator =</span> <span class="st">'copyopacity'</span>, </span>
+<span id="cb32-11"><a href="#cb32-11"></a>                               <span class="at">gravity =</span> <span class="st">"SouthEast"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-12"><a href="#cb32-12"></a>  <span class="fu">image_composite</span>(dino, <span class="at">compose_args =</span> <span class="st">"50%"</span>, </span>
+<span id="cb32-13"><a href="#cb32-13"></a>                               <span class="at">operator =</span> <span class="st">"dissolve"</span>, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>)</span>
+<span id="cb32-14"><a href="#cb32-14"></a></span>
+<span id="cb32-15"><a href="#cb32-15"></a>dino_matrix_glow <span class="ot">&lt;-</span> dino_matrix <span class="sc">%&gt;%</span> </span>
+<span id="cb32-16"><a href="#cb32-16"></a>  <span class="fu">image_colorize</span>(<span class="at">color =</span> col_matrix, <span class="at">opacity =</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-17"><a href="#cb32-17"></a>  <span class="fu">image_extent</span>(<span class="st">"1200x900"</span>, <span class="at">gravity =</span> <span class="st">"southeast"</span>) <span class="sc">%&gt;%</span> <span class="co"># Increase the canvas' size.</span></span>
+<span id="cb32-18"><a href="#cb32-18"></a>  <span class="fu">image_blur</span>(<span class="dv">200</span>, <span class="at">sigma =</span> <span class="dv">20</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-19"><a href="#cb32-19"></a>  <span class="fu">image_trim</span>() <span class="sc">%&gt;%</span>  <span class="co"># Remove the extra canvas space</span></span>
+<span id="cb32-20"><a href="#cb32-20"></a>  <span class="fu">image_composite</span>(<span class="fu">image_trim</span>(dino_matrix), <span class="at">gravity =</span> <span class="st">"southeast"</span>)</span>
+<span id="cb32-21"><a href="#cb32-21"></a></span>
+<span id="cb32-22"><a href="#cb32-22"></a>matrix_bg2 <span class="ot">&lt;-</span> matrix_bg <span class="sc">%&gt;%</span> </span>
+<span id="cb32-23"><a href="#cb32-23"></a>  <span class="fu">image_flop</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb32-24"><a href="#cb32-24"></a>  <span class="fu">image_blur</span>(<span class="dv">10</span>, <span class="dv">10</span>) </span>
+<span id="cb32-25"><a href="#cb32-25"></a></span>
+<span id="cb32-26"><a href="#cb32-26"></a><span class="fu">image_composite</span>(matrix_bg2, dino_matrix_glow, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-27"><a href="#cb32-27"></a>  <span class="fu">image_annotate</span>(</span>
+<span id="cb32-28"><a href="#cb32-28"></a>    <span class="at">text =</span> <span class="st">"Data visualisation use cases:"</span>,</span>
+<span id="cb32-29"><a href="#cb32-29"></a>    <span class="at">font =</span> <span class="st">"white rabbit"</span>,</span>
+<span id="cb32-30"><a href="#cb32-30"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb32-31"><a href="#cb32-31"></a>    <span class="at">strokecolor =</span> <span class="st">"#A7F4A7"</span>,</span>
+<span id="cb32-32"><a href="#cb32-32"></a>    <span class="at">size =</span> <span class="dv">30</span>,</span>
+<span id="cb32-33"><a href="#cb32-33"></a>    <span class="at">weight =</span> <span class="dv">700</span>,</span>
+<span id="cb32-34"><a href="#cb32-34"></a>    <span class="at">location =</span> <span class="st">"+90+90"</span></span>
+<span id="cb32-35"><a href="#cb32-35"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-36"><a href="#cb32-36"></a>  <span class="fu">image_annotate</span>(</span>
+<span id="cb32-37"><a href="#cb32-37"></a>    <span class="at">text =</span> <span class="st">"#1: to find dinosaurs"</span>, </span>
+<span id="cb32-38"><a href="#cb32-38"></a>    <span class="at">font =</span> <span class="st">"miltown ii"</span>,</span>
+<span id="cb32-39"><a href="#cb32-39"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb32-40"><a href="#cb32-40"></a>    <span class="at">strokecolor =</span> <span class="st">"#A7F4A7"</span>,</span>
+<span id="cb32-41"><a href="#cb32-41"></a>    <span class="at">size =</span> <span class="dv">70</span>, </span>
+<span id="cb32-42"><a href="#cb32-42"></a>    <span class="at">weight =</span> <span class="dv">700</span>,</span>
+<span id="cb32-43"><a href="#cb32-43"></a>    <span class="at">location =</span><span class="st">"+90+120"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-44"><a href="#cb32-44"></a>  <span class="fu">image_annotate</span>(</span>
+<span id="cb32-45"><a href="#cb32-45"></a>    <span class="at">text =</span> <span class="st">"Data can contain hidden </span><span class="sc">\n</span><span class="st">and suprising patterns </span><span class="sc">\n</span><span class="st">that only visualisations </span><span class="sc">\n</span><span class="st">can reveal"</span>,</span>
+<span id="cb32-46"><a href="#cb32-46"></a>    <span class="at">font =</span> <span class="st">"white rabbit"</span>,</span>
+<span id="cb32-47"><a href="#cb32-47"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb32-48"><a href="#cb32-48"></a>    <span class="at">strokecolor =</span> <span class="st">"#A7F4A7"</span>,</span>
+<span id="cb32-49"><a href="#cb32-49"></a>    <span class="co">#strokecolor = "#379b47",</span></span>
+<span id="cb32-50"><a href="#cb32-50"></a>    <span class="at">size =</span> <span class="dv">40</span>,</span>
+<span id="cb32-51"><a href="#cb32-51"></a>    <span class="at">location =</span> <span class="st">"+90+400"</span></span>
+<span id="cb32-52"><a href="#cb32-52"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-53"><a href="#cb32-53"></a>  <span class="fu">image_annotate</span>(</span>
+<span id="cb32-54"><a href="#cb32-54"></a>    <span class="at">text =</span> <span class="st">"Great examples of this are the Anscombe quartet </span><span class="sc">\n</span><span class="st">or the Datasaurus Dozen (Matejka &amp; Fitzmaurice, 2017)"</span>,</span>
+<span id="cb32-55"><a href="#cb32-55"></a>    <span class="at">font =</span> <span class="st">"white rabbit"</span>,</span>
+<span id="cb32-56"><a href="#cb32-56"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb32-57"><a href="#cb32-57"></a>     <span class="at">strokecolor =</span> <span class="st">"#A7F4A7"</span>,</span>
+<span id="cb32-58"><a href="#cb32-58"></a>    <span class="at">size =</span> <span class="dv">28</span>,</span>
+<span id="cb32-59"><a href="#cb32-59"></a>    <span class="at">gravity =</span> <span class="st">"southwest"</span>,</span>
+<span id="cb32-60"><a href="#cb32-60"></a>    <span class="at">location =</span> <span class="st">"+90+90"</span></span>
+<span id="cb32-61"><a href="#cb32-61"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-62"><a href="#cb32-62"></a>  <span class="fu">image_annotate</span>(</span>
+<span id="cb32-63"><a href="#cb32-63"></a>    <span class="at">text =</span> <span class="st">"Source: datasaurus@pixelfed.social"</span>,</span>
+<span id="cb32-64"><a href="#cb32-64"></a>    <span class="at">color =</span> <span class="st">"white"</span>,</span>
+<span id="cb32-65"><a href="#cb32-65"></a>    <span class="at">gravity =</span> <span class="st">"southeast"</span>,</span>
+<span id="cb32-66"><a href="#cb32-66"></a>    <span class="at">location =</span> <span class="st">"+50+50"</span>,</span>
+<span id="cb32-67"><a href="#cb32-67"></a>    <span class="at">size =</span> <span class="dv">18</span></span>
+<span id="cb32-68"><a href="#cb32-68"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-69"><a href="#cb32-69"></a>  <span class="fu">image_scale</span>(<span class="st">"1000x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-final-condensed" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-final-condensed-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;26: The same image, created from scratch in 69 lines of code</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout-caution callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Spot the difference?
+</div>
+</div>
+<div class="callout-body-container callout-body" data-collapsed="true">
+<p>Despite I said images <a href="#fig-final1">Figure&nbsp;25</a> and <a href="#fig-final-condensed">Figure&nbsp;26</a> are the same, they are slightly different. Can you spot the difference? Would you be able to make changes in the code to make them look the same?</p>
+</div>
+</div>
+</section>
+<section id="sec-animated-gif" class="level3">
+<h3 class="anchored" data-anchor-id="sec-animated-gif">Bonus: Animated GIF</h3>
+<p>Creating an animated GIF of the entire process is really straightforward. We just need to add the relevant images to a vector, and then use <code>image_animate()</code> to generate the GIF.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add key images to a vector.</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>images_clips <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  matrix_bg,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_extent</span>(dino, <span class="st">"2000x1000"</span>, <span class="at">gravity =</span> <span class="st">"southeast"</span>),</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_composite</span>(matrix_bg, dino, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>),</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_extent</span>(dino_grey, <span class="st">"2000x1000"</span>, <span class="at">gravity =</span> <span class="st">"southeast"</span>),</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_extent</span>(dino_grey2, <span class="st">"2000x1000"</span>, <span class="at">gravity =</span> <span class="st">"southeast"</span>),</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_composite</span>(matrix_bg, dino_grey2, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>),</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_extent</span>(<span class="fu">image_colorize</span>(dino_grey2, <span class="at">opacity =</span> <span class="dv">40</span>, <span class="at">color =</span>  <span class="st">"#379b47"</span>),</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>               <span class="st">"2000x1000"</span>, <span class="at">gravity =</span> <span class="st">"southeast"</span>),</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_extent</span>(dino_green2, <span class="st">"2000x1000"</span>, <span class="at">gravity =</span> <span class="st">"southeast"</span>),</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_composite</span>(matrix_bg, dino_green2, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>),</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_composite</span>(matrix_bg, dino_green2, <span class="at">operator =</span> <span class="st">'copyopacity'</span>, </span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>                               <span class="at">gravity =</span> <span class="st">"SouthEast"</span>),</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_extent</span>(dino_matrix, <span class="st">"2000x1000"</span>, <span class="at">gravity =</span> <span class="st">"southeast"</span>),</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># dino_matrix2,</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_composite</span>(matrix_bg, dino_matrix, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>),</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>  matrix_bg2,</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_composite</span>(matrix_bg2, dino_matrix2, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>),</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_extent</span>(dino_glow_tmp1, <span class="st">"2000x1000"</span>, <span class="at">gravity =</span> <span class="st">"southeast"</span>),</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_extent</span>(dino_glow_tmp2, <span class="st">"2000x1000"</span>, <span class="at">gravity =</span> <span class="st">"southeast"</span>),</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_extent</span>(dino_matrix_glow, <span class="st">"2000x1000"</span>, <span class="at">gravity =</span> <span class="st">"southeast"</span>),</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image_composite</span>(matrix_bg2, dino_matrix_glow, <span class="at">gravity =</span> <span class="st">"SouthEast"</span>),</span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>  annotated_dino,</span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>  annotated_dino2,</span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a>  final_image,</span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a>  final_image</span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the animation</span></span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>process_gif <span class="ot">&lt;-</span> <span class="fu">image_animate</span>(<span class="fu">image_scale</span>(images_clips, <span class="st">"x500"</span>), <span class="at">fps =</span> <span class="dv">2</span>)</span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualise the animation</span></span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a>process_gif</span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Save it as a GIF</span></span>
+<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a><span class="fu">image_write</span>(process_gif, <span class="st">"img/dino-matrix-process.gif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-process-animated" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-process-animated-1.gif" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;27: Animated GIF of the process</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>Throughout this post, we’ve learnt that we can use R (and coding) for creative purposes. There are several takeaways from this experience:</p>
+<ol type="1">
+<li>Manipulating images with R is relatively straightforward from a technical standpoint: it works pretty much in the same way you’d work with regular data (we can even use tidyverse’s pipe operators for that!). Proof is that creating that image would only require 69 lines of very readable code, as demonstrated in <a href="#sec-putting-everything-together">Section&nbsp;3.10</a></li>
+<li>However, that doesn’t mean it’s easy or fast. Admittedly, I spent a lot of time doing this, way more than if I would have used GIMP instead. It’s true that I’m way more experienced using GIMP and it is my first experience using magick in R (not bad for a first timer!), so that shouldn’t be a surprise. Where I pent most time of was planning what I wanted to do, and repeating it by trial and error. Admittedly, this is true from every creative process and not very different from what would have happened with GIMP or Phosothop. However, not having a GUI makes you perform some extra steps. On the bright side, repeating the same tasks while changing some parameters is extremely fast and easy when you are coding.</li>
+<li>There are some things where I feel I could have done better with GIMP, as I’d have full control over the image (i.e., by working with level curves, or applying some gradients in some areas), not to mention that there are way more effects I can apply.</li>
+<li>Probably the reasons for manipulating code are better summarised in the code used to generate <a href="#fig-process-animated">Figure&nbsp;27</a> : I really love the idea of having a creative process that can be entirely reproduced in a matter of seconds. And what is more, it is a non-destructive process which can also be easily tweaked (i.e.&nbsp;using a different image for the background, changing the text, changing the green colour…). This is particularly true if we were to repeat the process a number of times with minor tweaks or wanted to make sure of the process’ provenance, something where Image Editors fail at doing, and the only way to overcome that is to keep intermediate steps stored in their native file format. To make things worse those files are usually huge in terms of file size.</li>
+<li>Storing all the steps in code ensures the process’ provenance in a more efficient way: code is stored in text files which are very small in terms of file size and can be version controlled.</li>
+</ol>
+<p>So, all in all, while not that popular, using coding for image manipulation makes a lot of sense in some cases like the ones outlined before, and it’s a practice I am willing to use more frequently.</p>
+</section>
+<section id="resources" class="level2">
+<h2 class="anchored" data-anchor-id="resources">Resources</h2>
+<ul>
+<li><a href="https://ropensci.org/blog/2019/09/27/ropensci-docs/" class="uri">https://ropensci.org/blog/2019/09/27/ropensci-docs/</a></li>
+</ul>
+
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-matejka2017" class="csl-entry" role="doc-biblioentry">
+Matejka, Justin, and George Fitzmaurice. 2017. <span>“Same <span>Stats</span>, <span>Different</span> <span>Graphs</span>: <span>Generating</span> <span>Datasets</span> with <span>Varied</span> <span>Appearance</span> and <span>Identical</span> <span>Statistics</span> Through <span>Simulated</span> <span>Annealing</span>.”</span> In <em>Same <span>Stats</span>, <span>Different</span> <span>Graphs</span>: <span>Generating</span> <span>Datasets</span> with <span>Varied</span> <span>Appearance</span> and <span>Identical</span> <span>Statistics</span> Through <span>Simulated</span> <span>Annealing</span></em>. <a href="https://www.autodesk.com/research/publications/same-stats-different-graphs">https://www.autodesk.com/research/publications/same-stats-different-graphs</a>.
+</div>
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{cámara2023,
+  author = {Carlos Cámara},
+  title = {Matrix Effect Using {Imagemagick}},
+  date = {2023-03-05},
+  url = {https://dslabs.carloscamara.es/posts/2023-03-02_matrix-effect/},
+  langid = {en},
+  abstract = {This tutorial provides a detailed step-by-step process
+    that demonstrates how to use R and Imagemagik to produce a
+    Matrix-like image as well as highlights some key take away lessons I
+    learnt from this experiencefrom doing that.}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-cámara2023" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Carlos Cámara. 2023. <span>“Matrix Effect Using Imagemagick.”</span>
+March 5, 2023. <a href="https://dslabs.carloscamara.es/posts/2023-03-02_matrix-effect/">https://dslabs.carloscamara.es/posts/2023-03-02_matrix-effect/</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="ccamara/dslabs" data-repo-id="R_kgDOJFtHLg" data-category="Comments" data-category-id="DIC_kwDOJFtHLs4CUtWF" data-mapping="pathname" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
