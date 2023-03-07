@@ -3,7 +3,10 @@ project:
 
 website:
   title: "DS Labs"
+  site-url: "https://ds-labs.carloscamara.es/"
   description:  "A lab for experimenting with Data Science and Data visualisation"
+  # twitter-card: true
+  # open-graph: true
   navbar:
     right:
       - blog.qmd
@@ -12,6 +15,18 @@ website:
         href: https://github.com/ccamara
       - icon: mastodon
         href: https://scholar.social/users/ccamara
+      - icon: instagram
+        href: https://pixelfed.social/datasaurus
+  comments: 
+    hypothesis:
+      theme: clean
+      openSidebar: false
+    giscus:
+      repo: ccamara/dslabs
+      category: Comments 
+      category-id: DIC_kwDOJFtHLs4CUtWF
+      mapping: pathname
+      input-position: top
 format:
   html:
     theme: journal #sandstone or pulse are also good
