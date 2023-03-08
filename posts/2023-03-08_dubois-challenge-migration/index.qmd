@@ -1,0 +1,47 @@
+---
+title: "Migration Maps"
+author:  
+  - name: "Carlos Cámara-Menoyo"
+      # given: "Carlos"
+      # family: "Cámara-Menoyo"
+      # literal: "Carlos Cámara-Menoyo"
+    orcid: 0000-0002-9378-0549
+    email: carlos.camara@warwick.ac.uk
+    affiliations:
+    - name: University of Warwick
+      address: Centre for Interdisciplinary Methodologies (CIM), Social Sciences Building
+      city: Coventry
+      postal-code: CV4 7AL
+categories:
+  - R
+  - tutorial
+  - maps
+image: "https://raw.githubusercontent.com/ajstarks/dubois-data-portraits/master/challenge/challenge09/original-plate-08.jpg"
+image-alt: "The plate to recreate."
+format:
+  html:
+    toc: true
+    #code-line-numbers: true
+    reference-location: margin
+editor: visual
+bibliography: references.bib
+citation: true
+---
+
+https://github.com/ajstarks/dubois-data-portraits/tree/master
+
+Inspiration:
+
+-   https://bookdown.org/nicohahn/making_maps_with_r5/docs/mapdeck.html
+
+-   https://geospatialtraining.com/tutorial-mapping-migration-flows-with-r/
+
+-   https://personal.tcu.edu/kylewalker/interactive-flow-visualization-in-r.html
+
+-   https://plotly.com/r/lines-on-maps/
+
+References:
+
+-   Dubois challenge:
+
+    -   zInteresting paper [@tackett2023]
