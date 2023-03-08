@@ -328,7 +328,7 @@ gtag('config', 'G-GM3K1FXK2H', { 'anonymize_ip': true});
 <p></p><figcaption class="figure-caption">Figure&nbsp;1: <a href="https://en.wikipedia.org/wiki/The_Matrix">The Matrix</a> (1999) © Warner Bros.&nbsp;Entertainment</figcaption><p></p>
 </figure>
 </div>
-<p>In this case, however, I will not be using any editing software. Instead, I will be solely using code to produce a Matrix-like image like the one below (<a href="#fig-final-result">Figure&nbsp;2</a>), and some bonus output, too. Specifically, I’m going to use R and <a href="https://docs.ropensci.org/magick/index.html"><code>{magick}</code></a>, which is an R interface for <a href="https://imagemagick.org/">Imagemagik</a> developed by the <a href="https://ropensci.org/">rOpensCi</a> community.</p>
+<p>In this case, however, I will not be using any editing software. Instead, I will be solely using code to produce a Matrix-like image like the one below (<a href="#fig-final-result">Figure&nbsp;2</a>), and some bonus output, too. Specifically, I’m going to use R and <code>{magick}</code> <span class="citation" data-cites="ooms2023">(<a href="#ref-ooms2023" role="doc-biblioref">Ooms 2023</a>)</span>, which is an R interface for <a href="https://imagemagick.org/">Imagemagik</a> developed by the <a href="https://ropensci.org/">rOpensCi</a> community.</p>
 <div class="column-page">
 <div id="fig-final-result" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
@@ -340,7 +340,7 @@ gtag('config', 'G-GM3K1FXK2H', { 'anonymize_ip': true});
 <section id="why-would-we-want-to-do-this-using-r" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="why-would-we-want-to-do-this-using-r">Why would we want to do this using R?</h2>
 <div class="page-columns page-full"><p>Before starting with the tutorial, though, I need to be crystal clear. <strong>I do not think that R and any of their image-manipulation packages or, more generally, a programming language, can fully replace an image editing software such as Photoshop or <a href="https://gimp.org">GIMP</a></strong><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. After all, they are made for different purposes and with different audiences in mind.</p><div class="no-row-height column-margin column-container"><li id="fn2"><p><sup>2</sup>&nbsp;GIMP is an excellent Free/Libre OpenSource software for image manipulation, very similar (feature-wise) to Photoshop. You can visit the official website <a href="https://gimp.org" class="uri">https://gimp.org</a><br>
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/The_GIMP_icon_-_gnome.svg/240px-The_GIMP_icon_-_gnome.svg.png" class="img-fluid" alt="GIMP’s mascot: Wilbert"></p></li></div></div>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/The_GIMP_icon_-_gnome.svg/240px-The_GIMP_icon_-_gnome.svg.png" class="img-fluid" alt="GIMP's mascot: Wilbert"></p></li></div></div>
 <p>However, that doesn’t mean that using R for handling images doesn’t make sense at all. On the contrary! There are a number of cases where manipulating images from code makes a lot of sense:</p>
 <ol type="1">
 <li>Batch manipulation</li>
@@ -1147,7 +1147,10 @@ Spot the difference?
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-matejka2017" class="csl-entry" role="doc-biblioentry">
-Matejka, Justin, and George Fitzmaurice. 2017. <span>“Same <span>Stats</span>, <span>Different</span> <span>Graphs</span>: <span>Generating</span> <span>Datasets</span> with <span>Varied</span> <span>Appearance</span> and <span>Identical</span> <span>Statistics</span> Through <span>Simulated</span> <span>Annealing</span>.”</span> In <em>Same <span>Stats</span>, <span>Different</span> <span>Graphs</span>: <span>Generating</span> <span>Datasets</span> with <span>Varied</span> <span>Appearance</span> and <span>Identical</span> <span>Statistics</span> Through <span>Simulated</span> <span>Annealing</span></em>. <a href="https://www.autodesk.com/research/publications/same-stats-different-graphs">https://www.autodesk.com/research/publications/same-stats-different-graphs</a>.
+Matejka, Justin, and George Fitzmaurice. 2017. <span>“Same <span>Stats</span>, <span>Different</span> <span>Graphs</span>: <span>Generating</span> <span>Datasets</span> with <span>Varied</span> <span>Appearance</span> and <span>Identical</span> <span>Statistics</span> Through <span>Simulated</span> <span>Annealing</span>.”</span> In <em><span>ACM</span> <span>SIGCHI</span> <span>Conference</span> on <span>Human</span> <span>Factors</span> in <span>Computing</span> <span>Systems</span></em>. <a href="https://www.autodesk.com/research/publications/same-stats-different-graphs">https://www.autodesk.com/research/publications/same-stats-different-graphs</a>.
+</div>
+<div id="ref-ooms2023" class="csl-entry" role="doc-biblioentry">
+Ooms, Jeroen. 2023. <em>Magick: Advanced Graphics and Image-Processing in r</em>.
 </div>
 </div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{cámara2023,
   author = {Carlos Cámara},
