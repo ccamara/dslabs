@@ -2,7 +2,6 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/2023-03-08_dubois-challenge-migration/index.html",
       "/posts/2023-03-02_matrix-effect/index.html",
       "/posts/welcome/index.html"
     ]
@@ -10,7 +9,6 @@
   {
     "listing": "/blog.html",
     "items": [
-      "/posts/2023-03-08_dubois-challenge-migration/index.html",
       "/posts/2023-03-02_matrix-effect/index.html",
       "/posts/welcome/index.html"
     ]
