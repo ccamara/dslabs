@@ -2,22 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ds-labs.carloscamara.es/posts/welcome/index.html</loc>
-    <lastmod>2023-03-07T13:45:11.772Z</lastmod>
+    <lastmod>2023-03-08T09:51:18.158Z</lastmod>
   </url>
   <url>
     <loc>https://ds-labs.carloscamara.es/posts/2023-03-02_matrix-effect/index.html</loc>
-    <lastmod>2023-03-07T13:45:13.039Z</lastmod>
+    <lastmod>2023-03-08T09:51:19.366Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ds-labs.carloscamara.es/posts/2023-03-08_dubois-challenge-migration/index.html</loc>
+    <lastmod>2023-03-08T09:51:19.839Z</lastmod>
   </url>
   <url>
     <loc>https://ds-labs.carloscamara.es/index.html</loc>
-    <lastmod>2023-03-07T13:45:13.377Z</lastmod>
+    <lastmod>2023-03-08T09:51:20.195Z</lastmod>
   </url>
   <url>
     <loc>https://ds-labs.carloscamara.es/about.html</loc>
-    <lastmod>2023-03-07T13:45:13.713Z</lastmod>
+    <lastmod>2023-03-08T09:51:20.502Z</lastmod>
   </url>
   <url>
     <loc>https://ds-labs.carloscamara.es/blog.html</loc>
-    <lastmod>2023-03-07T13:45:14.040Z</lastmod>
+    <lastmod>2023-03-08T09:51:20.853Z</lastmod>
   </url>
 </urlset>

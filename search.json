@@ -49,11 +49,18 @@
     "text": "Resources\n\nhttps://ropensci.org/blog/2019/09/27/ropensci-docs/"
   },
   {
+    "objectID": "posts/2023-03-08_dubois-challenge-migration/index.html",
+    "href": "posts/2023-03-08_dubois-challenge-migration/index.html",
+    "title": "Migration Maps",
+    "section": "",
+    "text": "https://github.com/ajstarks/dubois-data-portraits/tree/master\nInspiration:\n\nhttps://bookdown.org/nicohahn/making_maps_with_r5/docs/mapdeck.html\nhttps://geospatialtraining.com/tutorial-mapping-migration-flows-with-r/\nhttps://personal.tcu.edu/kylewalker/interactive-flow-visualization-in-r.html\nhttps://plotly.com/r/lines-on-maps/\n\nReferences:\n\nDubois challenge:\n\nzInteresting paper (Tackett and Çetinkaya-Rundel 2023)\n\n\n\n\n\n\nReferences\n\nTackett, Maria, and Mine Çetinkaya-Rundel. 2023. “Analyzing and Recreating Data Visualizations of w.e.b. Du Bois.” CHANCE 36 (1): 40–47. https://doi.org/10.1080/09332480.2023.2179279.\n\nCitationBibTeX citation:@online{cámara-menoyo,\n  author = {Carlos Cámara-Menoyo},\n  title = {Migration {Maps}},\n  url = {https://ds-labs.carloscamara.es//posts/2023-03-08_dubois-challenge-migration},\n  langid = {en}\n}\nFor attribution, please cite this work as:\nCarlos Cámara-Menoyo. n.d. “Migration Maps.” https://ds-labs.carloscamara.es//posts/2023-03-08_dubois-challenge-migration."
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Blog",
     "section": "",
-    "text": "Matrix effect using Imagemagick\n\n\n\n\n\n\n\nR\n\n\ntutorial\n\n\nimage manipulation\n\n\nImageMagick\n\n\nMagick\n\n\n\n\nIn this tutorial I’m using R and Imagemagik to produce a Matrix-like image just using code.\n\n\n\n\n\n\nMar 5, 2023\n\n\nCarlos Cámara\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nMar 2, 2023\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "text": "Migration Maps\n\n\n\n\n\n\n\nR\n\n\ntutorial\n\n\nmaps\n\n\n\n\n\n\n\n\n\n\n\nCarlos Cámara-Menoyo\n\n\n\n\n\n\n  \n\n\n\n\nMatrix effect using Imagemagick\n\n\n\n\n\n\n\nR\n\n\ntutorial\n\n\nimage manipulation\n\n\nImageMagick\n\n\nMagick\n\n\n\n\nIn this tutorial I’m using R and Imagemagik to produce a Matrix-like image just using code.\n\n\n\n\n\n\nMar 5, 2023\n\n\nCarlos Cámara\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nMar 2, 2023\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -88,6 +95,6 @@
     "href": "blog.html",
     "title": "Blog",
     "section": "",
-    "text": "Matrix effect using Imagemagick\n\n\n\n\n\n\n\nR\n\n\ntutorial\n\n\nimage manipulation\n\n\nImageMagick\n\n\nMagick\n\n\n\n\nIn this tutorial I’m using R and Imagemagik to produce a Matrix-like image just using code.\n\n\n\n\n\n\nMar 5, 2023\n\n\nCarlos Cámara\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nMar 2, 2023\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "text": "Migration Maps\n\n\n\n\n\n\n\nR\n\n\ntutorial\n\n\nmaps\n\n\n\n\n\n\n\n\n\n\n\nCarlos Cámara-Menoyo\n\n\n\n\n\n\n  \n\n\n\n\nMatrix effect using Imagemagick\n\n\n\n\n\n\n\nR\n\n\ntutorial\n\n\nimage manipulation\n\n\nImageMagick\n\n\nMagick\n\n\n\n\nIn this tutorial I’m using R and Imagemagik to produce a Matrix-like image just using code.\n\n\n\n\n\n\nMar 5, 2023\n\n\nCarlos Cámara\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nMar 2, 2023\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
   }
 ]
