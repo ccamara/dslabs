@@ -27,6 +27,9 @@ website:
       category-id: DIC_kwDOJFtHLs4CUtWF
       mapping: pathname
       input-position: top
+  google-analytics:  
+    tracking-id: "G-GM3K1FXK2H"
+    storage: none
 format:
   html:
     theme: journal #sandstone or pulse are also good
