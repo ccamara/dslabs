@@ -49,7 +49,7 @@ It is no wonder, then, that the Internet is flooded by a number of tutorials or 
 [The Matrix](https://en.wikipedia.org/wiki/The_Matrix) (1999) © Warner Bros. Entertainment
 :::
 
-In this case, however, I will not be using any editing software. Instead, I will be solely using code to produce a Matrix-like image like the one below (@fig-final-result), and some bonus output, too. Specifically, I'm going to use R and [`{magick}`](https://docs.ropensci.org/magick/index.html), which is an R interface for [Imagemagik](https://imagemagick.org/) developed by the [rOpensCi](https://ropensci.org/) community.
+In this case, however, I will not be using any editing software. Instead, I will be solely using code to produce a Matrix-like image like the one below (@fig-final-result), and some bonus output, too. Specifically, I'm going to use R and `{magick}` [@ooms2023], which is an R interface for [Imagemagik](https://imagemagick.org/) developed by the [rOpensCi](https://ropensci.org/) community.
 
 ::: column-page
 ![That's what we will be creating](img/datasaurus_matrix.png){#fig-final-result}
@@ -60,7 +60,7 @@ In this case, however, I will not be using any editing software. Instead, I will
 Before starting with the tutorial, though, I need to be crystal clear. **I do not think that R and any of their image-manipulation packages or, more generally, a programming language, can fully replace an image editing software such as Photoshop or [GIMP](https://gimp.org)**[^2]. After all, they are made for different purposes and with different audiences in mind.
 
 [^2]: GIMP is an excellent Free/Libre OpenSource software for image manipulation, very similar (feature-wise) to Photoshop. You can visit the official website <https://gimp.org>\
-    ![GIMP's mascot: Wilbert](https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/The_GIMP_icon_-_gnome.svg/240px-The_GIMP_icon_-_gnome.svg.png)
+    ![GIMP\'s mascot: Wilbert](https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/The_GIMP_icon_-_gnome.svg/240px-The_GIMP_icon_-_gnome.svg.png)
 
 However, that doesn't mean that using R for handling images doesn't make sense at all. On the contrary! There are a number of cases where manipulating images from code makes a lot of sense:
 
