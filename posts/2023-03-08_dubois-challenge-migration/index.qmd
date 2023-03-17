@@ -1,5 +1,6 @@
 ---
 title: "Migration Maps"
+date: 2023-03-16
 author:  
   - name: "Carlos Cámara-Menoyo"
       # given: "Carlos"
@@ -17,7 +18,7 @@ categories:
   - tutorial
   - maps
 image: "https://raw.githubusercontent.com/ajstarks/dubois-data-portraits/master/challenge/challenge09/original-plate-08.jpg"
-image-alt: "The plate to recreate."
+image-alt: "W.E.B. Dubois Plate to be recreated."
 format:
   html:
     toc: true
@@ -28,7 +29,51 @@ bibliography: references.bib
 citation: true
 ---
 
+## The #DuboisChallenge
+
+Read here https://nightingaledvs.com/the-dubois-challenge/
+
+In this case, this is the image we want to recreate
+
+You can read more here [@tackett2023]
+
+::: column-page
+![*"The Georgia Negro. A Social Study by W.E.Burghardt Du Bois".* The original image from Dubois that is to be recreated](https://raw.githubusercontent.com/ajstarks/dubois-data-portraits/master/challenge/challenge09/original-plate-08.jpg){#fig-original}
+:::
+
+### W.E.B. Dubois
+
+Explain who he was
+
+## Recreating the plate
+
+This
+
+```{r}
+library(dplyr)
+library(showtext) # Custom fonts
+library(sf) # SF requires GDAL to be installed. Read packages' info with instructions.
+library(spData) # Provides several geospatial datasets, such as the USA.
+
+
+df_birthplace <- read.csv("https://raw.githubusercontent.com/ajstarks/dubois-data-portraits/master/plate08/birthplace.csv")
+
+df_current <- read.csv("https://github.com/ajstarks/dubois-data-portraits/raw/master/plate08/present.csv")
+
+df <- df_current |> 
+  left_join(df_birthplace, by = join_by(State))
+
+```
+
 https://github.com/ajstarks/dubois-data-portraits/tree/master
+
+## Extending the original
+
+One of the aims of the challenge is to recreate Dubois plates using modern tools, in this years, not only new tools have appeared, there are also different visualisation types.
+
+### Sankey diagram
+
+### Interactive maps
 
 Inspiration:
 
