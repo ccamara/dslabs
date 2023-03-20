@@ -37,9 +37,7 @@ In this case, this is the image we want to recreate
 
 You can read more here [@tackett2023]
 
-::: column-page
 ![*"The Georgia Negro. A Social Study by W.E.Burghardt Du Bois".* The original image from Dubois that is to be recreated](https://raw.githubusercontent.com/ajstarks/dubois-data-portraits/master/challenge/challenge09/original-plate-08.jpg){#fig-original}
-:::
 
 ### W.E.B. Dubois
 
@@ -49,23 +47,123 @@ Explain who he was
 
 This
 
-```{r}
+```{r setup}
+#| warning: false
+#| label: tbl-dubois-dataset
+#| tbl-cap: WEB Dubois' data, combined in a single dataframe.
+
 library(dplyr)
 library(showtext) # Custom fonts
 library(sf) # SF requires GDAL to be installed. Read packages' info with instructions.
-library(spData) # Provides several geospatial datasets, such as the USA.
-
 
 df_birthplace <- read.csv("https://raw.githubusercontent.com/ajstarks/dubois-data-portraits/master/plate08/birthplace.csv")
 
 df_current <- read.csv("https://github.com/ajstarks/dubois-data-portraits/raw/master/plate08/present.csv")
 
-df <- df_current |> 
-  left_join(df_birthplace, by = join_by(State))
+dubois_df <- df_current |> 
+  left_join(df_birthplace, by = join_by(State)) |> 
+  rename_with(tolower)
+
+# Explore the data
+dubois_df |> 
+  head() |> 
+  knitr::kable()
+```
+
+Excellent! But regretfully, this is not all the data that we need. We need another dataset with the
+
+```{r}
+#| warning: false
+
+library(spData) # Provides several geospatial datasets, such as the USA.
+
+data("us_states")
+
+head(us_states)
+```
+
+This provides us with interesting information and beteersweet news: The good news is that there's a column named `geometry` that means that the `us_states` object, is not a regular data frame, but is actually a spatial object:
+
+```{r}
+class(us_states)
+```
+
+We can view its geometry calling the `plot()` function from base R
+
+```{r}
+#| label: fig-us_data
+#| fig-cap: US data (without Alaska) provided by `spData` package.
+
+plot(us_states)
 
 ```
 
+This is useful because we could combine (join) that geometry with the data in `dubois_df`. However, here come the bad news: in order to do that, we'd need a shared variable, and there is none. While both datasets refer to the same states, `dubois_df` uses their code names, whereas `us_states` has their full names.
+
+We can overcome that with relative ease by combining a dataset that translates code names into full names:
+
+```{r}
+#| label: tbl-us-states-dictionary
+#| tbl-cap: An intermediate dataset containing USA states' names and codes.
+
+# Data from: https://worldpopulationreview.com/states/state-abbreviations
+states_dic <- read.csv("data/us_states_names.csv")
+
+states_dic |> 
+  head() |> 
+  knitr::kable()
+```
+
+Now we can combine everything together:
+
+```{r}
+#| label: tbl-dubois-data-with-states
+#| tbl-cap: Dubois' data, now with the states' full name.
+
+dubois_df <- dubois_df |> 
+  rename(code = state) |> 
+  left_join(states_dic, by = join_by(code))
+
+dubois_df |> 
+  head() |> 
+  knitr::kable()
+```
+
+And we can join the data with the corresponding geometry:
+
+```{r}
+
+dubois_sdf <- us_states |> 
+  left_join(dubois_df, by = c("NAME" = "state"))
+
+dubois_sdf
+```
+
 https://github.com/ajstarks/dubois-data-portraits/tree/master
+
+Create a map
+
+```{r}
+library(tmap)
+
+# df_long <- dubois_sdf |> 
+#   select(GEOID, NAME, present.location, birthplace) |> 
+#   tidyr::pivot_longer()
+
+tm_shape(dubois_sdf) +
+    tm_polygons("birthplace")
+
+```
+
+REad https://stackoverflow.com/questions/49423007/how-to-adjust-color-palette-with-customized-breaks-in-tmap
+
+```{r}
+
+library(usmap)
+
+plot_usmap(data = dubois_df, values = "birthplace")
+
+```
 
 ## Extending the original
 

@@ -1,0 +1,81 @@
+---
+title: "Creating Basic Maps in R"
+date: 2023-03-16
+author:  
+  - name: "Carlos Cámara-Menoyo"
+      # given: "Carlos"
+      # family: "Cámara-Menoyo"
+      # literal: "Carlos Cámara-Menoyo"
+    orcid: 0000-0002-9378-0549
+    email: carlos.camara@warwick.ac.uk
+    affiliations:
+    - name: University of Warwick
+      address: Centre for Interdisciplinary Methodologies (CIM), Social Sciences Building
+      city: Coventry
+      postal-code: CV4 7AL
+categories:
+  - R
+  - tutorial
+  - maps
+format:
+  html:
+    toc: true
+    #code-line-numbers: true
+    reference-location: margin
+editor: visual
+bibliography: references.bib
+citation: true
+---
+
+A must-read book : [@lovelacegeocomputation2019]
+
+## Required packages
+
+-   {sf} (simple features): is a package that . Installing it may be tricky[^1], as it relies on other . It supercedes sp (see below)
+
+-   [{sp}](https://cran.r-project.org/web/packages/sp/index.html): provides classes and methods for spatial data, just as sf does. Despite sf superseedes sp in many ways, as of today, there are still lots of documentation mentioning them, and many other packages (such as tmap or spData -see below) will install them as a dependency.
+
+-   Data:
+
+    -   some packages provide default datasets (i.e. tmap comes with world),
+
+    -   using packages that provide spatial datasets\_
+
+        -   [{spData}](https://jakubnowosad.com/spData/) provides several datasets (most of them are from the USA and the World) in different R spatial objects either vectorial (sf and its predecessor sp) or raster.
+
+        -   https://github.com/Nowosad/spDataLarge
+
+        -   [{usmap}](https://usmap.dev/) maps for the USA
+
+    -   read it from geospatial files (`geopackage`, json or shapefile[^2]) or using packages that pro
+
+        -   https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.2021.html
+
+-   
+
+-   Visualisation
+
+    -   base r (plot)
+
+    -   ggplot
+
+    -   tmap: https://github.com/r-tmap/tmap
+
+    -   https://cran.r-project.org/web/packages/maps/maps.pdf
+
+[^1]: Refer to the package's documentation for the most updated and accurate instructions: [https://r-spatial.github.io/sf/index.html#installing](https://r-spatial.github.io/sf/index.html#installinghttps://r-spatial.github.io/sf/index.html#installing) (Package maintainers are usually very fast at adding instructions and testing the installation in different platforms)
+
+[^2]: Shapefile is a very popular file format, but it is also very old, very different (it actually consists of several files with different extensions, which is confusing for many newbies) and, above all, controversial. Unsurprisingly, there are a number of websites explaining the reasons for not using it, such as the popular: <http://switchfromshapefile.org/>
+
+### {sf} (Simple features)
+
+Installing
+
+Installing some of those packages may require relatively complex setup. Refer to [@rochette2022]
+
+## Complementary readings
+
+-   https://github.com/Robinlovelace/Creating-maps-in-R
+-   https://rtask.thinkr.fr/installation-of-r-4-2-on-ubuntu-22-04-lts-and-tips-for-spatial-packages/ (or the [R-bloggers version here](https://www.r-bloggers.com/2022/08/installation-of-r-4-2-on-ubuntu-22-04-1-lts-and-tips-for-spatial-packages/))
+-   A tutorial for Python: https://towardsdatascience.com/creating-geospatial-heatmaps-with-pythons-plotly-and-folium-libraries-4159e98a1ae8
+
