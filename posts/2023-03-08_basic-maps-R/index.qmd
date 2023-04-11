@@ -1,5 +1,6 @@
 ---
 title: "Creating Basic Maps in R"
+draft: true
 date: 2023-03-16
 author:  
   - name: "Carlos Cámara-Menoyo"
