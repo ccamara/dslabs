@@ -1,13 +1,74 @@
 ---
-title: "Blog"
-listing:
-  contents: posts
-  sort: "date desc"
-  type: default
-  categories: true
-  sort-ui: false
-  filter-ui: false
+title: "Welcome to my data lab!"
 page-layout: full
 title-block-banner: true
 comments: false
+listing:
+  id: sample-listings
+  contents: posts
+  type: grid
 ---
+
+Welcome to my data lab. This is an experimentation place where I will be publishing text and R and Python code in the form of computational notebooks that deal with specific issues within the different stages of the process of working with data.
+
+It is still a barebones site, but I hope to keep updating it.
+
+My name is Carlos Cámara, and you can read more [about me](/about.html), here or [on my website](https://carloscamara.es/en).
+
+### Latest posts
+
+::: {#sample-listings}
+:::
+
+<!--
+::: {#hero-banner .column-screen}
+Hola, estos es un banner
+:::
+-->
+
+```{=html}
+<style>
+#hero-banner {
+  padding-top: 35px;
+  background-color: rgb(237,243,249);
+}
+#quarto-content main { 
+  margin-top: 0;
+  padding-top: 0;
+}
+html {
+  scroll-behavior: smooth;
+}
+.headline {
+font-size: 1.25em;
+font-weight: 300;
+padding-bottom: 1em;
+}
+.headline p {
+  margin: 0;
+  padding-bottom: 0.2rem;
+}
+.headline a {
+  text-decoration: none;
+}
+.headline ul li {
+  margin-bottom: 0.3em;
+}
+.carousel.card {
+  padding-top: 2em;
+}
+.carousel img {
+  width: 70%;
+  margin-bottom: 110px;
+}
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  margin-bottom: 110px;
+}
+.carousel-caption {
+  padding-top: 1em;
+}
+.touch {
+  
+}
+</style>
+```

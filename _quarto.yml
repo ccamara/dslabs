@@ -2,8 +2,8 @@ project:
   type: website
 
 website:
-  title: "DS Labs"
-  site-url: "https://ds-labs.carloscamara.es/"
+  title: "Data Lab"
+  site-url: "https://datalabs.carloscamara.es/"
   description:  "A lab for experimenting with Data Science and Data visualisation"
   # twitter-card: true
   # open-graph: true
