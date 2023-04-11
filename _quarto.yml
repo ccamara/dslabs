@@ -3,7 +3,7 @@ project:
 
 website:
   title: "Data Lab"
-  site-url: "https://datalabs.carloscamara.es/"
+  site-url: "https://datalab.carloscamara.es/"
   description:  "A lab for experimenting with Data Science and Data visualisation"
   # twitter-card: true
   # open-graph: true
