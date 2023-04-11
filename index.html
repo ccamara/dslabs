@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.313">
+<meta name="generator" content="quarto-1.2.269">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>DS Labs - Blog</title>
+<title>Data Lab - Welcome to my data lab!</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -63,20 +63,20 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    const listingTargetEl = window.document.querySelector('#listing-sample-listings .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-title','listing-author','listing-date','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+    window['quarto-listings']['listing-sample-listings'] = new List('listing-sample-listings', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -117,7 +117,7 @@ gtag('config', 'G-GM3K1FXK2H', { 'anonymize_ip': true});
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">DS Labs</span>
+    <span class="navbar-title">Data Lab</span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -157,8 +157,8 @@ gtag('config', 'G-GM3K1FXK2H', { 'anonymize_ip': true});
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Blog</h1>
+    <div class="quarto-title column-page">
+      <h1 class="title">Welcome to my data lab!</h1>
                       </div>
   </div>
     
@@ -174,108 +174,130 @@ gtag('config', 'G-GM3K1FXK2H', { 'anonymize_ip': true});
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ImageMagick">ImageMagick <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Magick">Magick <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(1)</span></div><div class="category" data-category="image manipulation">image manipulation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="news">news <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tutorial">tutorial <span class="quarto-category-count">(1)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
 
 
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="R,tutorial,image manipulation,ImageMagick,Magick" data-listing-date-sort="1677974400000" data-listing-file-modified-sort="1678295037213" data-listing-reading-time-sort="25.555">
-<div class="thumbnail">
-<p><a href="./posts/2023-03-02_matrix-effect/index.html"> <img src="./posts/2023-03-02_matrix-effect/img/datasaurus_matrix.png" class="thumnail-image" alt="Screenshot of a Quarto document with an embedded Shinylive application."> </a></p>
-</div>
-<div class="body">
-<a href="./posts/2023-03-02_matrix-effect/index.html">
-<h3 class="no-anchor listing-title">
+<p>Welcome to my data lab. This is an experimentation place where I will be publishing text and R and Python code in the form of computational notebooks that deal with specific issues within the different stages of the process of working with data.</p>
+<p>It is still a barebones site, but I hope to keep updating it.</p>
+<p>My name is Carlos Cámara, and you can read more <a href="./about.html">about me</a>, here or <a href="https://carloscamara.es/en">on my website</a>.</p>
+<section id="latest-posts" class="level3">
+<h3 class="anchored" data-anchor-id="latest-posts">Latest posts</h3>
+<div id="listing-sample-listings" class="quarto-listing quarto-listing-container-grid">
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-categories="R,tutorial,image manipulation,ImageMagick,Magick" data-listing-date-sort="1677974400000" data-listing-file-modified-sort="1679012885279" data-listing-reading-time-sort="25.555">
+<a href="./posts/2023-03-02_matrix-effect/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2023-03-02_matrix-effect/img/datasaurus_matrix.png" class="thumbnail-image card-img" style="height: 150px;" alt="Screenshot of a Quarto document with an embedded Shinylive application.">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
 Matrix effect using Imagemagick
-</h3>
-<div class="listing-subtitle">
-
+</h5>
+<div class="card-text listing-description">
+In this tutorial I’m using R and Imagemagik to produce a Matrix-like image just using code.
 </div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('tutorial'); return false;">
-tutorial
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('image manipulation'); return false;">
-image manipulation
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('ImageMagick'); return false;">
-ImageMagick
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Magick'); return false;">
-Magick
-</div>
-</div>
-<a href="./posts/2023-03-02_matrix-effect/index.html">
-<div class="listing-description">
-<p>In this tutorial I’m using R and Imagemagik to produce a Matrix-like image just using code.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/2023-03-02_matrix-effect/index.html">
-<div class="listing-date">
-Mar 5, 2023
-</div>
+<div class="card-attribution card-text-small justify">
 <div class="listing-author">
 Carlos Cámara
 </div>
-</a>
+<div class="listing-date">
+Mar 5, 2023
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="news" data-listing-date-sort="1677715200000" data-listing-file-modified-sort="1678047518301" data-listing-reading-time-sort="0.16">
-<div class="thumbnail">
-<p><a href="./posts/welcome/index.html"> <img src="./posts/welcome/thumbnail.jpg" class="thumnail-image"> </a></p>
 </div>
-<div class="body">
-<a href="./posts/welcome/index.html">
-<h3 class="no-anchor listing-title">
-Welcome To My Blog
-</h3>
-<div class="listing-subtitle">
-
-</div>
-</a>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('news'); return false;">
-news
-</div>
-</div>
-<a href="./posts/welcome/index.html">
-<div class="listing-description">
-This is the first post in a Quarto blog. Welcome!
 </div>
 </a>
 </div>
-<div class="metadata">
-<a href="./posts/welcome/index.html">
+<div class="g-col-1" data-index="1" data-categories="news" data-listing-date-sort="1677715200000" data-listing-file-modified-sort="1681236367398" data-listing-reading-time-sort="0.615">
+<a href="./posts/welcome/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/welcome/thumbnail.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Welcome To my Data Lab
+</h5>
+<div class="card-text listing-description">
+This is just a placeholder post that I…
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Carlos Cámara
+</div>
 <div class="listing-date">
 Mar 2, 2023
 </div>
-<div class="listing-author">
-Tristan O’Malley
+</div>
+</div>
 </div>
 </a>
-</div>
 </div>
 </div>
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div></main> <!-- /main -->
+</div>
+<!--
+::: {#hero-banner .column-screen}
+Hola, estos es un banner
+:::
+-->
+<style>
+#hero-banner {
+  padding-top: 35px;
+  background-color: rgb(237,243,249);
+}
+#quarto-content main { 
+  margin-top: 0;
+  padding-top: 0;
+}
+html {
+  scroll-behavior: smooth;
+}
+.headline {
+font-size: 1.25em;
+font-weight: 300;
+padding-bottom: 1em;
+}
+.headline p {
+  margin: 0;
+  padding-bottom: 0.2rem;
+}
+.headline a {
+  text-decoration: none;
+}
+.headline ul li {
+  margin-bottom: 0.3em;
+}
+.carousel.card {
+  padding-top: 2em;
+}
+.carousel img {
+  width: 70%;
+  margin-bottom: 110px;
+}
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  margin-bottom: 110px;
+}
+.carousel-caption {
+  padding-top: 1em;
+}
+.touch {
+  
+}
+</style>
+
+
+
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

@@ -2,13 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.313">
+<meta name="generator" content="quarto-1.2.269">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Carlos Cámara-Menoyo">
+<meta name="dcterms.date" content="2023-03-16">
 
-<title>DS Labs - Migration Maps</title>
+<title>Data Lab - Migration Maps</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +22,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
@@ -112,7 +176,7 @@ gtag('config', 'G-GM3K1FXK2H', { 'anonymize_ip': true});
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">DS Labs</span>
+    <span class="navbar-title">Data Lab</span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -179,6 +243,12 @@ gtag('config', 'G-GM3K1FXK2H', { 'anonymize_ip': true});
   <div class="quarto-title-meta">
 
         
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 16, 2023</p>
+      </div>
+    </div>
     
       
     </div>
@@ -188,7 +258,22 @@ gtag('config', 'G-GM3K1FXK2H', { 'anonymize_ip': true});
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-duboischallenge" id="toc-the-duboischallenge" class="nav-link active" data-scroll-target="#the-duboischallenge">The #DuboisChallenge</a>
+  <ul class="collapse">
+  <li><a href="#w.e.b.-dubois" id="toc-w.e.b.-dubois" class="nav-link" data-scroll-target="#w.e.b.-dubois">W.E.B. Dubois</a></li>
+  </ul></li>
+  <li><a href="#recreating-the-plate" id="toc-recreating-the-plate" class="nav-link" data-scroll-target="#recreating-the-plate">Recreating the plate</a></li>
+  <li><a href="#extending-the-original" id="toc-extending-the-original" class="nav-link" data-scroll-target="#extending-the-original">Extending the original</a>
+  <ul class="collapse">
+  <li><a href="#sankey-diagram" id="toc-sankey-diagram" class="nav-link" data-scroll-target="#sankey-diagram">Sankey diagram</a></li>
+  <li><a href="#interactive-maps" id="toc-interactive-maps" class="nav-link" data-scroll-target="#interactive-maps">Interactive maps</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
@@ -196,7 +281,338 @@ gtag('config', 'G-GM3K1FXK2H', { 'anonymize_ip': true});
 
 
 
+<section id="the-duboischallenge" class="level2">
+<h2 class="anchored" data-anchor-id="the-duboischallenge">The #DuboisChallenge</h2>
+<p>Read here https://nightingaledvs.com/the-dubois-challenge/</p>
+<p>In this case, this is the image we want to recreate</p>
+<p>You can read more here <span class="citation" data-cites="tackett2023">(<a href="#ref-tackett2023" role="doc-biblioref">Tackett and Çetinkaya-Rundel 2023</a>)</span></p>
+<div id="fig-original" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="https://raw.githubusercontent.com/ajstarks/dubois-data-portraits/master/challenge/challenge09/original-plate-08.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: <em>“The Georgia Negro. A Social Study by W.E.Burghardt Du Bois”.</em> The original image from Dubois that is to be recreated</figcaption><p></p>
+</figure>
+</div>
+<section id="w.e.b.-dubois" class="level3">
+<h3 class="anchored" data-anchor-id="w.e.b.-dubois">W.E.B. Dubois</h3>
+<p>Explain who he was</p>
+</section>
+</section>
+<section id="recreating-the-plate" class="level2">
+<h2 class="anchored" data-anchor-id="recreating-the-plate">Recreating the plate</h2>
+<p>This</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(showtext) <span class="co"># Custom fonts</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf) <span class="co"># SF requires GDAL to be installed. Read packages' info with instructions.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>df_birthplace <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://raw.githubusercontent.com/ajstarks/dubois-data-portraits/master/plate08/birthplace.csv"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>df_current <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://github.com/ajstarks/dubois-data-portraits/raw/master/plate08/present.csv"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>dubois_df <span class="ot">&lt;-</span> df_current <span class="sc">|&gt;</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(df_birthplace, <span class="at">by =</span> <span class="fu">join_by</span>(State)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename_with</span>(tolower)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Explore the data</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>dubois_df <span class="sc">|&gt;</span> </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="tbl-dubois-dataset" class="anchored">
+<table class="table table-sm table-striped">
+<caption>Table&nbsp;1: WEB Dubois’ data, combined in a single dataframe.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">state</th>
+<th style="text-align: right;">present.location</th>
+<th style="text-align: right;">birthplace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CA</td>
+<td style="text-align: right;">254</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AZ</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NM</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OK</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TX</td>
+<td style="text-align: right;">12016</td>
+<td style="text-align: right;">99</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LA</td>
+<td style="text-align: right;">6025</td>
+<td style="text-align: right;">144</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Excellent! But regretfully, this is not all the data that we need. We need another dataset with the</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spData) <span class="co"># Provides several geospatial datasets, such as the USA.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"us_states"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(us_states)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 6 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -114.8136 ymin: 24.55868 xmax: -71.78699 ymax: 42.04964
+Geodetic CRS:  NAD83
+  GEOID        NAME   REGION             AREA total_pop_10 total_pop_15
+1    01     Alabama    South 133709.27 [km^2]      4712651      4830620
+2    04     Arizona     West 295281.25 [km^2]      6246816      6641928
+3    08    Colorado     West 269573.06 [km^2]      4887061      5278906
+4    09 Connecticut Norteast  12976.59 [km^2]      3545837      3593222
+5    12     Florida    South 151052.01 [km^2]     18511620     19645772
+6    13     Georgia    South 152725.21 [km^2]      9468815     10006693
+                        geometry
+1 MULTIPOLYGON (((-88.20006 3...
+2 MULTIPOLYGON (((-114.7196 3...
+3 MULTIPOLYGON (((-109.0501 4...
+4 MULTIPOLYGON (((-73.48731 4...
+5 MULTIPOLYGON (((-81.81169 2...
+6 MULTIPOLYGON (((-85.60516 3...</code></pre>
+</div>
+</div>
+<p>This provides us with interesting information and beteersweet news: The good news is that there’s a column named <code>geometry</code> that means that the <code>us_states</code> object, is not a regular data frame, but is actually a spatial object:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(us_states)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "sf"         "data.frame"</code></pre>
+</div>
+</div>
+<p>We can view its geometry calling the <code>plot()</code> function from base R</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(us_states)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-us_data" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-us_data-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2: US data (without Alaska) provided by <code>spData</code> package.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This is useful because we could combine (join) that geometry with the data in <code>dubois_df</code>. However, here come the bad news: in order to do that, we’d need a shared variable, and there is none. While both datasets refer to the same states, <code>dubois_df</code> uses their code names, whereas <code>us_states</code> has their full names.</p>
+<p>We can overcome that with relative ease by combining a dataset that translates code names into full names:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data from: https://worldpopulationreview.com/states/state-abbreviations</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>states_dic <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/us_states_names.csv"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>states_dic <span class="sc">|&gt;</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="tbl-us-states-dictionary" class="anchored">
+<table class="table table-sm table-striped">
+<caption>Table&nbsp;2: An intermediate dataset containing USA states’ names and codes.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">state</th>
+<th style="text-align: left;">abbrev</th>
+<th style="text-align: left;">code</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Alabama</td>
+<td style="text-align: left;">Ala.</td>
+<td style="text-align: left;">AL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Alaska</td>
+<td style="text-align: left;">Alaska</td>
+<td style="text-align: left;">AK</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Arizona</td>
+<td style="text-align: left;">Ariz.</td>
+<td style="text-align: left;">AZ</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Arkansas</td>
+<td style="text-align: left;">Ark.</td>
+<td style="text-align: left;">AR</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">California</td>
+<td style="text-align: left;">Calif.</td>
+<td style="text-align: left;">CA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Colorado</td>
+<td style="text-align: left;">Colo.</td>
+<td style="text-align: left;">CO</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Now we can combine everything together:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>dubois_df <span class="ot">&lt;-</span> dubois_df <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">code =</span> state) <span class="sc">|&gt;</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(states_dic, <span class="at">by =</span> <span class="fu">join_by</span>(code))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>dubois_df <span class="sc">|&gt;</span> </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="tbl-dubois-data-with-states" class="anchored">
+<table class="table table-sm table-striped">
+<caption>Table&nbsp;3: Dubois’ data, now with the states’ full name.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">code</th>
+<th style="text-align: right;">present.location</th>
+<th style="text-align: right;">birthplace</th>
+<th style="text-align: left;">state</th>
+<th style="text-align: left;">abbrev</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CA</td>
+<td style="text-align: right;">254</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">California</td>
+<td style="text-align: left;">Calif.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AZ</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">Arizona</td>
+<td style="text-align: left;">Ariz.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NM</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">New Mexico</td>
+<td style="text-align: left;">N.M.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OK</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">Oklahoma</td>
+<td style="text-align: left;">Okla.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TX</td>
+<td style="text-align: right;">12016</td>
+<td style="text-align: right;">99</td>
+<td style="text-align: left;">Texas</td>
+<td style="text-align: left;">Tex.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LA</td>
+<td style="text-align: right;">6025</td>
+<td style="text-align: right;">144</td>
+<td style="text-align: left;">Louisiana</td>
+<td style="text-align: left;">La.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>And we can join the data with the corresponding geometry:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dubois_sdf <span class="ot">&lt;-</span> us_states <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(dubois_df, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"NAME"</span> <span class="ot">=</span> <span class="st">"state"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in sf_column %in% names(g): Each row in `x` is expected to match at most 1 row in `y`.
+ℹ Row 12 of `x` matches multiple rows.
+ℹ If multiple matches are expected, set `multiple = "all"` to silence this
+  warning.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>dubois_sdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 50 features and 10 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -124.7042 ymin: 24.55868 xmax: -66.9824 ymax: 49.38436
+Geodetic CRS:  NAD83
+First 10 features:
+   GEOID        NAME   REGION             AREA total_pop_10 total_pop_15 code
+1     01     Alabama    South 133709.27 [km^2]      4712651      4830620   AL
+2     04     Arizona     West 295281.25 [km^2]      6246816      6641928   AZ
+3     08    Colorado     West 269573.06 [km^2]      4887061      5278906   CO
+4     09 Connecticut Norteast  12976.59 [km^2]      3545837      3593222   CT
+5     12     Florida    South 151052.01 [km^2]     18511620     19645772   FL
+6     13     Georgia    South 152725.21 [km^2]      9468815     10006693   GA
+7     16       Idaho     West 216512.66 [km^2]      1526797      1616547   ID
+8     18     Indiana  Midwest  93648.40 [km^2]      6417398      6568645   IN
+9     20      Kansas  Midwest 213037.08 [km^2]      2809329      2892987   KS
+10    22   Louisiana    South 122345.76 [km^2]      4429940      4625253   LA
+   present.location birthplace abbrev                       geometry
+1             24556       6720   Ala. MULTIPOLYGON (((-88.20006 3...
+2                48         NA  Ariz. MULTIPOLYGON (((-114.7196 3...
+3               285         NA  Colo. MULTIPOLYGON (((-109.0501 4...
+4                97         13  Conn. MULTIPOLYGON (((-73.48731 4...
+5              3981       3198   Fla. MULTIPOLYGON (((-81.81169 2...
+6            798747     798747    Ga. MULTIPOLYGON (((-85.60516 3...
+7                 7          1  Idaho MULTIPOLYGON (((-116.916 45...
+8               193         21   Ind. MULTIPOLYGON (((-87.52404 4...
+9               480          6  Kans. MULTIPOLYGON (((-102.0517 4...
+10             6025        144    La. MULTIPOLYGON (((-92.01783 2...</code></pre>
+</div>
+</div>
 <p>https://github.com/ajstarks/dubois-data-portraits/tree/master</p>
+<p>Create a map</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># df_long &lt;- dubois_sdf |&gt; </span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   select(GEOID, NAME, present.location, birthplace) |&gt; </span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   tidyr::pivot_longer()</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(dubois_sdf) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_polygons</span>(<span class="st">"birthplace"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>REad https://stackoverflow.com/questions/49423007/how-to-adjust-color-palette-with-customized-breaks-in-tmap</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(usmap)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_usmap</span>(<span class="at">data =</span> dubois_df, <span class="at">values =</span> <span class="st">"birthplace"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="extending-the-original" class="level2">
+<h2 class="anchored" data-anchor-id="extending-the-original">Extending the original</h2>
+<p>One of the aims of the challenge is to recreate Dubois plates using modern tools, in this years, not only new tools have appeared, there are also different visualisation types.</p>
+<section id="sankey-diagram" class="level3">
+<h3 class="anchored" data-anchor-id="sankey-diagram">Sankey diagram</h3>
+</section>
+<section id="interactive-maps" class="level3">
+<h3 class="anchored" data-anchor-id="interactive-maps">Interactive maps</h3>
 <p>Inspiration:</p>
 <ul>
 <li><p>https://bookdown.org/nicohahn/making_maps_with_r5/docs/mapdeck.html</p></li>
@@ -214,19 +630,23 @@ gtag('config', 'G-GM3K1FXK2H', { 'anonymize_ip': true});
 
 
 
+</section>
+</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-tackett2023" class="csl-entry" role="doc-biblioentry">
 Tackett, Maria, and Mine Çetinkaya-Rundel. 2023. <span>“Analyzing and Recreating Data Visualizations of w.e.b. Du Bois.”</span> <em>CHANCE</em> 36 (1): 40–47. <a href="https://doi.org/10.1080/09332480.2023.2179279">https://doi.org/10.1080/09332480.2023.2179279</a>.
 </div>
-</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{cámara-menoyo,
+</div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{cámara-menoyo2023,
   author = {Carlos Cámara-Menoyo},
   title = {Migration {Maps}},
-  url = {https://ds-labs.carloscamara.es//posts/2023-03-08_dubois-challenge-migration},
+  date = {2023-03-16},
+  url = {https://datalabs.carloscamara.es//posts/2023-03-08_dubois-challenge-migration},
   langid = {en}
 }
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-cámara-menoyo" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
-Carlos Cámara-Menoyo. n.d. <span>“Migration Maps.”</span> <a href="https://ds-labs.carloscamara.es//posts/2023-03-08_dubois-challenge-migration">https://ds-labs.carloscamara.es//posts/2023-03-08_dubois-challenge-migration</a>.
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-cámara-menoyo2023" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Carlos Cámara-Menoyo. 2023. <span>“Migration Maps.”</span> March 16,
+2023. <a href="https://datalabs.carloscamara.es//posts/2023-03-08_dubois-challenge-migration">https://datalabs.carloscamara.es//posts/2023-03-08_dubois-challenge-migration</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

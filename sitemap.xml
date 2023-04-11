@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ds-labs.carloscamara.es/posts/welcome/index.html</loc>
-    <lastmod>2023-03-08T17:07:52.404Z</lastmod>
+    <loc>https://datalabs.carloscamara.es/blog.html</loc>
+    <lastmod>2023-04-11T18:21:21.271Z</lastmod>
   </url>
   <url>
-    <loc>https://ds-labs.carloscamara.es/posts/2023-03-02_matrix-effect/index.html</loc>
-    <lastmod>2023-03-08T17:07:53.777Z</lastmod>
+    <loc>https://datalabs.carloscamara.es/index.html</loc>
+    <lastmod>2023-04-11T18:21:22.450Z</lastmod>
   </url>
   <url>
-    <loc>https://ds-labs.carloscamara.es/index.html</loc>
-    <lastmod>2023-03-08T17:07:54.117Z</lastmod>
+    <loc>https://datalabs.carloscamara.es/about.html</loc>
+    <lastmod>2023-04-11T18:21:23.370Z</lastmod>
   </url>
   <url>
-    <loc>https://ds-labs.carloscamara.es/about.html</loc>
-    <lastmod>2023-03-08T17:07:54.465Z</lastmod>
+    <loc>https://datalabs.carloscamara.es/posts/2023-03-02_matrix-effect/index.html</loc>
+    <lastmod>2023-04-11T18:21:28.554Z</lastmod>
   </url>
   <url>
-    <loc>https://ds-labs.carloscamara.es/blog.html</loc>
-    <lastmod>2023-03-08T17:07:54.795Z</lastmod>
+    <loc>https://datalabs.carloscamara.es/posts/welcome/index.html</loc>
+    <lastmod>2023-04-11T18:21:29.646Z</lastmod>
   </url>
 </urlset>

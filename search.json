@@ -1,10 +1,45 @@
 [
   {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
     "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+    "text": "Matrix effect using Imagemagick\n\n\n\n\n\n\n\nR\n\n\ntutorial\n\n\nimage manipulation\n\n\nImageMagick\n\n\nMagick\n\n\n\n\nIn this tutorial I’m using R and Imagemagik to produce a Matrix-like image just using code.\n\n\n\n\n\n\nMar 5, 2023\n\n\nCarlos Cámara\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To my Data Lab\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nMar 2, 2023\n\n\nCarlos Cámara\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome to my data lab!",
+    "section": "",
+    "text": "Welcome to my data lab. This is an experimentation place where I will be publishing text and R and Python code in the form of computational notebooks that deal with specific issues within the different stages of the process of working with data.\nIt is still a barebones site, but I hope to keep updating it.\nMy name is Carlos Cámara, and you can read more about me, here or on my website.\n\nLatest posts\n\n\n\n\n\n\n\n\n\n\nMatrix effect using Imagemagick\n\n\nIn this tutorial I’m using R and Imagemagik to produce a Matrix-like image just using code.\n\n\n\nCarlos Cámara\n\n\nMar 5, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To my Data Lab\n\n\n\n\n\n\nCarlos Cámara\n\n\nMar 2, 2023\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Hi, I’m Carlos Cámara-Menoyo! I am a versatile, transdisciplinary, and passionate person with a mixed technical and sociological background. I work as a Senior Research Software Engineer, at the University of Warwick’s Centre for Interdisciplinary Methodologies, where I am responsible to support research and teaching by using and developing research software while promoting an open, reproducible research culture and outputs."
+  },
+  {
+    "objectID": "about.html#academic-profile",
+    "href": "about.html#academic-profile",
+    "title": "About",
+    "section": "Academic Profile",
+    "text": "Academic Profile\nPrior to joining CIM as Senior Research Software Engineer, I have worked in the private sector as an architect, drupal developer, product owner, GIS technician, as well as in Higher Education. It is in that field where I have extensive teaching experience as a Lecturer at the School of Architecture and Technology at Universidad San Jorge (Spain), Associate Lecturer at the MSc on Cities and Urbanism at Universitat Oberta de Catalunya (Spain), and Associate Lecturer at the School of the Built Environment at Oxford Brookes University, amongst others. As a researcher, I have worked as a Research Fellow at Warwick’s IGSD, studiying the role visual representations to understand and engage with abstract concepts like the Food-Energy-Water nexus; as a research associate at Urban Transformation and Global Change Laboratory (Universitat Oberta de Catalunya), exploring the geographies of digital capitalism and bottom-up alternatives through their research areas on urbanization processes and co-creation; and at the Open Source Architectures Research Group at Universidad San Jorge, contributing in the projects “Zaragoza’s Social Risk Map” and “Accessible Zaragoza”, as a PI."
+  },
+  {
+    "objectID": "about.html#activism",
+    "href": "about.html#activism",
+    "title": "About",
+    "section": "Activism",
+    "text": "Activism\nAs an activist, I contribute to open and alternative projects and initiatives such as OpenStreetMap, Wikipedia, or QGIS, I a member of several cooperatives of the social economy, and I am one of the co-founders of Collaborative Mapping, an action-research group to promote the tools and knowledge to make open and alternative cartographies available to the general public. I have also taken part in several mapathons and hackathons, such as Médecins Sans Frontières’ Humanitarian mapathons (organizer), Meta-decidim’s Participatory Science’s workshop of data on tourist accommodationLink opens in a new window, or Tabakalera’s Summerlab on Data Literacy (invited), amongst others."
+  },
+  {
+    "objectID": "about.html#research-profile",
+    "href": "about.html#research-profile",
+    "title": "About",
+    "section": "Research Profile",
+    "text": "Research Profile\nThe combination of such diverse experiences, interests, and skills has articulated my research agenda within the Urban Studies, structured around two pillars: 1) the commodifications between cities, technology, and society, and 2) co-production and collective-action. So far, I have applied a spatial reading with a social perspective to the topic of urban, spatial inequities, and, more specifically, on urban mobility for disabled people and urban commons to find ways in which cities can be more resilient and egalitarian.\nWorking at CIM as Senior Research Software Engineer has given me the opportunity of bridging my passions by applying technology and software through an social perspective and within a collaborative setting to the existing diverse and interdisciplinar research culture and teaching of the Centre.\nAreas of Interest: Urban Studies, Open Science, Commons, Co-production, Data Visualisation, Spatial Justice"
   },
   {
     "objectID": "posts/2023-03-02_matrix-effect/index.html",
@@ -49,45 +84,10 @@
     "text": "Resources\n\nhttps://ropensci.org/blog/2019/09/27/ropensci-docs/"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Blog",
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To my Data Lab",
     "section": "",
-    "text": "Matrix effect using Imagemagick\n\n\n\n\n\n\n\nR\n\n\ntutorial\n\n\nimage manipulation\n\n\nImageMagick\n\n\nMagick\n\n\n\n\nIn this tutorial I’m using R and Imagemagik to produce a Matrix-like image just using code.\n\n\n\n\n\n\nMar 5, 2023\n\n\nCarlos Cámara\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nMar 2, 2023\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "Hi, I’m Carlos Cámara-Menoyo! I am a versatile, transdisciplinary, and passionate person with a mixed technical and sociological background. I work as a Senior Research Software Engineer, at the University of Warwick’s Centre for Interdisciplinary Methodologies, where I am responsible to support research and teaching by using and developing research software while promoting an open, reproducible research culture and outputs."
-  },
-  {
-    "objectID": "about.html#academic-profile",
-    "href": "about.html#academic-profile",
-    "title": "About",
-    "section": "Academic Profile",
-    "text": "Academic Profile\nPrior to joining CIM as Senior Research Software Engineer, I have worked in the private sector as an architect, drupal developer, product owner, GIS technician, as well as in Higher Education. It is in that field where I have extensive teaching experience as a Lecturer at the School of Architecture and Technology at Universidad San Jorge (Spain), Associate Lecturer at the MSc on Cities and Urbanism at Universitat Oberta de Catalunya (Spain), and Associate Lecturer at the School of the Built Environment at Oxford Brookes University, amongst others. As a researcher, I have worked as a Research Fellow at Warwick’s IGSD, studiying the role visual representations to understand and engage with abstract concepts like the Food-Energy-Water nexus; as a research associate at Urban Transformation and Global Change Laboratory (Universitat Oberta de Catalunya), exploring the geographies of digital capitalism and bottom-up alternatives through their research areas on urbanization processes and co-creation; and at the Open Source Architectures Research Group at Universidad San Jorge, contributing in the projects “Zaragoza’s Social Risk Map” and “Accessible Zaragoza”, as a PI."
-  },
-  {
-    "objectID": "about.html#activism",
-    "href": "about.html#activism",
-    "title": "About",
-    "section": "Activism",
-    "text": "Activism\nAs an activist, I contribute to open and alternative projects and initiatives such as OpenStreetMap, Wikipedia, or QGIS, I a member of several cooperatives of the social economy, and I am one of the co-founders of Collaborative Mapping, an action-research group to promote the tools and knowledge to make open and alternative cartographies available to the general public. I have also taken part in several mapathons and hackathons, such as Médecins Sans Frontières’ Humanitarian mapathons (organizer), Meta-decidim’s Participatory Science’s workshop of data on tourist accommodationLink opens in a new window, or Tabakalera’s Summerlab on Data Literacy (invited), amongst others."
-  },
-  {
-    "objectID": "about.html#research-profile",
-    "href": "about.html#research-profile",
-    "title": "About",
-    "section": "Research Profile",
-    "text": "Research Profile\nThe combination of such diverse experiences, interests, and skills has articulated my research agenda within the Urban Studies, structured around two pillars: 1) the commodifications between cities, technology, and society, and 2) co-production and collective-action. So far, I have applied a spatial reading with a social perspective to the topic of urban, spatial inequities, and, more specifically, on urban mobility for disabled people and urban commons to find ways in which cities can be more resilient and egalitarian.\nWorking at CIM as Senior Research Software Engineer has given me the opportunity of bridging my passions by applying technology and software through an social perspective and within a collaborative setting to the existing diverse and interdisciplinar research culture and teaching of the Centre.\nAreas of Interest: Urban Studies, Open Science, Commons, Co-production, Data Visualisation, Spatial Justice"
-  },
-  {
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "Blog",
-    "section": "",
-    "text": "Matrix effect using Imagemagick\n\n\n\n\n\n\n\nR\n\n\ntutorial\n\n\nimage manipulation\n\n\nImageMagick\n\n\nMagick\n\n\n\n\nIn this tutorial I’m using R and Imagemagik to produce a Matrix-like image just using code.\n\n\n\n\n\n\nMar 5, 2023\n\n\nCarlos Cámara\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nMar 2, 2023\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "text": "This is just a placeholder post that I will update at some point to explain what this site is, what motivated to create it and probably other stuff such about how did I create it (spoiler alert: quarto) or who I am.\nI just created this experimental site to experiment with computational notebooks and share code and text with others, but also with myself.\nOften times, I found myself wanting to do something I knew I did in the past, or trying to reproduce some code I’ve seen elsewhere, but I do not know where to find it. This site will address that.\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
   }
 ]
