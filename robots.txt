@@ -1,1 +1,1 @@
-Sitemap: https://datalabs.carloscamara.es/sitemap.xml
+Sitemap: https://datalab.carloscamara.es/sitemap.xml

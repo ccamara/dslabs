@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://datalabs.carloscamara.es/blog.html</loc>
-    <lastmod>2023-04-11T18:21:21.271Z</lastmod>
+    <loc>https://datalab.carloscamara.es/blog.html</loc>
+    <lastmod>2023-04-11T18:23:50.150Z</lastmod>
   </url>
   <url>
-    <loc>https://datalabs.carloscamara.es/index.html</loc>
-    <lastmod>2023-04-11T18:21:22.450Z</lastmod>
+    <loc>https://datalab.carloscamara.es/index.html</loc>
+    <lastmod>2023-04-11T18:23:51.314Z</lastmod>
   </url>
   <url>
-    <loc>https://datalabs.carloscamara.es/about.html</loc>
-    <lastmod>2023-04-11T18:21:23.370Z</lastmod>
+    <loc>https://datalab.carloscamara.es/about.html</loc>
+    <lastmod>2023-04-11T18:23:52.758Z</lastmod>
   </url>
   <url>
-    <loc>https://datalabs.carloscamara.es/posts/2023-03-02_matrix-effect/index.html</loc>
-    <lastmod>2023-04-11T18:21:28.554Z</lastmod>
+    <loc>https://datalab.carloscamara.es/readme.html</loc>
+    <lastmod>2023-04-11T18:23:53.854Z</lastmod>
   </url>
   <url>
-    <loc>https://datalabs.carloscamara.es/posts/welcome/index.html</loc>
-    <lastmod>2023-04-11T18:21:29.646Z</lastmod>
+    <loc>https://datalab.carloscamara.es/posts/2023-03-02_matrix-effect/index.html</loc>
+    <lastmod>2023-04-11T18:23:58.006Z</lastmod>
+  </url>
+  <url>
+    <loc>https://datalab.carloscamara.es/posts/welcome/index.html</loc>
+    <lastmod>2023-04-11T18:23:58.838Z</lastmod>
   </url>
 </urlset>

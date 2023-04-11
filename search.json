@@ -42,6 +42,13 @@
     "text": "Research Profile\nThe combination of such diverse experiences, interests, and skills has articulated my research agenda within the Urban Studies, structured around two pillars: 1) the commodifications between cities, technology, and society, and 2) co-production and collective-action. So far, I have applied a spatial reading with a social perspective to the topic of urban, spatial inequities, and, more specifically, on urban mobility for disabled people and urban commons to find ways in which cities can be more resilient and egalitarian.\nWorking at CIM as Senior Research Software Engineer has given me the opportunity of bridging my passions by applying technology and software through an social perspective and within a collaborative setting to the existing diverse and interdisciplinar research culture and teaching of the Centre.\nAreas of Interest: Urban Studies, Open Science, Commons, Co-production, Data Visualisation, Spatial Justice"
   },
   {
+    "objectID": "readme.html",
+    "href": "readme.html",
+    "title": "Data Lab",
+    "section": "",
+    "text": "Carlos’ Data Lab\n\nPublish site\nquarto publish gh-pages"
+  },
+  {
     "objectID": "posts/2023-03-02_matrix-effect/index.html",
     "href": "posts/2023-03-02_matrix-effect/index.html",
     "title": "Matrix effect using Imagemagick",
