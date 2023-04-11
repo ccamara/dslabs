@@ -1,11 +1,15 @@
 ---
-title: "Welcome To My Blog"
-author: "Tristan O'Malley"
+title: "Welcome To my Data Lab"
+author: "Carlos Cámara"
 date: "2023-03-02"
 categories: [news]
 ---
 
-This is the first post in a Quarto blog. Welcome!
+This is just a placeholder post that I will update at some point to explain what this site is, what motivated to create it and probably other stuff such about how did I create it (spoiler alert: quarto) or who I am.
+
+I just created this experimental site to experiment with computational notebooks and share code and text with others, but also with myself.
+
+Often times, I found myself wanting to do something I knew I did in the past, or trying to reproduce some code I've seen elsewhere, but I do not know where to find it. This site will address that.
 
 ![](thumbnail.jpg)
 
