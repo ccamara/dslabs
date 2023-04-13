@@ -1,0 +1,65 @@
+---
+title: "A brief note on colour palette"
+draft: true
+date: 2023-03-16
+author:  
+  - name: "Carlos Cámara-Menoyo"
+      # given: "Carlos"
+      # family: "Cámara-Menoyo"
+      # literal: "Carlos Cámara-Menoyo"
+    orcid: 0000-0002-9378-0549
+    email: carlos.camara@warwick.ac.uk
+    affiliations:
+    - name: University of Warwick
+      address: Centre for Interdisciplinary Methodologies (CIM), Social Sciences Building
+      city: Coventry
+      postal-code: CV4 7AL
+categories:
+  - R
+  - tutorial
+  - maps
+format:
+  html:
+    toc: true
+    #code-line-numbers: true
+    reference-location: margin
+editor: visual
+bibliography: references.bib
+citation: true
+---
+
+### Adding colour
+
+We could add colours to those visualisations, but we need to understand how colours work.
+
+First, define our color palette. We will be using [`{colorspace}`](https://colorspace.r-forge.r-project.org/articles/colorspace.html) package[^1], which provides a series of colour palettes, each of them aimed at different use cases:
+
+[^1]: Another alternative could be using [RColorBrewer](https://renenyffenegger.ch/notes/development/languages/R/packages/RColorBrewer/index), which implements colorbrewer palettes, which are used a lot in maps: <https://colorbrewer2.org>
+
+-   Diverging
+-   Sequential
+-   Diverging
+
+```{r}
+library(colorspace)
+
+hcl_palettes(plot = TRUE, type = "Qualitative")
+hcl_palettes(plot = TRUE, type = "Sequential")
+hcl_palettes(plot = TRUE, type = "Diverging")
+
+```
+
+It seems that the colour palette that the original stripe is using is a diverging palette, and most specifically a Blue-Red variation, probably closer to `Blue-Red 3`
+
+#### Defining colour breaks
+
+In turn, each palette can have different number of colour breaks:
+
+```{r}
+par(mfrow = c(3, 1))
+hcl_palettes(plot = TRUE, type = "Diverging", palette = "Blue-Red 3")
+hcl_palettes(plot = TRUE, type = "Diverging", palette = "Blue-Red 3", n = 7)
+hcl_palettes(plot = TRUE, type = "Diverging", palette = "Blue-Red 3", n = 9)
+```
+
+Now we
