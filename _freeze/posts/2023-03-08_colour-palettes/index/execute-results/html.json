@@ -1,0 +1,16 @@
+{
+  "hash": "f134248f758ab1e1b17734f7276a8910",
+  "result": {
+    "markdown": "---\ntitle: \"A brief note on colour palette\"\n#draft: true\nimage: color_palettes.png\ndate: 2023-03-16\nauthor:  \n  - name: \"Carlos Cámara-Menoyo\"\n      # given: \"Carlos\"\n      # family: \"Cámara-Menoyo\"\n      # literal: \"Carlos Cámara-Menoyo\"\n    orcid: 0000-0002-9378-0549\n    email: carlos.camara@warwick.ac.uk\n    affiliations:\n    - name: University of Warwick\n      address: Centre for Interdisciplinary Methodologies (CIM), Social Sciences Building\n      city: Coventry\n      postal-code: CV4 7AL\ncategories:\n  - R\n  - tutorial\n  - maps\nformat:\n  html:\n    toc: true\n    #code-line-numbers: true\n    reference-location: margin\neditor: visual\nbibliography: references.bib\ncitation: true\n---\n\n\n### Adding colour\n\nWe could add colours to those visualisations, but we need to understand how colours work.\n\nFirst, define our color palette. We will be using [`{colorspace}`](https://colorspace.r-forge.r-project.org/articles/colorspace.html) package[^1], which provides a series of colour palettes, each of them aimed at different use cases:\n\n[^1]: Another alternative could be using [RColorBrewer](https://renenyffenegger.ch/notes/development/languages/R/packages/RColorBrewer/index), which implements colorbrewer palettes, which are used a lot in maps: <https://colorbrewer2.org>\n\n-   Diverging\n-   Sequential\n-   Diverging\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(colorspace)\n\nhcl_palettes(plot = TRUE, type = \"Qualitative\")\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-1-1.png){width=672}\n:::\n\n```{.r .cell-code}\nhcl_palettes(plot = TRUE, type = \"Sequential\")\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-1-2.png){width=672}\n:::\n\n```{.r .cell-code}\nhcl_palettes(plot = TRUE, type = \"Diverging\")\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-1-3.png){width=672}\n:::\n:::\n\n\nIt seems that the colour palette that the original stripe is using is a diverging palette, and most specifically a Blue-Red variation, probably closer to `Blue-Red 3`\n\n#### Defining colour breaks\n\nIn turn, each palette can have different number of colour breaks:\n\n\n::: {.cell}\n\n```{.r .cell-code}\npar(mfrow = c(3, 1))\nhcl_palettes(plot = TRUE, type = \"Diverging\", palette = \"Blue-Red 3\")\nhcl_palettes(plot = TRUE, type = \"Diverging\", palette = \"Blue-Red 3\", n = 7)\nhcl_palettes(plot = TRUE, type = \"Diverging\", palette = \"Blue-Red 3\", n = 9)\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-2-1.png){width=672}\n:::\n:::\n\n\nNow we\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
