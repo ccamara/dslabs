@@ -1,0 +1,246 @@
+---
+title: "Research Tools for the Fediverse"
+subtitle: "An overview"
+author: "Carlos Cámara-Menoyo"
+title-slide-attributes:
+  data-background-color: "#6364FF"
+  data-background-image: "https://www.dur.ac.uk/images/ARCLogo/RSE/rse.jpg"
+  data-background-opacity: "0.30"
+format: 
+  revealjs:
+    #theme: serif
+    theme: [default, ../css/warwick.scss, ../css/warwick-fonts.scss]
+    logo: ../images/logo_black.png 
+    transition: slide
+    background-transition: fade
+---
+
+# Questions {.hidden-title background-color="#552D62"}
+
+::: r-fit-text
+What kind of researches are possible with/about the Fediverse?
+
+Can we simply reproduce methods, tools and researches used in other social media platforms?
+:::
+
+The answer is highly constrained to technical and ethical/legal aspects.
+
+This session is to explore
+
+# Aim
+
+-   Provide an overview of existing tools that can be used for researching in/about the Fediverse
+
+-   Flag limitations/affordances when using those tools
+
+-   Favour a discussion regarding tools, limitations, affordances, gaps... that can inform future research
+
+# Tools vs Research tools
+
+::: columns
+::: {.column width="50%"}
+-   Thematic repositories with accounts to follow, grouped by topic. Directly importable to Mastodon.
+
+-   Clients
+
+-   Crossposters
+
+-   Bots
+
+-   Groups
+
+-   ...
+
+We are not talking about them (for now) ;)
+:::
+
+::: {.column width="50%"}
+![[Awesome Mastodon](https://github.com/tleb/awesome-mastodon): a collaborative list with resources](img/awesome-mastodon.png)
+:::
+:::
+
+## Research tools {.hidden-title background-color="#6364FF"}
+
+How big is the Fediverse?
+
+Who belongs to the Fediverse?
+
+How's the Fediverse look like?
+
+What's said on the fediverse? ...
+
+# Shape and size of the Fediverse
+
+# Instances.social
+
+List of instances/servers from the Fediverse. Aimed at users to help them choosing the right instance for them.
+
+::: columns
+::: {.column width="50%"}
+Data is tagged
+
+-   URL: <https://instances.social>
+
+-   Code: <https://github.com/TheKinrar/instances>
+
+-   Data collection: servers' admin voluntarily submit information.
+
+-   API to retrieve information.
+
+    -   Well documented.
+    -   Token required / No limits
+    -   Integrated within Rtoot
+:::
+
+::: {.column width="50%"}
+![](img/instances-social.png)
+:::
+:::
+
+## Example dataset {.smaller}
+
+This is how data retreived from the API works
+
+```{r}
+
+library(dplyr)
+library(DT)
+
+instances_df <- read.csv("data/rtoot_instances.csv")
+
+names(instances_df)
+
+
+```
+
+And this is how the data looks like:
+
+```{r}
+#| classes: small-text
+
+instances_df |> 
+  select(-id, -thumbnail_proxy, -updated_at) |> 
+  head(4) |> 
+  datatable(filter ="none") 
+
+
+```
+
+------------------------------------------------------------------------
+
+Pros
+
+Cons
+
+-   Results do not mention the software used
+
+# FediDB
+
+::: columns
+::: {.column width="50%"}
+Historic data from the Fediverse (software and servers)
+
+-   URL: <https://fedidb.org/>
+
+-   Creator: Daniel Supernaut (\@dansup)
+
+-   
+
+-   Visualisations can easily be downloaded
+
+-   API to retreive the data
+
+-   Git Repo: ???
+
+-   Methods: crawling ([source](https://fedidb.org/crawler.html))
+
+-   Licence: ???
+:::
+
+::: {.column width="50%"}
+![](img/fedidb-home.png){fig-alt="Screenshot from https://fedidb.org/"}
+:::
+:::
+
+------------------------------------------------------------------------
+
+```{r}
+fedidb_servers <- read.csv("data/fedidb_servers.csv")
+fedidb_software <- read.csv("data/fedidb_software.csv")
+
+
+```
+
+------------------------------------------------------------------------
+
+Pros and cons
+
+![](img/fedidb-crawler.png)
+
+## API
+
+::: columns
+::: {.column width="50%"}
+**Application programming interface (API)**: is a software interface for two or more computer programs (software) to communicate with each other.
+
+Contrary to other APIs from other social media platforms[^1] (Twitter, Reddit...), it is possible to:
+
+-   GET information (retreive)
+
+-   POST information (i.e. statuses)
+:::
+
+::: {.column width="50%"}
+![](img/api-diagram.png){fig-alt="API Diagram"}
+:::
+:::
+
+[^1]: When their APIs used to be free and working!
+
+# What's being said?
+
+# Rtoot
+
+# Fediverse explorer
+
+::: columns
+::: {.column width="50%"}
+Tool to retrieve trending hashtags and popular posts, regenerated every hour.
+
+-   URL: https://fediverse.0qz.fun/
+
+-   
+:::
+
+::: {.column width="50%"}
+![](img/fediverse-explorer.png)
+:::
+:::
+
+# CIM's contribution
+
+# Survey
+
+Dataset
+
+::: columns
+::: {.column width="50%"}
+![](img/survey-dataset.png)
+:::
+
+::: {.column width="50%"}
+![](img/osf-io-survey.png)
+:::
+:::
+
+------------------------------------------------------------------------
+
+## Dashboard
+
+## Research Tool(s)
+
+![](img/emsley_workshop_cim_23.png)
+
+Iain Emsley has been developing a proof
+
+Status:
