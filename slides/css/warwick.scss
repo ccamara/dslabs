@@ -1,0 +1,62 @@
+/*-- scss:defaults --*/
+// Warwick colors:
+$w_aubergine: #552D62;
+$w_grey: #393A3B;
+$w_ruby_red: #9A1310;
+$w_sky_blue: #00407A;
+
+
+
+// Reveal colors:
+$body-bg: white;
+$body-color: $w_grey;
+$link-color: $w_aubergine;
+
+
+/*-- scss:rules --*/
+.reveal {
+  code {
+    color: $link-color;
+  }
+}
+
+#title-slide {
+  
+}
+
+.subtitle {
+  font-size: var(--r-heading3-size);
+  text-shadow: var(--r-heading1-text-shadow);
+  font-family: var(--r-heading-font);
+  font-weight: var(--r-heading-font-weight);
+  line-height: var(--r-heading-line-height);
+  letter-spacing: var(--r-heading-letter-spacing);
+  text-transform: var(--r-heading-text-transform);
+}
+
+.slide-primary{
+  background-color: $link-color;
+  color: white;
+}
+
+.has-dark-background {
+  aside {
+    color: white !important;
+      a {
+        color: $link-color !important;
+      }
+  }
+}
+
+.small-text {
+  font-size: 0.7em;
+}
+
+.smaller-text {
+  font-size: 0.5em;
+}
+
+.hidden-title h1,
+.hidden-title h2 {
+  display: none;
+}

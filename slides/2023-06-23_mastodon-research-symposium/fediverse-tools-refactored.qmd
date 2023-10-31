@@ -1,0 +1,349 @@
+---
+title: "Research Tools for the Fediverse"
+subtitle: "~~An overview~~ A Story"
+author: "Carlos Cámara-Menoyo"
+title-slide-attributes:
+  data-background-color: "#6364FF"
+  data-background-image: "https://www.dur.ac.uk/images/ARCLogo/RSE/rse.jpg"
+  data-background-opacity: "0.30"
+format: 
+  revealjs:
+    #theme: serif
+    theme: [default, ../css/warwick.scss, ../css/warwick-fonts.scss]
+    logo: ../images/logo_black.png 
+    transition: slide
+    background-transition: fade
+---
+
+# Aim
+
+-   Provide an overview of existing tools that can be used for researching in/about the Fediverse
+
+-   Flag limitations/affordances when using those tools
+
+-   Favour a discussion regarding tools, limitations, affordances, gaps... that can inform future research
+
+# Once upon a time {.hidden-title background-image="https://i.pinimg.com/originals/ce/dd/1e/cedd1e2070dc1f569081a302315f5bde.jpg"}
+
+# Questions {.hidden-title background-color="#552D62"}
+
+::: r-fit-text
+How's the fediverse like? How big is it?
+
+How are people using it?
+
+Can we characterise the migration from Twitter to Mastodon?
+:::
+
+# Instances.social
+
+List of instances/servers from the Fediverse.
+
+::: columns
+::: {.column width="50%"}
+-   Data collection: servers' admin voluntarily submit information.
+
+-   Information about servers
+
+-   API to retrieve information.
+
+    -   Well documented.
+    -   Token required / No limits
+:::
+
+::: {.column width="50%"}
+![](img/instances-social.png)
+
+-   URL: <https://instances.social>
+
+-   Code: <https://github.com/TheKinrar/instances>
+:::
+:::
+
+## Example dataset {.smaller}
+
+This is how data retreived from the API works
+
+```{r}
+
+library(tidyverse)
+library(DT)
+
+instances_df <- read.csv("data/rtoot_instances.csv")
+
+names(instances_df)
+
+
+```
+
+And this is how the data looks like:
+
+```{r}
+#| classes: small-text
+
+instances_df |> 
+  select(-id, -thumbnail_proxy, -updated_at) |> 
+  head(4) |> 
+  datatable(filter ="none") 
+
+
+```
+
+## But...
+
+-   Does not reflect the entire Fediverse, just a subset
+-   Some important data may be missing (i.e. software used, description...)
+-   No historic data (snapshot)
+
+# FediDB
+
+::: columns
+::: {.column width="50%"}
+-   Historic data from the Fediverse (software and servers)
+
+<!-- -->
+
+-   Creator: Daniel Supernaut (\@dansup)
+
+-   Visualisations can easily be downloaded
+
+-   API to retrieve the data
+
+-   Methods: crawling ([source](https://fedidb.org/crawler.html))
+
+-   Licence: ???
+:::
+
+::: {.column width="50%"}
+![](img/fedidb-home.png){fig-alt="Screenshot from https://fedidb.org/"}
+
+-   URL: <https://fedidb.org/>
+
+-   Git Repo: ???
+:::
+:::
+
+## Example dataset {.smaller .scrollable}
+
+This is how the data looks like:
+
+Servers
+
+```{r}
+#| classes: small-text
+fedidb_servers <- read.csv("data/fedidb_servers.csv") 
+
+colnames(fedidb_servers)
+
+fedidb_servers |> 
+  head(3) |> 
+  datatable()  
+
+
+```
+
+Software
+
+```{r}
+#| classes: small-text
+read.csv("data/fedidb_software.csv") |> 
+  head(3) |> 
+  datatable()
+```
+
+## But...
+
+::: columns
+::: {.column width="50%"}
+-   Limited API: max 20 entries
+
+-   Developed by a single user
+
+-   Blackbox
+
+    -   Unknown method
+
+    -   No public code
+:::
+
+::: {.column width="50%"}
+![](img/fedidb-crawler.png)
+:::
+:::
+
+## And...
+
+Number of users in mastodon.social, according to instances.social
+
+```{r}
+instances_df |> 
+  as_tibble() |> 
+  filter(name == "mastodon.social") |> 
+  select(name, statuses, users, active_users) 
+
+```
+
+According to fediDB
+
+```{r}
+fedidb_servers |> 
+    as_tibble() |> 
+  filter(domain == "mastodon.social") |> 
+  select(domain, starts_with("stats"))
+
+
+```
+
+Significant differences in the data (i.e. active users) -\> Who to trust? Is there a "ground truth"?
+
+# Questions {background-color="#552D62"}
+
+::: r-fit-text
+~~How's the fediverse like? How big is it?~~
+
+How are people using it?
+
+Can we characterise the migration from Twitter to Mastodon?
+:::
+
+# Rtoot
+
+::: columns
+::: {.column width="60%"}
+Information about instances:
+
+``` r
+# General info
+get_instance_general(instance = "mastodon.social")
+
+# Activity
+get_instance_activity(instance = "mastodon.social")
+get_instance_trends(instance = "mastodon.social")
+```
+
+Activity
+
+``` r
+get_timeline_public(instance = "mastodon.social")
+get_timeline_hashtag(hashtag = "rstats", instance = "mastodon.social")
+```
+
+Accounts:
+
+``` r
+get_account_followers() 
+get_account_following() 
+get_account_statuses()
+```
+:::
+
+::: {.column .text-small width="40%"}
+![](https://schochastics.github.io/rtoot/logo.png)
+
+-   URL: https://schochastics.github.io/rtoot/
+
+-   Repo: https://github.com/schochastics/rtoot
+:::
+:::
+
+## Some results
+
+![](img/statuses_date.png)
+
+------------------------------------------------------------------------
+
+![](img/migrated_or_not.png)
+
+## But... {background-image="img/uncle-ben.gif" background-color="black"}
+
+-   Can we really do this?!
+
+-   Is this legal? Is this ethical?
+
+# Fediverse explorer
+
+![](img/fediverse-explorer.png)
+
+Tool to retrieve trending hashtags and popular posts, regenerated every hour.
+
+-   URL: https://fediverse.0qz.fun/
+
+# Pause[...and think]{.fragment} {background-color="#6364FF"}
+
+# Survey
+
+::: columns
+::: {.column width="50%"}
+-   820 responses
+
+-   Responses were collected between 2023-01-13 and 2023-04-13
+
+-   Responses from 47 different countries.
+
+-   Questions about:
+
+    -   Demographics
+
+    -   Motivations
+
+    -   Expectations
+
+    -   Previous knowledge
+
+    -   Experience
+:::
+
+::: {.column width="50%"}
+![](img/survey_responses_country.png)
+:::
+:::
+
+------------------------------------------------------------------------
+
+![](img/survey_interests.png)
+
+## Results {.scrollable .hidden-title}
+
+::: columns
+::: {.column width="50%"}
+![](img/survey_motivations.png)
+:::
+
+::: {.column width="50%"}
+![](img/survey_experiences.png)
+:::
+:::
+
+## Dataset
+
+::: columns
+::: {.column width="50%"}
+![](img/survey-dataset.png)
+:::
+
+::: {.column width="50%"}
+![](img/osf-io-survey.png)
+:::
+:::
+
+## A Proof of concept tool
+
+![](img/emsley_workshop_cim_23.png)
+
+Iain Emsley has been developing a proof of concept tool that brings a different approach to instances' info with new possibilities.
+
+# Thank you! {background-color="#552D62"}
+
+## Questions {.hidden-title background-color="#552D62"}
+
+::: r-fit-text
+What kind of researches are possible with/about the Fediverse?
+
+Can we simply reproduce methods, tools and researches used in other social media platforms?
+
+. . .
+
+Answers are highly conditioned by technical and ethical/legal aspects.
+:::
+
+#  {.hidden-title background-image="https://i.pinimg.com/originals/ce/dd/1e/cedd1e2070dc1f569081a302315f5bde.jpg"}
