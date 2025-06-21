@@ -1,0 +1,224 @@
+---
+title: "Data visualizations as methods ...for discovering dinosaurs!"
+subtitle: "Digital Good Network - Summer School"
+author: "Carlos Cámara-Menoyo"
+institute: Centre for Interdisciplinary Methodologies (University of Warwick)
+
+title-slide-attributes:
+  data-background-color: "#BBDF46"
+  # data-background-image: "https://datalab.carloscamara.es/posts/2023-03-02_matrix-effect/img/datasaurus_matrix.png"
+  data-background-opacity: "0.30"
+format: 
+  revealjs:
+    #theme: serif
+    theme: [default, ../css/warwick.scss, ../css/warwick-fonts.scss]
+    logo: ../UoW_theme/uow-wordmark.svg
+    transition: slide
+    background-transition: fade
+bibliography: references.bib
+---
+
+# Outline
+
+-   13.30-14.30: Talk
+-   14.30-15.00: Break
+-   15.00-16.00: Hands-on: Create your own visualisation
+
+# Setting the expectations
+
+![](assets/data-visualization-training-Google-Search.png)
+
+# Disclaimer
+
+-   This is not a course on how to do (good) data visualisations (there are entire degrees for that!)
+-   Impossible to provide a training on data vis in 1h.
+    -   Plenty of training and videos that promise tools or tricks about data vis
+
+## The usual approach
+
+-   Tools
+
+-   Recipes / Tricks
+
+-   Chart types
+
+![Source](assets/Chart-Infographic.jpg)
+
+# Aims
+
+Hopefully I will deconstruct the way they understand data vis, and leave them at the start point, but with a refreshed undersanding of what they are, and wehere to get started.
+
+-   Critically understand how can we use data visualisations in research
+
+-   No solutions
+
+-   More questions than answers
+
+-   But..
+
+    -   You'll leave with key concepts to critically understand data visualisations and to get started in this exciting journey, and tools
+
+# Question time! {background-image="assets/question-time.jpg" background-color="#000" background-opacity="50%"}
+
+::: incremental
+1.  Who has ever created a data visualisation?
+2.  What did you intend to achieve when you created them?
+3.  Did you succeed?
+:::
+
+# Definition
+
+## What are data visualisations?
+
+Is this a data vis?
+
+\[ Image of a barplot\]
+
+------------------------------------------------------------------------
+
+\[\[Image of a scatterplot\]\]
+
+------------------------------------------------------------------------
+
+![](assets/Baylonianmaps.jpg)
+
+::: notes
+[*Imago Mundi*](https://en.wikipedia.org/wiki/Babylonian_Map_of_the_World "Babylonian Map of the World") Babylonian map, the oldest known world map, 6th century BC [Babylonia](https://en.wikipedia.org/wiki/Babylonia "Babylonia"). Now in the [British Museum](https://en.wikipedia.org/wiki/British_Museum "British Museum"). -\> This has to do with tools used.
+:::
+
+---
+
+-   Maps are a particular type of data visualisation: geospatial data visualisation.
+
+    -   They encode geographic positions (at least!)
+
+-   The tools used to create data visualisations are irrelevant (Babylon map)
+
+------------------------------------------------------------------------
+
+::: r-stack
+![Source: https://errantscience.com](assets/benn-abomination.jpeg)
+
+![Source: @abela2006](assets/Chart_Type_Data_Viz-1.png){.fragment alt="Source: @abela2006"}
+
+![Source: <https://activewizards.com/blog/how-to-choose-the-right-chart-type-infographic/>](assets/chart-types-infographics04.png){.fragment alt="Source: https://activewizards.com/blog/how-to-choose-the-right-chart-type-infographic/"}
+:::
+
+------------------------------------------------------------------------
+
+A text
+
+------------------------------------------------------------------------
+
+::: r-stack
+![](assets/table_excel_1.png)
+
+![](assets/table_excel_2.png){.fragment}
+
+![](assets/github_commits.png){.fragment}
+
+![](assets/Women-s-World-Cup-Predictions-reactable-cropped.png){.fragment}
+:::
+
+------------------------------------------------------------------------
+
+## Definitions
+
+> It is commonly stated that a picture tells a thousand words. As such, the visual register has long been used to summarise and describe datasets through statistical charts and graphs, diagrams,
+> spatialisations, maps, and animations. **These visual methods effectively reveal and communicate the structure, pattern and trends of variables and their interconnections**. Given the enormous volumes and velocity of big data, it is then no surprise that **visualisation has proven a popular way for making sense of data and communicating that sense**. [@kitchin2014, chap. 6 ]
+
+##  {.center}
+
+> Computer-based visualization systems provide visual representations of datasets designed to help people carry out tasks more effectively. [@munzner2015, p. 1]
+
+---
+
+> Visualizations are often described by the constraints from which they were designed:
+>
+> -   resources needed (data, media...)
+>
+> -   task to be enabled (to locate, compare, reflect)
+>
+> -   the context of use (e.g. users, situation, device).
+>
+> [@mcinerny2018]
+
+# A note on data
+
+Data vis needs data. Different types of data
+
+![@munzner2015](assets/Munzner-2015-fig2.1.png)
+
+# Uses
+
+## Communicating information
+
+Communication findings
+
+Usually come at the end of the process.
+
+Data vis are good to communicate findings because
+
+Importance here is:
+
+-   Audience
+
+-   "Activation": titles, labels, fonts... messages... anything we neeed to make sure that the message we want to convey is understood.
+
+-   aesthetics...
+
+-   Make data vis memorable
+
+![Source: <https://graphics.wsj.com/infectious-diseases-and-vaccines/>](assets/Screenshot 2023-11-28 at 16-16-55 Battling Infectious Diseases in the 20th Century The Impact of Vaccines.png)
+
+## Data exploration and data analysis
+
+This comes at early stages of the research process.
+
+Here, we want data vis to be quick (compare the code here, from the code from the previous plot)
+
+Datasaurus image
+
+![REPLACE with better quality](assets/Munzner-2015-fig3.1.png)
+
+## As artistic expression
+
+![The effects of red lining on black population. Source: @morrison2017](assets/031424_UCLA_AUD_Alumni-029.jpg){.r-stretch}
+
+##  {background-color="#000"}
+
+![ Joy Division's iconic cov4er for their debut album (1979), created by designer Peter Saville. showing a comparison of signals from a pulsar. +info: <https://www.fastcompany.com/1671015/the-data-viz-story-behind-joy-divisions-legendary-album-cover>](assets/joy_division_unknown_pleasures.jpg)
+
+---
+
+::: r-stack
+![](assets/show_your_stripes_cycling.png)
+
+![](assets/EUROPE-United_Kingdom-_3CAll_20of_20United_20Kingdom_3E-1884-2024-MO-withlabels.png){.fragment}
+
+![](assets/EUROPE-United_Kingdom-_3CAll_20of_20United_20Kingdom_3E-1884-2024-MO-barslabel.png){.fragment}
+:::
+
+---
+
+![[aRtsy](https://koenderks.github.io/aRtsy/) - hat implements algorithms for making generative art in a straightforward and standardized manner using 'ggplot2'.](assets/artsy_demo.png)
+
+## As a research method
+
+Halfwa y betweeb tge prevuious examples. This is a whole research process.
+
+# Examplar: Can digital goods be neutral?
+
+# Resources and Tools
+
+Financial Times' chart?
+
+![Source: [@financialtimes2021]](assets/FT4schools_RGS.png)
+
+## RawGraphs
+
+## Datawrapper
+
+# Conclusions
+
+# References {.scrollable}
