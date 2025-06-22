@@ -11,42 +11,104 @@ title-slide-attributes:
 format: 
   revealjs:
     #theme: serif
-    theme: [default, ../css/warwick.scss, ../css/warwick-fonts.scss]
+    theme: [default, ../UoW_theme/uow_brand.scss, ../UoW_theme/uow_brand-fonts.scss]
     logo: ../UoW_theme/uow-wordmark.svg
+    #logo: assets/digital-good-network-logo.png
     transition: slide
     background-transition: fade
 bibliography: references.bib
 ---
 
-# Outline
+```{r}
+library(dplyr)
+library(ggplot2)
+library(knitr)
+
+datasaurus <- read.csv("data/datasaurus.csv")
+```
+
+# Outline {background-color="rgba(108,183,255,0.4)"}
 
 -   13.30-14.30: Talk
 -   14.30-15.00: Break
 -   15.00-16.00: Hands-on: Create your own visualisation
 
+# Disclaimer {background-color="rgba(241,151,127,0.8) "}
+
+::: incremental
+-   Some ideas and materials used here are from the [MAsc in Data Visualization](https://warwick.ac.uk/fac/cross_fac/cim/apply-to-study/masters-programmes/visualisation/) taught at the Centre for Interdisciplinary Methodologies at the University of Warwick. Thanks to their authors: Greg McInerny, Cagatay Turkay, Timothy Monteath
+
+-   Other ideas are from the DNG Research Fund 2024 m project ["Can Digital Goods be Neutral?"](https://digitalgood.net/dg-research/can-digital-goods-be-neutral-evaluating-openstreetmaps-equity-through-participatory-data-visualisation/). Thanks to all those involved: Timothy Monteath, Selene Yang, Silvia Ribera Alfaro, Alejandra Canclini.
+
+-   This is not a course on how to do (good) data visualisations (there are entire degrees for that!)
+
+-   Impossible to provide a training on data vis in 1h.
+
+    -   Plenty of training and videos that promise tools or tricks about data vis
+:::
+
 # Setting the expectations
 
 ![](assets/data-visualization-training-Google-Search.png)
 
-# Disclaimer
+## The usual approach
 
--   This is not a course on how to do (good) data visualisations (there are entire degrees for that!)
--   Impossible to provide a training on data vis in 1h.
-    -   Plenty of training and videos that promise tools or tricks about data vis
+:::::: columns
+::: {.column width="33%"}
+### Tools
+
+-   Tableau
+-   
+-   DS libraries
+-   Observable
+-   R
+-   Python
+:::
+
+::: {.column width="33%"}
+### Chart types
+
+\![\]
+:::
+
+::: {.column width="33%"}
+### Recipes / Tricks
+
+![Source](assets/Chart-Infographic.jpg)
+:::
+::::::
 
 ## The usual approach
 
--   Tools
+-   Tools:
 
 -   Recipes / Tricks
 
 -   Chart types
 
-![Source](assets/Chart-Infographic.jpg)
+## About types
 
-# Aims
+::::: columns
+::: {.column width="50%"}
+### Yes
 
-Hopefully I will deconstruct the way they understand data vis, and leave them at the start point, but with a refreshed undersanding of what they are, and wehere to get started.
+About Types are impo
+:::
+
+::: {.column width="50%"}
+### ...but
+
+-   Trends
+
+-   New types appear from time to time
+
+![Replace: Forence's nightingale's coxcomb](assets/Screenshot%202023-04-05%20at%2010-03-45%20Five%20charts%20that%20changed%20the%20world%20-%20BBC%20Ideas.png)
+:::
+:::::
+
+# Aims {background-color="rgba(81,215,193,0.8)"}
+
+Hopefully, I will deconstruct the way they understand data vis, and leave them at the start point, but with a refreshed undersanding of what they are, and wehere to get started.
 
 -   Critically understand how can we use data visualisations in research
 
@@ -66,49 +128,95 @@ Hopefully I will deconstruct the way they understand data vis, and leave them at
 3.  Did you succeed?
 :::
 
-# Definition
+##  {.center data-menu-title="What are data visualisations?"}
 
-## What are data visualisations?
+::: r-fit-text
+What are data visualisations?
+:::
 
-Is this a data vis?
+::: fragment
+Let's see some examples. Are these data visualisations?
+:::
 
-\[ Image of a barplot\]
+##  {data-menu-title="Basic Scatterplot"}
 
-------------------------------------------------------------------------
+```{r}
+plot(datasaurus$x, datasaurus$y)
+```
 
-\[\[Image of a scatterplot\]\]
+::: fragment
+Scatterplots are a very popular and effective visualisation (even as basic as this one!) to detect correlations.
+:::
 
-------------------------------------------------------------------------
+##  {.center data-menu-title="Barplot" transition="fade-out"}
 
-![](assets/Baylonianmaps.jpg)
+```{r}
+
+# create dummy data
+data <- data.frame(
+  name=letters[1:5],
+  value=sample(seq(4,10),5)
+)
+
+# Control space:
+# barplot(height=data$value, names=data$name, col=rgb(0.2,0.4,0.6,0.6), space=c(0.1,0.2,3,1.5,0.3) )
+ 
+# Control width:
+barplot(height=data$value, names=data$name, col=rgb(0.2,0.4,0.6,0.6), width=c(0.1,0.2,3,1.5,0.3))
+
+
+```
+
+##  {.center data-menu-title="Barplot with label" transition="fade-in"}
+
+```{r}
+barplot(height=data$value, names=data$name, col=rgb(0.2,0.4,0.6,0.6), width=c(0.1,0.2,3,1.5,0.3), 
+        main ="Average scores by group",
+        xlab = "Group size",
+        ylab = "Score")
+```
 
 ::: notes
-[*Imago Mundi*](https://en.wikipedia.org/wiki/Babylonian_Map_of_the_World "Babylonian Map of the World") Babylonian map, the oldest known world map, 6th century BC [Babylonia](https://en.wikipedia.org/wiki/Babylonia "Babylonia"). Now in the [British Museum](https://en.wikipedia.org/wiki/British_Museum "British Museum"). -\> This has to do with tools used.
+This is a barplot, with an interesting addition: width is mapped to a numeric value. There are
 :::
 
----
+##  {.center .smaller data-menu-title="Pie chart"}
 
--   Maps are a particular type of data visualisation: geospatial data visualisation.
+![](assets/pie-chart-phd.png){fig-align="center"}
 
-    -   They encode geographic positions (at least!)
+::: fragment
+Interesting use of legends. Source: unknown, seen in social media.
+:::
 
--   The tools used to create data visualisations are irrelevant (Babylon map)
+##  {.smaller data-menu-title="Babylonian map"}
 
-------------------------------------------------------------------------
+![](assets/Baylonianmaps.jpg){fig-align="center" max-height="883px"}
+
+::: fragment
+[*Imago Mundi*](https://en.wikipedia.org/wiki/Babylonian_Map_of_the_World "Babylonian Map of the World") Babylonian map, the oldest known world map, 6th century BC [Babylonia](https://en.wikipedia.org/wiki/Babylonia "Babylonia"). Now in the [British Museum](https://en.wikipedia.org/wiki/British_Museum "British Museum").
+:::
+
+##  {.center data-menu-title="Venn abomination"}
+
+![Source: https://errantscience.com](assets/venn-abomination.jpeg)
+
+##  {.center data-menu-title="Infographic"}
+
+![Source: @abela2006](assets/Chart_Type_Data_Viz-1.png)
+
+##  {.center .smaller background-color="#fae900" data-menu-title="Guerrilla Girls"}
 
 ::: r-stack
-![Source: https://errantscience.com](assets/benn-abomination.jpeg)
+![](assets/guerrilla-girls-redacted.png)
 
-![Source: @abela2006](assets/Chart_Type_Data_Viz-1.png){.fragment alt="Source: @abela2006"}
-
-![Source: <https://activewizards.com/blog/how-to-choose-the-right-chart-type-infographic/>](assets/chart-types-infographics04.png){.fragment alt="Source: https://activewizards.com/blog/how-to-choose-the-right-chart-type-infographic/"}
+![](assets/guerrilla-girls.png){.fragment}
 :::
 
-------------------------------------------------------------------------
+::: fragment
+An infographic by Guerrilla Girls (1989), as seen in @dignazio2023
+:::
 
-A text
-
-------------------------------------------------------------------------
+##  {data-menu-title="Tables"}
 
 ::: r-stack
 ![](assets/table_excel_1.png)
@@ -120,76 +228,306 @@ A text
 ![](assets/Women-s-World-Cup-Predictions-reactable-cropped.png){.fragment}
 :::
 
-------------------------------------------------------------------------
+## Confusing? {.smaller}
 
-## Definitions
+::::::: columns
+::: {.column width="50%"}
+![Source: [How I Met Your Mother](https://www.youtube.com/watch?v=bTVd0eUQ7zM) (2005-2014)](assets/HDIMYM-charts.jpg)
+:::
 
-> It is commonly stated that a picture tells a thousand words. As such, the visual register has long been used to summarise and describe datasets through statistical charts and graphs, diagrams,
-> spatialisations, maps, and animations. **These visual methods effectively reveal and communicate the structure, pattern and trends of variables and their interconnections**. Given the enormous volumes and velocity of big data, it is then no surprise that **visualisation has proven a popular way for making sense of data and communicating that sense**. [@kitchin2014, chap. 6 ]
+::::: {.column width="50%"}
+::: fragment
+Let's see what we've learnt:
+:::
+
+::: incremental
+-   We may have an understanding of what Data Visualisations are, but defining them is not always easy.
+
+-   What defines a data visualisation are not **types** (scatterplots, pie, bars...)
+
+    -   Actually, we've seen visualisations that do not fit in a particular type of chart (see Grammar of Graphics [@wickham2010] )
+
+-   ...nor the **tools** used to generate them (e.g. Babylon map)
+
+-   ...nor their **visual qualities** or **complexity** (e.g. scatterplot)
+
+-   ... or their **accuracy**, even!
+
+-   They all have something in common... **data**!
+
+    -   **Mapping data** to specific features (colours, shapes, position...)
+:::
+:::::
+:::::::
+
+# A note on data {.smaller}
+
+::::: columns
+::: {.column width="50%"}
+There's a constant in every definition: Data.
+
+-   Data vis needs data.
+
+-   Data can be of different types -\> Defines what we can/can't do with it
+
+    -   format
+
+    -   structure
+
+-   Data manipulation comes hand in hand with data visualisation
+
+    -   Filtering
+
+    -   Reshaping
+
+    -   Modifying
+
+    -   ...
+:::
+
+::: {.column width="50%"}
+![Source @munzner2015](assets/Munzner-2015-fig2.1.png)
+:::
+:::::
+
+##  {.smaller data-menu-title="Good data vis != good data"}
+
+![](assets/1035_the-distance-between-neptune-and-the-sun_correlates-with_burglary-rates.svg){fig-align="center"}
+
+::: {.r-fit-text color="#BA0F27"}
+[Good data vis != good data]{style="color:#BA0F27"}
+:::
+
+We can create great data visualisations with totally wrong data!. Source: Tyler Vigen's [Spurious Correlations](https://www.tylervigen.com/spurious/correlation/1035_the-distance-between-neptune-and-the-sun_correlates-with_burglary-rates)
+
+# Definitions
+
+> It is commonly stated that a picture tells a thousand words. As such, the visual register has long been used to summarise and describe datasets through statistical charts and graphs, diagrams, spatialisations, maps, and animations. **These visual methods effectively reveal and [communicate the structure, pattern and trends of variables and their interconnections]{.highlight-text}**. Given the enormous volumes and velocity of big data, it is then no surprise that **visualisation has proven a popular way for making sense of data and communicating that sense**. [@kitchin2014, chap. 6]
+
+##  {#def-munzner .center data-menu-title="Tamara Munzner"}
+
+> [Computer-based]{.highlight-text} visualization systems provide [visual representations]{.highlight-text} of datasets designed to help people carry out [tasks]{.highlight-text} [more effectively]{.highlight-text}. [@munzner2015, p. 1]
+
+
+##  {#def-mcinerny .center data-menu-title="Greg McInerny"}
+
+> ::: {style=".r-fit-text"}
+> Visualizations are often described by the [constraints from which they were designed]{.highlight-text}:
+>
+> -   the [resources needed]{.highlight-text} (data, media...)
+>
+> -   the [task]{.highlight-text} to be enabled (to locate, compare, reflect)
+>
+> -   the [context of use]{.highlight-text} (e.g. users, situation, device).
+>
+> [@mcinerny2018]
+> :::
+
+# Uses {background-color="rgba(108,183,255,0.4)"}
+
+# Communicating information {.smaller}
+
+This usually comes at the end of the process. Here we use data vis to convey clear, memorable messages from complex data.
+
+![Source: <https://graphics.wsj.com/infectious-diseases-and-vaccines/>](assets/Screenshot%202023-11-28%20at%2016-16-55%20Battling%20Infectious%20Diseases%20in%20the%2020th%20Century%20The%20Impact%20of%20Vaccines.png)
+
+##  {.smaller background-color="#F6F6F6"}
+
+::::: columns
+::: {.column width="50%"}
+![](assets/bbc-global-warming-2024.webp)
+
+Data visualisations about Climate change, by Mark Poynting, Erwan Rivault, Becky Dale. Source: [BBC](https://www.bbc.co.uk/news/articles/cd7575x8yq5o)
+:::
+
+::: {.column width="50%"}
+![](assets/bbc-global-warming-2024-maps.webp)
+:::
+:::::
+
+## 
+
+![Histogram of new Mastodon accounts between April 2022 and February 2023. Source: Cámara-Menoyo and Tkacz (2023).](assets/fig4_account_creation.svg)
+
+##  {.smaller}
+
+::::: columns
+::: {.column width="50%"}
+![Greenhouse emissions. Source: UN climate report](assets/greenhouse-emissions.png)
+:::
+
+::: {.column width="50%"}
+![Source: [The Economist](https://www.economist.com/graphic-detail/2023/11/20/the-world-is-still-failing-to-come-close-to-its-climate-goals)](assets/greenhouse-emissions-economist.png)
+:::
+:::::
+
+Believe it or not, these two charts are showing the same data, but different design decisions. Can you spot the differences?
 
 ##  {.center}
 
-> Computer-based visualization systems provide visual representations of datasets designed to help people carry out tasks more effectively. [@munzner2015, p. 1]
+<iframe width="100%" height="515" src="https://www.youtube.com/embed/jbkSRLYSojo?si=ZxnH5isQomtptR02" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
 
----
+</iframe>
 
-> Visualizations are often described by the constraints from which they were designed:
->
-> -   resources needed (data, media...)
->
-> -   task to be enabled (to locate, compare, reflect)
->
-> -   the context of use (e.g. users, situation, device).
->
-> [@mcinerny2018]
+Hans Rosling's famous presentation skills include the use of good data visualisations, animations, pauses, facts... to effectively communicate about data.
 
-# A note on data
+## 
 
-Data vis needs data. Different types of data
+![This interactive dashboard encourages users to focus on one area – a country, region, or income level – and see how it compares to its counterparts across a wide range of metrics. Author: [Lindsey Poulter](http://www.lindseypoulter.com/). Source: <https://lindseypoulter.com/wdvp/>](assets/Dashboard-of-the-Present-Future-trimmed.png)
 
-![@munzner2015](assets/Munzner-2015-fig2.1.png)
+##  {data-menu-title="Sankey Diagram" background-color="#152233"}
 
-# Uses
+![Sankey Diagram with annotations](assets/plastic_disposal.jpg)
 
-## Communicating information
+## Summary {autoanimate="true"}
 
-Communication findings
+::::: columns
+::: {.column width="50%"}
+-   This is a (long) iterative process of continuous refinement.
 
-Usually come at the end of the process.
+-   To make information memorable, we need to consider:
 
-Data vis are good to communicate findings because
+    -   **Audience and literacies** \<\> chart types and texts
 
-Importance here is:
+    -   **Aesthetics**: how we map data into colours, shapes, sizes, position...
 
--   Audience
+    -   **Activation**: titles, labels, fonts... messages... anything we neeed to make sure that the message we want to convey is understood.
+:::
 
--   "Activation": titles, labels, fonts... messages... anything we neeed to make sure that the message we want to convey is understood.
+::: {.column width="50%"}
+![Source: [Enrico Bertini](https://vis.social/@ebertini/111388965959889952)](assets/line-graph-interpretation.png)
+:::
+:::::
 
--   aesthetics...
+# Data exploration/analysis {.smaller}
 
--   Make data vis memorable
-
-![Source: <https://graphics.wsj.com/infectious-diseases-and-vaccines/>](assets/Screenshot 2023-11-28 at 16-16-55 Battling Infectious Diseases in the 20th Century The Impact of Vaccines.png)
-
-## Data exploration and data analysis
-
+::::: columns
+::: {.column width="40%"}
 This comes at early stages of the research process.
 
-Here, we want data vis to be quick (compare the code here, from the code from the previous plot)
+Here, we want data visualisations to be quick and provide **insights** **to inform** our research.
 
-Datasaurus image
+We may want to interrogate our data to:
 
-![REPLACE with better quality](assets/Munzner-2015-fig3.1.png)
+-   Discover
 
-## As artistic expression
+-   Search
+
+-   Query
+
+-   Identify trends, outliers, features
+
+-   Understand attributes (distribution, correlation...)
+
+-   ...
+:::
+
+::: {.column width="60%"}
+![Source: @munzner2015](assets/Munzner-2015-fig3.1.png)
+:::
+:::::
+
+## Example {.smaller}
+
+Consider this dataset containing three columns and `r nrow(datasaurus)` rows:
+
+```{r}
+#| fig-cap: Table showing random 15 rows of our dataset to have a sense of our data.
+#| label: fig-datasaurus
+
+
+datasaurus$category <- as.factor(as.integer(as.factor(datasaurus$dataset)))
+
+datasaurus <- as_tibble(datasaurus)
+
+datasaurus |> 
+  select(category, x, y) |> 
+  slice_sample(n = 15) |> 
+  kable()
+
+```
+
+##  {.smaller data-menu-title="Summary statistics"}
+
+We see we have a column called `category`, so we can get a summary statistics of the `x` and `y` for each category:
+
+```{r}
+datasaurus |> 
+  group_by(category) |> 
+  summarise(
+    mean_x = mean(x, na.rm = TRUE),
+    sd_x = sd(x, na.rm = TRUE),
+    min_x = min(x, na.rm = TRUE),
+    max_x = max(x, na.rm = TRUE),
+    mean_y = mean(y, na.rm = TRUE),
+    sd_y = sd(y, na.rm = TRUE),
+    min_y = min(y, na.rm = TRUE),
+    max_y = max(y, na.rm = TRUE),
+    .groups = "drop"
+  ) |> 
+  knitr::kable()
+```
+
+It is difficult to see any pattern (groups have almost identical means and standard deviations). Could data visualisations be more useful?
+
+##  {.smaller data-menu-title="Visual summary statistics"}
+
+We can create a scatterplot and assign a colour per each category:
+
+```{r}
+#| echo: true
+ggplot(datasaurus, aes(x = x, y = y, color = category)) +
+  geom_point()
+```
+
+If you have good sight, you may be able to see something, but still difficult. Let's try something different: let's create small multiples per category (i.e., an array of independent plots for each category)
+
+##  {.smaller data-menu-title="Visual summary statistics (cont)"}
+
+```{r}
+#| echo: true
+ggplot(datasaurus, aes(x = x, y = y, color = category)) +
+  geom_point() +
+  facet_wrap(~category)
+```
+
+This famous dataset is called [`datasaurus dozen`](https://en.wikipedia.org/wiki/Datasaurus_dozen) and was constructed in 2016 by [Alberto Cairo](https://en.wikipedia.org/wiki/Alberto_Cairo) for illustrative purposes (see @matejka2017)
+
+## Correlations
+
+![Pairwise correlations between 4 variables. Source: @turkay2023, chap 15](assets/correlations.png)
+
+## Clustering / dimension reduction
+
+![Interactive cluster analysis using Orange. Source: https://orangedatamining.com/widget-catalog/bioinformatics/cluster_analysis/](assets/Cluster-Analysis-example.png)
+
+## Summary
+
+Here the importance lies more on Speed than aesthetics:
+
+-   They are part of a process: they need to be easy to generate and adapt
+
+    -   Usually hand-in-hand with data manipulation
+
+    -   Integrated in the research workflow
+
+    -   Importance of programming languages (R, Python) or Visual Programming Languages (Orange)
+
+-   They need to be understandable by the researcher/research team/reviewers
+
+    -   labels, titles... are less important here
+
+    -   academic audience only -\> scientific types (e.g., boxplots...) are welcome
+
+# As artistic expression
 
 ![The effects of red lining on black population. Source: @morrison2017](assets/031424_UCLA_AUD_Alumni-029.jpg){.r-stretch}
 
-##  {background-color="#000"}
+##  {data-menu-title="Joy Division" background-color="#000"}
 
-![ Joy Division's iconic cov4er for their debut album (1979), created by designer Peter Saville. showing a comparison of signals from a pulsar. +info: <https://www.fastcompany.com/1671015/the-data-viz-story-behind-joy-divisions-legendary-album-cover>](assets/joy_division_unknown_pleasures.jpg)
+![Joy Division's iconic cov4er for their debut album (1979), created by designer Peter Saville. showing a comparison of signals from a pulsar. +info: <https://www.fastcompany.com/1671015/the-data-viz-story-behind-joy-divisions-legendary-album-cover>](assets/joy_division_unknown_pleasures.jpg)
 
----
+##  {data-menu-title="Climate Stripes"}
 
 ::: r-stack
 ![](assets/show_your_stripes_cycling.png)
@@ -199,26 +537,230 @@ Datasaurus image
 ![](assets/EUROPE-United_Kingdom-_3CAll_20of_20United_20Kingdom_3E-1884-2024-MO-barslabel.png){.fragment}
 :::
 
----
+##  {data-menu-title="aRtsy"}
 
-![[aRtsy](https://koenderks.github.io/aRtsy/) - hat implements algorithms for making generative art in a straightforward and standardized manner using 'ggplot2'.](assets/artsy_demo.png)
+![[aRtsy](https://koenderks.github.io/aRtsy/) - R package that implements algorithms for making generative art in a straightforward and standardized manner using 'ggplot2'.](assets/artsy_demo.png)
 
-## As a research method
+## Summary
 
-Halfwa y betweeb tge prevuious examples. This is a whole research process.
+-   Data visualisations have so much in common with design[^1] that they can become design objects by themselves!
+    -   Data may be informing/generating the design, but those patterns may not be explicit nor evident
 
-# Examplar: Can digital goods be neutral?
+[^1]: Design choices, design principles, design patterns... see communicating section
 
-# Resources and Tools
+# As a research method
 
-Financial Times' chart?
+::::: columns
+::: {.column width="45%"}
+Halfway between the previous examples. This is a whole research process.
+
+
+Because Data vis need data which can be represented in different ways, and different representations convey different messages, [they are excellent mechanisms to]{.highlight-text}:
+
+- **articulate discussions** about the data that is available or is missing, and how is represented or hidden... and what is it telling
+- **enquiry about data** and surfacing key concepts that may have been hidden otherwise.
+- **empower** communities involved
+
+:::
+
+::: {.column width="55%"}
+![Co-design board with stakeholders used to decide data, types, questions... Source: @cámara-menoyo2024](assets/co-design.jpg)
+:::
+:::::
+
+# Examplar: {background-color="#BBDF46" background-image="assets/digital-good-network-logo.png" background-position="95% 5%" background-size="127px 128px"}
+
+::: r-fit-text
+Can Digital Goods Be Neutral?
+:::
+
+Evaluating OpenStreetMap’s equity through participatory data visualisation
+
+## Motivation
+
+We wanted to understand how these decisions around mapping were impacting under-represented communities.
+
+We wanted to study a particular type of digital good: OpenStreetMap, to understand how neutrality is used to favour or hamper equity.
+
+![Katherine d'Ignazio and Lauren Klein's [-@dignazio2016; -@dignazio2023] Data feminism design principles](assets/data-feminism-principles.png)
+
+::: notes
+Kowing about all of this, and inspired by the work of feminist geographers and d'Ignazio and Lauren data feminism principles, we wanted to understand whether these decisions decisions had a positive or negative impact in under-represented communities.
+:::
+
+## OpenStreetMap (OSM)
+
+OSM is the largest and most exhaustive collaborative map of the world.
+
+::::: columns
+::: {.column width="50%"}
+![OSM is a map](assets/osm_carto.png)
+:::
+
+::: {.column width="50%"}
+![OSM is a database](assets/osm_id_editor.png){fig-alt="Editing OSM Data"}
+:::
+:::::
+
+::: smaller
+OSM is also a community of 10,000,000 users worldwide! (mostly volunteers, but not always)
+:::
+
+::: notes
+We have already mentioned OSM as the wikipedia of the maps
+
+We know already that OSM is a collaborative map, but it is also a database, and because all their items are geo-located, we call it a "geospatial" database.
+:::
+
+##  {.center .smaller}
+
+::: r-fit-text
+OSM's data, **contributed by 10,000,000 volunteers**,
+
+complements **official data sources**, and
+
+populates thousands of **tools and services**.
+:::
+
+**Major Sites**: [Amazon]{.highlight-text}, [Apple]{.highlight-text}, Baidu Maps, Facebook, [Microsoft]{.highlight-text}, Wikipedia and Wikimedia
+
+**Transport**: [Air France]{.highlight-text}, Alaska Airlines, Deutsche Bahn, Grab, SNCF (French rail agency), [Uber]{.highlight-text}, Geodata Software and Services: CARTO, Digital Globe, ESRI, [Garmin]{.highlight-text}, Mapbox, Telenav
+
+**Government**: Agence Française de Développement, Government of Brazil, Government of Italy: President’s Office, [Police Scotland]{.highlight-text}, US National Park Service, US State Department, USAID, Peace Corps….
+
+::: notes
+OSM is huge and is everywhere!
+:::
+
+##  {.center}
+
+::: r-fit-text
+Like Wikipedia, **OSM is based**
+
+on principles of **openness** and **neutrality**
+:::
+
+“[OpenStreetMap maps world as it exists]{.highlight-text}, and includes mapping borders and countries according to actual current situation and [not a preferred or ideal situation]{.highlight-text}” ([OSM Wiki](https://wiki.openstreetmap.org/wiki/Disputed_territories))
+
+## What? {.center}
+
+::: r-fit-text
+-   Is OSM as neutral as it claims to be?
+-   How is the notion of neutrality being implemented?
+-   How is 'neutrality' affecting other, underrepresented demographics?
+:::
+
+## How? {.smaller}
+
+::: r-fit-text
+Participatory research: teaming with *GeoChicas* to codesign data visualisations
+:::
+
+:::::::: columns
+:::::: {.column width="60%"}
+::::: columns
+::: {.column width="50%"}
+GeoChicas is a collective of feminist women linked to OpenStreetMap, originally Spanish-speaking, who work for women's empowerment and the reduction of the gender gap in OpenStreetMap communities and in communities associated with the world of free software and open data.
+:::
+
+::: {.column width="50%"}
+Data visualisations as a method to:
+
+-   think about data (and representation)
+-   communicate and surface controversies
+:::
+:::::
+::::::
+
+::: {.column width="40%"}
+![](assets/codesign.png)
+:::
+::::::::
+
+## Understanding community composition {.smaller .center}
+
+::::: columns
+::: {.column width="50%"}
+![](assets/osm_users_country.png)
+:::
+
+::: {.column width="50%"}
+![](assets/osm_users_language.png)
+:::
+:::::
+
+Results are not representative, but significative: show a clear over-representation of certain demographics.
+
+::: notes
+We've created visualisations like this to understand how heterogeneous is or is not
+:::
+
+## How do users contribute to OSM? {.smaller}
+
+![A dashboard showing how groups contribute to OSM](assets/dashboard.png)
+
+Initial findings show differences in how women contribute to OSM.
+
+::: notes
+We've created a dashboard showing how a group of users contribute to OSM so we can compare how similar or different are the contributions patterns of certain users.
+:::
+
+## Inclusive cartographies {.smaller}
+
+::::: columns
+::: {.column width="60%"}
+Planning a series of workhops aimed at **creating maps that address particular needs of underrepresented minorities using data that is available in OpenStreetMap**
+
+Prompts:
+
+-   Aim: what would you want the map to help you with?
+
+-   Iconography: how are the icons being used?
+
+-   Information being displayed or not: what do you want to be seen? How would you like it to be represented?
+
+Audience:
+
+-   **People from non-hegemonic demographics** (women, racialized, LGTBQ+) who feel that current maps do not sufficiently address their needs.
+
+-   **Map enthusiasts**, Data visualization enthusiasts and OpenStreetMap users with a keen interest in EDI issues.
+
+-   **Activists**, Researchers, or people sensitive to EDI issues and inequalities (we will particularly welcome people interested in issues related to gender, race or queer topics).
+
+You are invited!
+:::
+
+::: {.column width="40%"}
+![WEB Dubois map of Philadelphia](http://berkeleyjournal.org/wp-content/uploads/2016/01/Philadelphia.jpg)
+
+![Kelly 2020](img/iconography.png){width="300"}
+:::
+:::::
+
+# Resources and Tools {background-color="rgba(108,183,255,0.4)"}
+
+## Chart types {background-color="#ffffff"}
+
+![Source: @abela2006](assets/Chart_Type_Data_Viz-1.png){fig-align="center"}
+
+##  {background-color="#ffffff"}
+
+![](assets/chart-types-infographics04.png){fig-align="center"}
+
+##  {background-color="#ffffff"}
 
 ![Source: [@financialtimes2021]](assets/FT4schools_RGS.png)
 
-## RawGraphs
+## Tools
 
-## Datawrapper
+[![RawGraphs (\<https://www.rawgraphs.io/\>)](assets/RAWGraphs.png)](https://www.rawgraphs.io/)
 
-# Conclusions
+## 
+
+[![DataWrapper (\<https://www.datawrapper.de/\>)](assets/Datawrapper-Create-charts-maps-and-tables.png)](https://www.datawrapper.de/)
+
+# Conclusions {background-color="rgba(108,183,255,0.4)"}
+
+# Thanks! {background-color="rgba(68,3,121,0.8)"}
 
 # References {.scrollable}
