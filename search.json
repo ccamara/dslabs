@@ -4,14 +4,497 @@
     "href": "blog.html",
     "title": "Blog",
     "section": "",
-    "text": "Matrix effect using Imagemagick\n\n\n\n\n\n\n\nR\n\n\ntutorial\n\n\nimage manipulation\n\n\nImageMagick\n\n\nMagick\n\n\n\n\nIn this tutorial I’m using R and Imagemagik to produce a Matrix-like image just using code.\n\n\n\n\n\n\nMar 5, 2023\n\n\nCarlos Cámara\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To my Data Lab\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nMar 2, 2023\n\n\nCarlos Cámara\n\n\n\n\n\n\nNo matching items"
+    "text": "Matrix effect using Imagemagick\n\n\n\n\n\n\nR\n\n\ntutorial\n\n\nimage manipulation\n\n\nImageMagick\n\n\nMagick\n\n\n\nIn this tutorial I’m using R and Imagemagik to produce a Matrix-like image just using code.\n\n\n\n\n\nMar 5, 2023\n\n\nCarlos Cámara\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To my Data Lab\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nMar 2, 2023\n\n\nCarlos Cámara\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "readme.html",
+    "href": "readme.html",
+    "title": "Carlos’ Data Lab",
+    "section": "",
+    "text": "Carlos’ Data Lab\n\nPublish site\nquarto publish gh-pages"
+  },
+  {
+    "objectID": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#example-dataset",
+    "href": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#example-dataset",
+    "title": "Research Tools for the Fediverse",
+    "section": "Example dataset",
+    "text": "Example dataset\nThis is how data retreived from the API works\n\n\n [1] \"id\"                 \"name\"               \"updated_at\"        \n [4] \"checked_at\"         \"uptime\"             \"up\"                \n [7] \"dead\"               \"version\"            \"ipv6\"              \n[10] \"https_score\"        \"https_rank\"         \"obs_score\"         \n[13] \"obs_rank\"           \"users\"              \"statuses\"          \n[16] \"connections\"        \"open_registrations\" \"thumbnail\"         \n[19] \"thumbnail_proxy\"    \"active_users\"       \"email\"             \n[22] \"admin\"              \"added_at\"          \n\n\nAnd this is how the data looks like:"
+  },
+  {
+    "objectID": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#but",
+    "href": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#but",
+    "title": "Research Tools for the Fediverse",
+    "section": "But…",
+    "text": "But…\n\nDoes not reflect the entire Fediverse, just a subset\nSome important data may be missing (i.e. software used, description…)\nNo historic data (snapshot)"
+  },
+  {
+    "objectID": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#example-dataset-1",
+    "href": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#example-dataset-1",
+    "title": "Research Tools for the Fediverse",
+    "section": "Example dataset",
+    "text": "Example dataset\nThis is how the data looks like:\nServers\n\n\n [1] \"id\"                         \"domain\"                    \n [3] \"open_registration\"          \"description\"               \n [5] \"banner_url\"                 \"location.city\"             \n [7] \"location.country\"           \"software.id\"               \n [9] \"software.name\"              \"software.url\"              \n[11] \"software.version\"           \"stats.status_count\"        \n[13] \"stats.user_count\"           \"stats.monthly_active_users\"\n[15] \"first_seen_at\"              \"last_seen_at\"              \n[17] \"date_scraped\"              \n\n\n\n\n\n\nSoftware"
+  },
+  {
+    "objectID": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#but-1",
+    "href": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#but-1",
+    "title": "Research Tools for the Fediverse",
+    "section": "But…",
+    "text": "But…\n\n\n\nLimited API: max 20 entries\nDeveloped by a single user\nBlackbox\n\nUnknown method\nNo public code"
+  },
+  {
+    "objectID": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#and",
+    "href": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#and",
+    "title": "Research Tools for the Fediverse",
+    "section": "And…",
+    "text": "And…\nNumber of users in mastodon.social, according to instances.social\n\n\n# A tibble: 1 × 4\n  name            statuses   users active_users\n  &lt;chr&gt;              &lt;int&gt;   &lt;int&gt;        &lt;int&gt;\n1 mastodon.social 57685540 1201035       125176\n\n\nAccording to fediDB\n\n\n# A tibble: 1 × 4\n  domain          stats.status_count stats.user_count stats.monthly_active_users\n  &lt;chr&gt;                        &lt;int&gt;            &lt;int&gt;                      &lt;int&gt;\n1 mastodon.social           57681385          1200905                     220176\n\n\nSignificant differences in the data (i.e. active users) -&gt; Who to trust? Is there a “ground truth”?"
+  },
+  {
+    "objectID": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#some-results",
+    "href": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#some-results",
+    "title": "Research Tools for the Fediverse",
+    "section": "Some results",
+    "text": "Some results"
+  },
+  {
+    "objectID": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#but-2",
+    "href": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#but-2",
+    "title": "Research Tools for the Fediverse",
+    "section": "But…",
+    "text": "But…\n\nCan we really do this?!\nIs this legal? Is this ethical?"
+  },
+  {
+    "objectID": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#results",
+    "href": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#results",
+    "title": "Research Tools for the Fediverse",
+    "section": "Results",
+    "text": "Results"
+  },
+  {
+    "objectID": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#dataset",
+    "href": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#dataset",
+    "title": "Research Tools for the Fediverse",
+    "section": "Dataset",
+    "text": "Dataset"
+  },
+  {
+    "objectID": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#a-proof-of-concept-tool",
+    "href": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#a-proof-of-concept-tool",
+    "title": "Research Tools for the Fediverse",
+    "section": "A Proof of concept tool",
+    "text": "A Proof of concept tool\n\nIain Emsley has been developing a proof of concept tool that brings a different approach to instances’ info with new possibilities."
+  },
+  {
+    "objectID": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#questions-2",
+    "href": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools-refactored.html#questions-2",
+    "title": "Research Tools for the Fediverse",
+    "section": "Questions",
+    "text": "Questions\n\nWhat kind of researches are possible with/about the Fediverse?\nCan we simply reproduce methods, tools and researches used in other social media platforms?\n. . .\nAnswers are highly conditioned by technical and ethical/legal aspects."
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Welcome to my data lab!",
     "section": "",
-    "text": "Welcome to my data lab. This is an experimentation place where I will be publishing text and R and Python code in the form of computational notebooks that deal with specific issues within the different stages of the process of working with data.\nIt is still a barebones site, but I hope to keep updating it.\nMy name is Carlos Cámara, and you can read more about me, here or on my website.\n\nLatest posts\n\n\n\n\n\n\n\n\n\n\nMatrix effect using Imagemagick\n\n\nIn this tutorial I’m using R and Imagemagik to produce a Matrix-like image just using code.\n\n\n\nCarlos Cámara\n\n\nMar 5, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To my Data Lab\n\n\n\n\n\n\nCarlos Cámara\n\n\nMar 2, 2023\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Welcome to my data lab. This is an experimentation place where I will be publishing text and R and Python code in the form of computational notebooks that deal with specific issues within the different stages of the process of working with data.\nIt is still a barebones site, but I hope to keep updating it.\nMy name is Carlos Cámara, and you can read more about me, here or on my website.\n\nLatest posts\n\n\n\n\n\n\n\n\n\n\nMatrix effect using Imagemagick\n\n\nIn this tutorial I’m using R and Imagemagik to produce a Matrix-like image just using code.\n\n\n\nCarlos Cámara\n\n\nMar 5, 2023\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To my Data Lab\n\n\n\n\n\n\nCarlos Cámara\n\n\nMar 2, 2023\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To my Data Lab",
+    "section": "",
+    "text": "This is just a placeholder post that I will update at some point to explain what this site is, what motivated to create it and probably other stuff such about how did I create it (spoiler alert: quarto) or who I am.\nI just created this experimental site to experiment with computational notebooks and share code and text with others, but also with myself.\nOften times, I found myself wanting to do something I knew I did in the past, or trying to reproduce some code I’ve seen elsewhere, but I do not know where to find it. This site will address that.\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  },
+  {
+    "objectID": "posts/2023-03-02_matrix-effect/index.html",
+    "href": "posts/2023-03-02_matrix-effect/index.html",
+    "title": "Matrix effect using Imagemagick",
+    "section": "",
+    "text": "The iconic film series “The Matrix” (and sequels) can be recognized by a number of technical and aesthetical features, but probably, the most unique one is their green cascading code1 that is present throughout the films and also its promotional imagery and fanart.\nIt is no wonder, then, that the Internet is flooded by a number of tutorials or even web tools aimed at reproducing those aesthetics. However, all of them require Image Editing software such as Photoshop, like this excellent tutorial from Abbey Esparza which was an inspiration for me.\nIn this case, however, I will not be using any editing software. Instead, I will be solely using code to produce a Matrix-like image like the one below (Figure 2), and some bonus output, too. Specifically, I’m going to use R and {magick} (Ooms 2023), which is an R interface for Imagemagik developed by the rOpensCi community."
+  },
+  {
+    "objectID": "posts/2023-03-02_matrix-effect/index.html#why-would-we-want-to-do-this-using-r",
+    "href": "posts/2023-03-02_matrix-effect/index.html#why-would-we-want-to-do-this-using-r",
+    "title": "Matrix effect using Imagemagick",
+    "section": "Why would we want to do this using R?",
+    "text": "Why would we want to do this using R?\nBefore starting with the tutorial, though, I need to be crystal clear. I do not think that R and any of their image-manipulation packages or, more generally, a programming language, can fully replace an image editing software such as Photoshop or GIMP2. After all, they are made for different purposes and with different audiences in mind.\n2 GIMP is an excellent Free/Libre OpenSource software for image manipulation, very similar (feature-wise) to Photoshop. You can visit the official website https://gimp.org\nHowever, that doesn’t mean that using R for handling images doesn’t make sense at all. On the contrary! There are a number of cases where manipulating images from code makes a lot of sense:\n\nBatch manipulation\nImage transformation based on some kind of data (either metadata or linked data)\nIncluding images as part of our data visualisation workflow/outputs\n…\n\nTherefore, this tutorial is a proof of concept and a demonstration about how can R be used for creative tasks and manipulation. It is also an exploration of the limits3.\n3 Given my background as an architect, I’ve used Photoshop and GIMP extensively in the past, with a great deal of success. However, as someone who is interested in coding, I could see how destructive and non-reproducible the workflows can be. So, this is also a selfish exercise where I wanted to see how far I could go using R in a creative context and understanding their limits."
+  },
+  {
+    "objectID": "posts/2023-03-02_matrix-effect/index.html#why-this-image",
+    "href": "posts/2023-03-02_matrix-effect/index.html#why-this-image",
+    "title": "Matrix effect using Imagemagick",
+    "section": "Why this image?",
+    "text": "Why this image?\nWhen thinking about the first image for my pixelfed account on data visualisation, it was clear to me that I had to start with a mention to the work of Justin Matejka and George Fitzmaurice with their Datasaurus Dozen (Matejka and Fitzmaurice 2017) to demonstrate the importance of Data Visualisation to detect patterns in data that summary statistics cannot reveal. But because I was also aware that this is a well-known topic within the field, which has received quite a lot of attention, I wanted to find a different image to those illustrating the blog posts accompanying an explanation.\n\n\n\n\n\n\nFigure 3: Graphical explanation of the Datasaurus Dozen by their authors (Matejka & Fitzmaurice)\n\n\n\nSo when reflecting on how to represent a dinosaur hidden in data, or images appearing out of a messy dataset, I suddenly remembered the Matrix scene where Neo learns how the Matrix works and how, immediately, what used to be inscrutable code turns into recognizable images.\nI was immediately seduced by the idea of creating a Dinosaur (ideally similar to that in the datasaurus) emerging from what could be a Matrix-like dataset, and using data visualisation tools for that seemed the most logic (and most meta) thing to do. The text describing that (with a pun) just emphasizes that idea."
+  },
+  {
+    "objectID": "posts/2023-03-02_matrix-effect/index.html#step-by-step",
+    "href": "posts/2023-03-02_matrix-effect/index.html#step-by-step",
+    "title": "Matrix effect using Imagemagick",
+    "section": "Step by step",
+    "text": "Step by step\nI started the process with the following outline in mind:\n\nwe need to combine a background image and a dinosaur (ideally with little or no colors)\nwe need to add some effects to the dinosaur\nwe need to add some text to it\n\nAs you will see, it turned out to be more complex (I needed to create more intermediate steps), but the essence is the same. The GIF4 below is probably the best description of what we are going to do.\n4 This GIF has also been generated with R, refer to Section 3.11 for details.\n\n\n\n\n\nFigure 4: Graphic overview of what we will be doing in this tutorial.\n\n\n\n\nLoading dependencies\nin this case, we will only be using a single library: {magick}, developed by Jeroen Ooms. According to its website, [Magick provides]:\n\nBindings to ImageMagick: the most comprehensive open-source image processing library available. Supports many common formats (png, jpeg, tiff, pdf, etc) and manipulations (rotate, scale, crop, trim, flip, blur, etc). All operations are vectorized via the Magick++ STL meaning they operate either on a single frame or a series of frames for working with layers, collages, or animation. In RStudio images are automatically previewed when printed to the console, resulting in an interactive editing environment.\n\nSo the only thing we need to do is installing the package normally and then adding a call to library() at the beginning of our document:\n\nlibrary(magick)\n\nLinking to ImageMagick 6.9.12.3\nEnabled features: cairo, fontconfig, freetype, heic, lcms, pango, raw, rsvg, webp\nDisabled features: fftw, ghostscript, x11\n\n# Also save some variables.\ncol_matrix &lt;- \"#00dc00\"\n\n\n\n\n\n\n\nImportant\n\n\n\n\n\nNote that because magick is just an interface, we need to have ImageMagick library installed in our system if it’s not already installed (i.e., in Linux Machines). magick’s Readme file covers that https://docs.ropensci.org/magick/articles/intro.html#installing-magick\n\n\n\n\n\nLoad images\nOnly two images are needed for this tutorial: a background image and a dinousaur with a transparent background5. I downloaded the T-Rex image from Unsplash (thanks to the author, Amy-Leigh Barnard, for releasing it under the Unsplash License), and I fond the matrix-like background using DuckDuckGo’s search for Images under Creative Commons, which pointed me towards Peter DeHaas’ website.\n5 Actually, the dinousar image is the only image I failed to generate using R. I used GIMP to create an alpha channel and remove the background from the original Photo by Amy-Leigh Barnard on Unsplash:\n\nYou can read a tutorial on how to do that using GIMP here: https://www.guidingtech.com/remove-background-gimp-layer-mask/So, once we get the images stored in a folder within our project, we need to load them to R’s environment:\n\n# Load images\ndino &lt;- image_read(\"img/amy-leigh-barnard-SByb8Ch9XcQ-unsplash.png\") \nmatrix_bg &lt;- image_read(\"img/matrix01.webp\") \n\n# Put them together in a vector\nimages_clips &lt;- c(dino, matrix_bg)\n\n# Display the images side by side\nimage_append(image_scale(images_clips, \"x200\"))\n\n\n\n\n\n\n\n# Display images' properties\nprint(images_clips)\n\n  format width height colorspace matte filesize density\n1    PNG  4608   3072       sRGB  TRUE  8293810   72x72\n2   WEBP  2000   1000       sRGB FALSE   373842   72x72\n\n\n\n\n\n\n\n\n\nNote the different output from calling the images directly or using print(): the first one displays the image, whereas the later will show the image’s properties as well as the image. There are two things that it’s worth paying attention to judging from the images’ properties:\n\nThey have different sizes. This would be an issue when combining images, so we need to scale them to similar sizes before doing that.\nDinousaur is stored in a PNG format. These type of formats are usually used because they have an alpha channel (in this case, a transparent background), which is extremely useful for our purposes.\n\n\n\nScaling images\nDue to the dinosaur being considerable larger than the background, we need to resize the image before combining them. There are a number of ways to alter the size of an image (with or without distortions)6, but we will be using image_scale():\n6 For an explanation of the available options, refer to https://docs.ropensci.org/magick/reference/transform.html\n# Remove the extra background.\ndino &lt;- image_trim(dino) \n\n# Scale proportionally to a height of 800px.\ndino &lt;- image_scale(dino, \"x800\")\n\n\n\nCombining images (first attempt)\nBecause the dinosaur doesn’t have any background, we can combine them by overlying it on top of the background using image_composite():\n\nimage_composite(matrix_bg, dino)\n\n\n\n\n\n\n\nFigure 5: First attempt at compositing two images\n\n\n\n\n\n\n\n\n\n\n\nOrder matters!\n\n\n\n\n\nPay attention to the order of the images, as it does matter! The first one will be placed on top of the second.\n\nimage_composite(dino, matrix_bg) \n\n\n\n\n\n\n\nFigure 6: Resuling image with wrong order: the background is completely covering the dinousaur\n\n\n\n\n\nActually, this output is very similar to something we will want to achieve at a latter point.\n\n\n\nAs you can see, by default composite image gets the size of the first image and adds a second one aligned from its top left position. Because both images have different sizes, the dinosaur seems to be floating. We can control the alignment using the gravity pattern, which accepts several strings7.\n7 For the full list of accepted strings refer to this page at ImageMagick’s documentation https://www.imagemagick.org/Magick++/Enumerations.html#GravityType\n# We can use gravity to control alignment\nimage_composite(matrix_bg, dino, gravity = \"SouthEast\") \n\n\n\n\n\n\n\nFigure 7: Controlling images alignment with gravity parameter\n\n\n\n\n\nNow it’s slightly better, but the dinosaur stands out too much, and it is clear that there are two juxtaposed images that have nothing to do one with each other. We will try to address that by:\n\nDessaturating / coloring it\nAdding the code on top of it\n\n\n\nColor dessaturation\nOne of the outstanding features of The Matrix imagery is by the absence of colors except for green and black. This effect has been accentuated over time (see Figure 8 ), and has often implied using dessaturated images (the clearer examples are Figure 8 (c) and Figure 8 (d)). We are going to try to achieve that with our dinosaur.\n\n\n\n\n\n\n\n\n\n\n\n(a) The Matrix (1999)\n\n\n\n\n\n\n\n\n\n\n\n(b) The Matrix Reloaded (2003)\n\n\n\n\n\n\n\n\n\n\n\n(c) The Matrix Revolutions (2003)\n\n\n\n\n\n\n\n\n\n\n\n(d) 20th Anniversary poster (2019)\n\n\n\n\n\n\n\n\n\n\n\n(e) The Matrix Ressurrections (2021)\n\n\n\n\n\n\n\nFigure 8: Evolution of The Matrix series’ graphic image through its posters (1999) © Warner Bros. Entertainment\n\n\n\nThe most immediate way to remove the colours from an image is to convert it to a grayscale image:\n\n# Convert to grayscale\ndino_grey &lt;- image_quantize(dino, colorspace = 'gray')\n\ndino_grey\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDessaturation\n\n\n\n\n\nAn alternative that gives more control is to change saturation. Moving the saturation somewhere between 100 (maximum value: all colors) and 1 (minimum value: grayscale) gives more control and interesting results.\n\n# Or better, partially dessaturate the image\ndino_grey2 &lt;- image_modulate(dino, saturation = 20)\ndino_grey2\n\n\n\n\n\n\n\nimage_modulate(dino, saturation = 20, brightness = 200)\n\n\n\n\n\n\n\n\nThis result is probably more similar to Figure 8 (d)\n\n\n\n\n# We can use gravity to control alignment\nimage_composite(matrix_bg, dino_grey, gravity = \"SouthEast\") \n\n\n\n\n\n\n\nFigure 9: Composition with greyscale dino\n\n\n\n\n\nThis is getting better, but probably, it would be even better if the dinosaur was greener (something similar to Figure 8 (c) . One way to do that could be by colorizing the image:\n\n# We can use image colorize with low opacity values\ndino_green &lt;- image_colorize(dino_grey2, opacity = 40, color =  \"#379b47\")\ndino_green\n\n\n\n\n\n\n\nFigure 10: Colorized image, with low opacity\n\n\n\n\n\nLet’s see how it looks when combined with our background.\n\nimage_composite(matrix_bg, dino_green, gravity = \"SouthEast\") \n\n\n\n\n\n\n\nFigure 11: Composition with coloured dino\n\n\n\n\n\nRegretfully, this doesn’t look particularly good: the dinosaur’s details seemed veiled (actually, that’s what we did: we covered the dinosaur with a thin, green veil).\nWe are going to use a slightly different approach now. This time we will be combining a greyscale version with a green image, but using multiply as the blend mode. Multiply will keep the same details of the original image, but will result in a darker image (which in this case, is also desired!)8 . Also, because we do not have a green image, we will need to create one from scratch using image_blank():\n8 For more information about multiply blend mode, refer to this tutorial https://digital-photography-school.com/multiply-blend-mode/ . Also, the wikipedia has information about different blend modes, including, but not limited to, multiply: https://en.wikipedia.org/wiki/Blend_modes\n# We need to create an image of the same size with just colour green.\ngreen_img &lt;-  image_blank(2000, 1000, color = col_matrix)\n\n# Combine two images using Multiply blend mode.\ndino_green2 &lt;- image_composite(dino_grey2, green_img, operator = \"Multiply\")\n\ndino_green2\n\n\n\n\n\n\n\nFigure 12: Multiply produces a sharper green dino, but transparency is lost.\n\n\n\n\n\nAs you can see, this dinosaur is darker and their details (shades) don’t look so washed away as the previous one (Figure 10). Regretfully, the colour is also added to the background, which used to be transparent, so we will need to restore the alpha channel. We will do that by creating yet another composite, but using copyopacity operator this time to copy the alpha channel from the original dinosaur.\n\n# Restoring alpha channel.\ndino_green2 &lt;- image_composite(dino_green2, dino, operator = 'copyopacity')\n\n# Compare results\nimage_append(image_scale(c(dino_green, dino_green2), \"x250\"))\n\n\n\n\n\n\n\nFigure 13: Green dinos’ comparison: colorised (left) and mulitplied (right)\n\n\n\n\n\nAnd now, we can combine the green dinosaur with the background:\n\nimage_composite(matrix_bg, dino_green2, gravity = \"SouthEast\") \n\n\n\n\n\n\n\nFigure 14: Composition with coloured dino (multiply version)\n\n\n\n\n\n\n\nAdding code texture to the dinosaur\nBecause we wanted to recreate the effect on Figure 1 (b) that suggests that the dinosaur is also made of code, we will need to over impress the source code over the T-Rex. To do that, we could apply the same technique we used for Figure 13 and merge the background with the dinosaur using the copyopacity operator.\n\ndino_matrix &lt;- image_composite(matrix_bg, dino_green2, operator = 'copyopacity', \n                               gravity = \"SouthEast\")\n\ndino_matrix\n\n\n\n\n\n\n\nFigure 15: Matrix code within the dinosaur silhouette.\n\n\n\n\n\nWe are almost there! We have the code applied to the dinosaur, but the texture and details have been lost, only its silhouette has been preserved! We will combine two images, but using the dissolve blend mode:\n\ndino_matrix &lt;- image_composite(dino_matrix, dino_green2, compose_args = \"60%\", \n                               operator = \"dissolve\", gravity = \"SouthEast\")\n\ndino_matrix\n\n\n\n\n\n\n\nFigure 16: A green dinosaur with the Matrix code and its texture applied.\n\n\n\n\n\nThis looks nice9, so now we can combine that with the background:\n9 Probably, the dinosaur is too green now. If that’s the case, we could try to overlay the code on top of the grey dinosaur or the slightly dessaturated version, instead of the green T-Rex. However, for the sake of better illustrating the next step, I will be using this version.\nimage_composite(matrix_bg, dino_matrix, gravity = \"SouthEast\") \n\n\n\n\n\n\n\nFigure 17: Composition with the dino with code. Not nice.\n\n\n\n\n\nThe resulting image is way less impressive that what he had imagined, right? Why isn’t it looking as good as the previous compositions if the dinosaur with the code looked even better than the previous ones? Basically, the problem is that because we have used the same image for the background and as a texture over the dinosaur, the background and foreground are matching and it seems we just added it on top of a green dinosaur, which is not what we wanted to achieve (it seems that there’s a dinosaur behind a curtain of raining letters).\nThere are different ways to overcome that issue:\n\nUse different (but similar) images for the background and the code texture (that would be ideal, but I didn’t have much time to find images, also, it will be good for teaching purposes)\nModify the background so it looks slightly different.\n\n\n\nModifying the background\nIn order to make the background look like a different image than the code from the foreground, we are going to do these two transformations:\n\nDisplace it\nBlur it\n\nBecause this is getting long, I’m becoming lazier, and in this case I will use the pipe operator to chain several transformations and I will also use image_flop() instead of moving the background using some of the image transformations provided by {magick}\n\nmatrix_bg2 &lt;- matrix_bg %&gt;% \n  image_flop() %&gt;% # This creates a vertical mirror, which is a lazy way to move the background\n  image_blur(10, 10) \n\nimage_composite(matrix_bg2, dino_matrix, gravity = \"SouthEast\") \n\n\n\n\n\n\n\nFigure 18: Composition with the dino with code, after altering the background\n\n\n\n\n\nNow we can see that dinosaur! However, I realised that in some recent posters, the images are not completely green, but have some greyish texture. We could try to do the same, but instead of having an entirely green dinosaur, using one of the grey versions with code overlayed on them.\n\ndino_matrix2 &lt;- image_composite(dino_matrix, dino_grey2, compose_args = \"40%\", \n                                operator = \"dissolve\", gravity = \"SouthEast\")\n\nimage_composite(matrix_bg2, dino_matrix2, gravity = \"SouthEast\") \n\n\n\n\n\n\n\nFigure 19: Same composition, but the dino is not completely green.\n\n\n\n\n\nWay better now! We can see that the dinosaur now stands out against the background, but we could do better: we could add a light green glow around the dinosaur, just like the original imagery does.\n\n\nGlow effect\nThis is probably one of the trickiest parts of this tutorial. Imagemagik (and therefore, {magick}) allow a limited range of effects (check all of them here), but none of them consists of projecting an inner or outer glow, which is what you’d do in Photoshop or GIMP. For a while I played with the idea of projecting an outer shadow using image_shadow() (but it would only project square shadows) or image_shadow_mask() but only seems to work for vector images.\nSo, instead, we will be achieving that in several steps:\n\nCreate a light green silhouette\nScale it to make it slightly bigger than the original, so it seems like a contour\nBlur the contour image\nAdd it below the dinosaur\n\n\n# Create a glow effect\ndino_glow_tmp1 &lt;- dino_green %&gt;% \n  image_colorize(color = \"#00dc00\", opacity = 100) %&gt;% \n  image_blur(200, sigma = 20)\n\n# We are ready to add the dino on top of it!\ndino_glow_tmp2 &lt;- dino_glow_tmp1 %&gt;% \n  image_composite(dino_grey2, gravity = \"southeast\") # Using grey version to highlight the effect.\n\n# Compare results\nimage_append(image_scale(c(dino_glow_tmp1, dino_glow_tmp2), \"x250\"))\n\n\n\n\n\n\n\nFigure 20: Glowing silouetthe (left) and glowing dino (right). First attempt.\n\n\n\n\n\nFigure on the left shows a perfectly green T-Rex with blurry contour, so wen we overlay a dinosaur on top of it, it looks like if it was glowing. It looks pretty neat, right? Well… except that there is an issue. Look at the upper border and left side of the image: the glow looks trimmed! Actually, because the glow exceeds the size of the original image, the glow also exceeds the canvas and it is not shown on those areas.\nTo fix this we will need to make the canvas (not the image) a little bit bigger, making room for the glow to grow without being trimmed. We will do that using image_extent(), paying attention to make the canvas grow from the bottom right corner (because that’s the point we are using to align the dino within the background). Once we are done with that, we can then remove any extra white space using image_trim() and proceed to add the dinosaur with the code on top of it.\n\ndino_matrix_glow &lt;- dino_green %&gt;% \n  image_colorize(color = \"#00dc00\", opacity = 100) %&gt;% \n  image_extent(\"1200x900\", gravity = \"southeast\") %&gt;% # Increase the canvas' size.\n  image_blur(200, sigma = 20) %&gt;% \n  image_trim() %&gt;%  # Remove the extra canvas space\n  image_composite(image_trim(dino_matrix2), gravity = \"southeast\")\n\ndino_matrix_glow\n\n\n\n\n\n\n\nFigure 21: Glowing T-Rex, now without trimmed glows.\n\n\n\n\n\nAnd this is how the the final composition would look like when we add the glowing dinosaur to the background (compare it to Figure 19)\n\nimage_composite(matrix_bg2, dino_matrix_glow, gravity = \"SouthEast\")\n\n\n\n\n\n\n\nFigure 22: Adding the glowing dinosaur to the composition\n\n\n\n\n\nAnd we are almost done, now! We could add some text on top of the image, and that would be it.\n\n\nAdding text\nAdding text over images is pretty straightforward using image_annotate(), but there are some considerations to be made for this particular case:\n\nWe have a dark image, so we will need to give the text a light color, as opposed to the default black color\nThe image is quite big, so we will have to either scale it down or use big fonts\n\n\nannotated_dino &lt;- image_composite(matrix_bg2, dino_matrix_glow, gravity = \"SouthEast\") %&gt;% \n  image_annotate(\n    text = \"This text is shown in the top left corner\",\n    color = \"white\",\n    size = 30\n  )\n\nannotated_dino\n\n\n\n\n\n\n\nFigure 23: Adding our first text.\n\n\n\n\n\nAs you can see, the text is positioned on the top left corner of the image, but we can control that with the parameters gravity and location.\n\nannotated_dino2 &lt;- image_composite(matrix_bg2, dino_matrix_glow, gravity = \"SouthEast\") %&gt;% \n  image_annotate(\n    text = \"This text is shown in the top left corner (with padding)\",\n    color = \"white\",\n    size = 30,\n    location = \"+100+100\"\n  ) %&gt;% \n  image_annotate(\n    text = \"This text is shown in the center, slightly rotated\",\n    color = \"white\",\n    size = 30,\n    gravity = \"center\",\n    degrees = 20\n  ) %&gt;% \n  image_annotate(\n    text = \"This text is shown in the bottom right\",\n    color = \"white\",\n    size = 30,\n    gravity = \"southeast\",\n    location = \"+100+100\"\n  )\n\nannotated_dino2\n\n\n\n\n\n\n\nFigure 24: Combining several text strings and controlling their position\n\n\n\n\n\nThese are the basics, but there are other interesting parameters we can use with image_annotate() to control the font family, text rotation, style, decoration, kerning… but I’m sure you get the idea.\nIn the example below, I’m using two custom font types that are Matrix-theme inspired and are also free to use:\n\nMiltown II by Apostrophic Labs\nWhite rabbit by Matthew Welch\n\n\nfinal_image &lt;- image_composite(matrix_bg2, dino_matrix_glow, gravity = \"SouthEast\")  %&gt;% \n  image_annotate(\n    text = \"Data visualisation use cases:\",\n    font = \"white rabbit\",\n    color = \"white\",\n    strokecolor = \"#A7F4A7\",\n    size = 30,\n    weight = 700,\n    location = \"+90+90\"\n  ) %&gt;% \n  image_annotate(\n    text = \"#1: to find dinosaurs\", \n    font = \"miltown ii\",\n    color = \"white\",\n    strokecolor = \"#A7F4A7\",\n    size = 70, \n    weight = 700,\n    location =\"+90+120\") %&gt;% \n  image_annotate(\n    text = \"Data can contain hidden \\nand suprising patterns \\nthat only visualisations \\ncan reveal\",\n    font = \"white rabbit\",\n    color = \"white\",\n    strokecolor = \"#A7F4A7\",\n    size = 40,\n    location = \"+90+400\"\n  ) %&gt;% \n  image_annotate(\n    text = \"Great examples of this are the Anscombe quartet \\nor the Datasaurus Dozen (Matejka & Fitzmaurice, 2017)\",\n    font = \"white rabbit\",\n    color = \"white\",\n     strokecolor = \"#A7F4A7\",\n    size = 28,\n    gravity = \"southwest\",\n    location = \"+90+90\"\n  ) %&gt;% \n  image_annotate(\n    text = \"Source: datasaurus@pixelfed.social\",\n    color = \"white\",\n    gravity = \"southeast\",\n    location = \"+50+50\",\n    size = 18\n  )\n\nfinal_image\n\n\n\n\n\n\n\nFigure 25: The final image\n\n\n\n\n\nSo this is it! We made it! Now we only need to save the image and start using it!\n\nimage_write(final_image, \"img/datasaurus_matrix.png\")\n\n\n\nPutting everything together\nWe could try to replicate the same image in a more compressed way:\n\ncol_matrix &lt;- \"#00dc00\"\n\nmatrix_bg &lt;- image_read(\"img/matrix01.webp\") \n\ndino &lt;- image_read(\"img/amy-leigh-barnard-SByb8Ch9XcQ-unsplash.png\") %&gt;% \n  image_trim() %&gt;% \n  image_scale(\"x800\") %&gt;% \n  image_modulate(saturation = 15)\n\ndino_matrix &lt;- image_composite(matrix_bg, dino, operator = 'copyopacity', \n                               gravity = \"SouthEast\") %&gt;% \n  image_composite(dino, compose_args = \"50%\", \n                               operator = \"dissolve\", gravity = \"SouthEast\")\n\ndino_matrix_glow &lt;- dino_matrix %&gt;% \n  image_colorize(color = col_matrix, opacity = 100) %&gt;% \n  image_extent(\"1200x900\", gravity = \"southeast\") %&gt;% # Increase the canvas' size.\n  image_blur(200, sigma = 20) %&gt;% \n  image_trim() %&gt;%  # Remove the extra canvas space\n  image_composite(image_trim(dino_matrix), gravity = \"southeast\")\n\nmatrix_bg2 &lt;- matrix_bg %&gt;% \n  image_flop() %&gt;% \n  image_blur(10, 10) \n\nimage_composite(matrix_bg2, dino_matrix_glow, gravity = \"SouthEast\") %&gt;% \n  image_annotate(\n    text = \"Data visualisation use cases:\",\n    font = \"white rabbit\",\n    color = \"white\",\n    strokecolor = \"#A7F4A7\",\n    size = 30,\n    weight = 700,\n    location = \"+90+90\"\n  ) %&gt;% \n  image_annotate(\n    text = \"#1: to find dinosaurs\", \n    font = \"miltown ii\",\n    color = \"white\",\n    strokecolor = \"#A7F4A7\",\n    size = 70, \n    weight = 700,\n    location =\"+90+120\") %&gt;% \n  image_annotate(\n    text = \"Data can contain hidden \\nand suprising patterns \\nthat only visualisations \\ncan reveal\",\n    font = \"white rabbit\",\n    color = \"white\",\n    strokecolor = \"#A7F4A7\",\n    #strokecolor = \"#379b47\",\n    size = 40,\n    location = \"+90+400\"\n  ) %&gt;% \n  image_annotate(\n    text = \"Great examples of this are the Anscombe quartet \\nor the Datasaurus Dozen (Matejka & Fitzmaurice, 2017)\",\n    font = \"white rabbit\",\n    color = \"white\",\n     strokecolor = \"#A7F4A7\",\n    size = 28,\n    gravity = \"southwest\",\n    location = \"+90+90\"\n  ) %&gt;% \n  image_annotate(\n    text = \"Source: datasaurus@pixelfed.social\",\n    color = \"white\",\n    gravity = \"southeast\",\n    location = \"+50+50\",\n    size = 18\n  ) %&gt;% \n  image_scale(\"1000x\")\n\n\n\n\n\n\n\nFigure 26: The same image, created from scratch in 69 lines of code\n\n\n\n\n\n\n\n\n\n\n\nSpot the difference?\n\n\n\nDespite I said images Figure 25 and Figure 26 are the same, they are slightly different. Can you spot the difference? Would you be able to make changes in the code to make them look the same?\n\n\n\n\nBonus: Animated GIF\nCreating an animated GIF of the entire process is really straightforward. We just need to add the relevant images to a vector, and then use image_animate() to generate the GIF.\n\n# Add key images to a vector.\nimages_clips &lt;- c(\n  matrix_bg,\n  image_extent(dino, \"2000x1000\", gravity = \"southeast\"),\n  image_composite(matrix_bg, dino, gravity = \"SouthEast\"),\n  image_extent(dino_grey, \"2000x1000\", gravity = \"southeast\"),\n  image_extent(dino_grey2, \"2000x1000\", gravity = \"southeast\"),\n  image_composite(matrix_bg, dino_grey2, gravity = \"SouthEast\"),\n  image_extent(image_colorize(dino_grey2, opacity = 40, color =  \"#379b47\"),\n               \"2000x1000\", gravity = \"southeast\"),\n  image_extent(dino_green2, \"2000x1000\", gravity = \"southeast\"),\n  image_composite(matrix_bg, dino_green2, gravity = \"SouthEast\"),\n  image_composite(matrix_bg, dino_green2, operator = 'copyopacity', \n                               gravity = \"SouthEast\"),\n  image_extent(dino_matrix, \"2000x1000\", gravity = \"southeast\"),\n  # dino_matrix2,\n  image_composite(matrix_bg, dino_matrix, gravity = \"SouthEast\"),\n  matrix_bg2,\n  image_composite(matrix_bg2, dino_matrix2, gravity = \"SouthEast\"),\n  image_extent(dino_glow_tmp1, \"2000x1000\", gravity = \"southeast\"),\n  image_extent(dino_glow_tmp2, \"2000x1000\", gravity = \"southeast\"),\n  image_extent(dino_matrix_glow, \"2000x1000\", gravity = \"southeast\"),\n  image_composite(matrix_bg2, dino_matrix_glow, gravity = \"SouthEast\"),\n  annotated_dino,\n  annotated_dino2,\n  final_image,\n  final_image\n)\n\n# Generate the animation\nprocess_gif &lt;- image_animate(image_scale(images_clips, \"x500\"), fps = 2)\n\n# Visualise the animation\nprocess_gif\n\n# Save it as a GIF\nimage_write(process_gif, \"img/dino-matrix-process.gif\")\n\n\n\n\n\n\n\nFigure 27: Animated GIF of the process"
+  },
+  {
+    "objectID": "posts/2023-03-02_matrix-effect/index.html#conclusion",
+    "href": "posts/2023-03-02_matrix-effect/index.html#conclusion",
+    "title": "Matrix effect using Imagemagick",
+    "section": "Conclusion",
+    "text": "Conclusion\nThroughout this post, we’ve learnt that we can use R (and coding) for creative purposes. There are several takeaways from this experience:\n\nManipulating images with R is relatively straightforward from a technical standpoint: it works pretty much in the same way you’d work with regular data (we can even use tidyverse’s pipe operators for that!). Proof is that creating that image would only require 69 lines of very readable code, as demonstrated in Section 3.10\nHowever, that doesn’t mean it’s easy or fast. Admittedly, I spent a lot of time doing this, way more than if I would have used GIMP instead. It’s true that I’m way more experienced using GIMP and it is my first experience using magick in R (not bad for a first timer!), so that shouldn’t be a surprise. Where I pent most time of was planning what I wanted to do, and repeating it by trial and error. Admittedly, this is true from every creative process and not very different from what would have happened with GIMP or Phosothop. However, not having a GUI makes you perform some extra steps. On the bright side, repeating the same tasks while changing some parameters is extremely fast and easy when you are coding.\nThere are some things where I feel I could have done better with GIMP, as I’d have full control over the image (i.e., by working with level curves, or applying some gradients in some areas), not to mention that there are way more effects I can apply.\nProbably the reasons for manipulating code are better summarised in the code used to generate Figure 27 : I really love the idea of having a creative process that can be entirely reproduced in a matter of seconds. And what is more, it is a non-destructive process which can also be easily tweaked (i.e. using a different image for the background, changing the text, changing the green colour…). This is particularly true if we were to repeat the process a number of times with minor tweaks or wanted to make sure of the process’ provenance, something where Image Editors fail at doing, and the only way to overcome that is to keep intermediate steps stored in their native file format. To make things worse those files are usually huge in terms of file size.\nStoring all the steps in code ensures the process’ provenance in a more efficient way: code is stored in text files which are very small in terms of file size and can be version controlled.\n\nSo, all in all, while not that popular, using coding for image manipulation makes a lot of sense in some cases like the ones outlined before, and it’s a practice I am willing to use more frequently."
+  },
+  {
+    "objectID": "posts/2023-03-02_matrix-effect/index.html#resources",
+    "href": "posts/2023-03-02_matrix-effect/index.html#resources",
+    "title": "Matrix effect using Imagemagick",
+    "section": "Resources",
+    "text": "Resources\n\nhttps://ropensci.org/blog/2019/09/27/ropensci-docs/"
+  },
+  {
+    "objectID": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools.html#research-tools",
+    "href": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools.html#research-tools",
+    "title": "Research Tools for the Fediverse",
+    "section": "Research tools",
+    "text": "Research tools\nHow big is the Fediverse?\nWho belongs to the Fediverse?\nHow’s the Fediverse look like?\nWhat’s said on the fediverse? …"
+  },
+  {
+    "objectID": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools.html#example-dataset",
+    "href": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools.html#example-dataset",
+    "title": "Research Tools for the Fediverse",
+    "section": "Example dataset",
+    "text": "Example dataset\nThis is how data retreived from the API works\n\n\n [1] \"id\"                 \"name\"               \"updated_at\"        \n [4] \"checked_at\"         \"uptime\"             \"up\"                \n [7] \"dead\"               \"version\"            \"ipv6\"              \n[10] \"https_score\"        \"https_rank\"         \"obs_score\"         \n[13] \"obs_rank\"           \"users\"              \"statuses\"          \n[16] \"connections\"        \"open_registrations\" \"thumbnail\"         \n[19] \"thumbnail_proxy\"    \"active_users\"       \"email\"             \n[22] \"admin\"              \"added_at\"          \n\n\nAnd this is how the data looks like:"
+  },
+  {
+    "objectID": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools.html#api",
+    "href": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools.html#api",
+    "title": "Research Tools for the Fediverse",
+    "section": "API",
+    "text": "API\n\n\nApplication programming interface (API): is a software interface for two or more computer programs (software) to communicate with each other.\nContrary to other APIs from other social media platforms1 (Twitter, Reddit…), it is possible to:\n\nGET information (retreive)\nPOST information (i.e. statuses)\n\n\n\n\nWhen their APIs used to be free and working!"
+  },
+  {
+    "objectID": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools.html#dashboard",
+    "href": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools.html#dashboard",
+    "title": "Research Tools for the Fediverse",
+    "section": "Dashboard",
+    "text": "Dashboard"
+  },
+  {
+    "objectID": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools.html#research-tools-1",
+    "href": "slides/2023-06-23_mastodon-research-symposium/fediverse-tools.html#research-tools-1",
+    "title": "Research Tools for the Fediverse",
+    "section": "Research Tool(s)",
+    "text": "Research Tool(s)\n\nIain Emsley has been developing a proof\nStatus:"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#the-usual-approach",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#the-usual-approach",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "The usual approach",
+    "text": "The usual approach\n\n\n\nTools: Tableau, Power BI, Javascript libraries, Observable, Python, R…\nChart types: sunburst, sankey, spyder, violin, lollypop…\nRecipes / Tricks: to do specific tasks: sorting, adding interactivity, compositing images…\n\n\n\n\n\nRadial histogram. Source: https://www.datylon.com/blog/types-of-charts-graphs-examples-data-visualization#radial-histogram"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Yes\nThey all are important stuff:\n\nTools define what we can and can’t do, and how we do it (consider affordances, workflows, price, features…)\nChoosing the right Chart types is not trivial, and play a key role in succeeding or failing at what we want to do with data vis.\nRecipes / Tricks are ideal to quickly learn specific, frequent tasks.\n\n\n\n…But\n\nThey are usually subject to trends or commercial interests (Newer != better)\n\nNew chart types and software are constantly created (also, see Wickham (2010))\n\nToo specific, difficult to generalise from or start from\nData visualisations are way more than a series of technical choices.\n\n\n\n\nFlorence Nightingale created the famous (and still trendy!) Coxcomb diagram in 1858!"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-1",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-1",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "What are data visualisations?\n\n\nLet’s see some examples. Are these data visualisations?"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-2",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-2",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Scatterplots are a very popular and effective visualisation (even as basic as this one!) to detect correlations."
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-4",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-4",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "This is a barplot, with an interesting addition: width is mapped to a numeric value. There are"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-5",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-5",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Interesting use of legends. Source: unknown, seen in social media."
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-6",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-6",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Imago Mundi Babylonian map, the oldest known world map, 6th century BC Babylonia. Now in the British Museum."
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-7",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-7",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Source: https://errantscience.com"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-8",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-8",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Source: Abela (2006)"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-9",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-9",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "An infographic by Guerrilla Girls (1989), as seen in d’Ignazio and Klein (2023)"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#confusing",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#confusing",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "Confusing?",
+    "text": "Confusing?\n\n\n\n\n\nSource: How I Met Your Mother (2005-2014)\n\n\n\n\nLet’s see what we’ve learnt:\n\n\n\nWe may have an understanding of what Data Visualisations are, but defining them is not always easy.\nWhat defines a data visualisation are not types (scatterplots, pie, bars…)\n\nActually, we’ve seen visualisations that do not fit in a particular type of chart (see Grammar of Graphics (Wickham 2010) )\n\n…nor the tools used to generate them (e.g. Babylon map)\n…nor their visual qualities or complexity (e.g. scatterplot)\n… or their accuracy, even!\nThey all have something in common… data!\n\nMapping data to specific features (colours, shapes, position…)"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-11",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-11",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Good data vis != good data\n\nWe can create great data visualisations with totally wrong data!. Source: Tyler Vigen’s Spurious Correlations"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#def-munzner",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#def-munzner",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Computer-based visualization systems provide visual representations of datasets designed to help people carry out tasks more effectively. (Munzner 2015, 1)"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#def-mcinerny",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#def-mcinerny",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Visualizations are often described by the constraints from which they were designed:\n\nthe resources needed (data, media…)\nthe task to be enabled (to locate, compare, reflect)\nthe context of use (e.g. users, situation, device).\n\n(McInerny 2018)"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-12",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-12",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Data visualisations about Climate change, by Mark Poynting, Erwan Rivault, Becky Dale. Source: BBC"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-13",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-13",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Histogram of new Mastodon accounts between April 2022 and February 2023. Source: Cámara-Menoyo and Tkacz (2023)."
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-14",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-14",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Greenhouse emissions. Source: UN climate report\n\n\n\n\n\n\nSource: The Economist\n\n\n\nBelieve it or not, these two charts are showing the same data, but different design decisions. Can you spot the differences?"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-15",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-15",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Hans Rosling’s famous presentation skills include the use of good data visualisations, animations, pauses, facts… to effectively communicate about data."
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-16",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-16",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "This interactive dashboard encourages users to focus on one area – a country, region, or income level – and see how it compares to its counterparts across a wide range of metrics. Author: Lindsey Poulter. Source: https://lindseypoulter.com/wdvp/"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-17",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-17",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Sankey Diagram with annotations"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#summary",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#summary",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "Summary",
+    "text": "Summary\n\n\n\nThis is a (long) iterative process of continuous refinement.\nTo make information memorable, we need to consider:\n\nAudience and literacies &lt;&gt; chart types and texts\nAesthetics: how we map data into colours, shapes, sizes, position…\nActivation: titles, labels, fonts… messages… anything we neeed to make sure that the message we want to convey is understood.\n\n\n\n\n\n\nSource: Enrico Bertini"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#example",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#example",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "Example",
+    "text": "Example\nConsider this dataset containing three columns and 1846 rows:\n\n\n\n\n\n\n\ncategory\nx\ny\n\n\n\n\n1\n28.00332\n46.67219\n\n\n12\n78.12852\n23.13923\n\n\n3\n52.52055\n51.50244\n\n\n2\n40.61013\n89.13624\n\n\n8\n75.14152\n73.81967\n\n\n13\n67.94870\n8.71800\n\n\n10\n27.56084\n72.84783\n\n\n5\n45.31723\n10.49587\n\n\n11\n39.58257\n17.64845\n\n\n12\n45.22574\n30.55523\n\n\n8\n73.00149\n24.07381\n\n\n8\n68.85102\n39.57343\n\n\n6\n44.67676\n80.23829\n\n\n1\n78.07942\n93.13332\n\n\n7\n59.20348\n41.27068\n\n\n\n\n\nFigure 1: Table showing random 15 rows of our dataset to have a sense of our data."
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-18",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-18",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "We see we have a column called category, so we can get a summary statistics of the x and y for each category:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncategory\nmean_x\nsd_x\nmin_x\nmax_x\nmean_y\nsd_y\nmin_y\nmax_y\n\n\n\n\n1\n54.26610\n16.76983\n15.56075\n91.63996\n47.83472\n26.93974\n0.0151193\n97.47577\n\n\n2\n54.26692\n16.77000\n27.43963\n77.91587\n47.83160\n26.93790\n0.2170063\n99.28376\n\n\n3\n54.26030\n16.76774\n25.44353\n77.95444\n47.83983\n26.93019\n15.7718920\n94.24933\n\n\n4\n54.26993\n16.76996\n30.44965\n89.50485\n47.83699\n26.93768\n2.7347602\n99.69468\n\n\n5\n54.26144\n16.76590\n22.00371\n98.28812\n47.83025\n26.93988\n10.4639152\n90.45894\n\n\n6\n54.26881\n16.76670\n17.89350\n96.08052\n47.83545\n26.94000\n14.9139625\n87.15221\n\n\n7\n54.26785\n16.76676\n18.10947\n95.59342\n47.83590\n26.93610\n0.3038724\n99.64418\n\n\n8\n54.26588\n16.76885\n20.20978\n95.26053\n47.83150\n26.93861\n5.6457775\n99.57959\n\n\n9\n54.26732\n16.76001\n21.86358\n85.66476\n47.83772\n26.93004\n16.3265464\n85.57813\n\n\n10\n54.26873\n16.76924\n19.28820\n91.73554\n47.83082\n26.93573\n9.6915471\n85.87623\n\n\n11\n54.26734\n16.76896\n27.02460\n86.43590\n47.83955\n26.93027\n14.3655905\n92.21499\n\n\n12\n54.26015\n16.76996\n31.10687\n85.44619\n47.83972\n26.93000\n4.5776614\n97.83761\n\n\n13\n54.26327\n16.76514\n22.30770\n98.20510\n47.83225\n26.93540\n2.9487000\n99.48720\n\n\n\n\n\nIt is difficult to see any pattern (groups have almost identical means and standard deviations). Could data visualisations be more useful?"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-19",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-19",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "We can create a scatterplot and assign a colour per each category:\n\nggplot(datasaurus, aes(x = x, y = y, color = category)) +\n  geom_point()\n\n\nStill not very useful unless you have extraordinary sight for pattern recognition. Let’s try something different: let’s create small multiples per category (i.e., an array of independent plots for each category)"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-20",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-20",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "ggplot(datasaurus, aes(x = x, y = y, color = category)) +\n  geom_point() +\n  facet_wrap(~category)\n\n\nThis famous dataset is called datasaurus dozen and was constructed in 2016 by Alberto Cairo for illustrative purposes (see Matejka and Fitzmaurice (2017))"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#correlations",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#correlations",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "Correlations",
+    "text": "Correlations\n\nPairwise correlations between 4 variables. Source: Turkay, Cámara, and Tripp (2023), chap 15"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#clustering-dimension-reduction",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#clustering-dimension-reduction",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "Clustering / dimension reduction",
+    "text": "Clustering / dimension reduction\n\nInteractive cluster analysis using Orange. Source: https://orangedatamining.com/widget-catalog/bioinformatics/cluster_analysis/"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#summary-1",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#summary-1",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "Summary",
+    "text": "Summary\nHere the importance lies more on Speed than aesthetics:\n\nThey are part of a process: they need to be easy to generate and adapt\n\nUsually hand-in-hand with data manipulation\nIntegrated in the research workflow\nImportance of programming languages (R, Python) or Visual Programming Languages (Orange)\n\nThey need to be understandable by the researcher/research team/reviewers\n\nlabels, titles… are less important here\nacademic audience only -&gt; scientific types (e.g., boxplots…) are welcome"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-22",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-22",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Joy Division’s iconic cov4er for their debut album (1979), created by designer Peter Saville. showing a comparison of signals from a pulsar. +info: https://www.fastcompany.com/1671015/the-data-viz-story-behind-joy-divisions-legendary-album-cover"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-24",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-24",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "aRtsy - R package that implements algorithms for making generative art in a straightforward and standardized manner using ‘ggplot2’."
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#summary-2",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#summary-2",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "Summary",
+    "text": "Summary\n\nData visualisations have so much in common with design1 that they can become design objects by themselves!\n\nData may be informing/generating the design, but those patterns may not be explicit nor evident\n\n\nDesign choices, design principles, design patterns… see communicating section"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#motivation",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#motivation",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "Motivation",
+    "text": "Motivation\nWe wanted to understand how these decisions around mapping were impacting under-represented communities.\nWe wanted to study a particular type of digital good: OpenStreetMap, to understand how neutrality is used to favour or hamper equity.\n\nKatherine d’Ignazio and Lauren Klein’s (2016, 2023) Data feminism design principles\nKowing about all of this, and inspired by the work of feminist geographers and d’Ignazio and Lauren data feminism principles, we wanted to understand whether these decisions decisions had a positive or negative impact in under-represented communities."
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#openstreetmap-osm",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#openstreetmap-osm",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "OpenStreetMap (OSM)",
+    "text": "OpenStreetMap (OSM)\nOSM is the largest and most exhaustive collaborative map of the world.\n\n\n\n\n\nOSM is a map\n\n\n\n\n\n\nOSM is a database\n\n\n\n\nOSM is also a community of 10,000,000 users worldwide! (mostly volunteers, but not always)\n\n\nWe have already mentioned OSM as the wikipedia of the maps\nWe know already that OSM is a collaborative map, but it is also a database, and because all their items are geo-located, we call it a “geospatial” database."
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-25",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-25",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "OSM’s data, contributed by 10,000,000 volunteers,\ncomplements official data sources, and\npopulates thousands of tools and services.\n\nMajor Sites: Amazon, Apple, Baidu Maps, Facebook, Microsoft, Wikipedia and Wikimedia\nTransport: Air France, Alaska Airlines, Deutsche Bahn, Grab, SNCF (French rail agency), Uber, Geodata Software and Services: CARTO, Digital Globe, ESRI, Garmin, Mapbox, Telenav\nGovernment: Agence Française de Développement, Government of Brazil, Government of Italy: President’s Office, Police Scotland, US National Park Service, US State Department, USAID, Peace Corps….\n\nOSM is huge and is everywhere!"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-26",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-26",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Like Wikipedia, OSM is based\non principles of openness and neutrality\n\n“OpenStreetMap maps world as it exists, and includes mapping borders and countries according to actual current situation and not a preferred or ideal situation” (OSM Wiki)"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#what",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#what",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "What?",
+    "text": "What?\n\n\nIs OSM as neutral as it claims to be?\nHow is the notion of neutrality being implemented?\nHow is ‘neutrality’ affecting other, underrepresented demographics?"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#how",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#how",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "How?",
+    "text": "How?\n\nParticipatory research: teaming with GeoChicas to codesign data visualisations\n\n\n\n\n\nGeoChicas is a collective of feminist women linked to OpenStreetMap, originally Spanish-speaking, who work for women’s empowerment and the reduction of the gender gap in OpenStreetMap communities and in communities associated with the world of free software and open data.\n\nData visualisations as a method to:\n\nthink about data (and representation)\ncommunicate and surface controversies"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#understanding-community-composition",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#understanding-community-composition",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "Understanding community composition",
+    "text": "Understanding community composition\n\n\n\n\n\n\nResults are not representative, but significative: show a clear over-representation of certain demographics.\n\nWe’ve created visualisations like this to understand how heterogeneous is or is not"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#how-do-users-contribute-to-osm",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#how-do-users-contribute-to-osm",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "How do users contribute to OSM?",
+    "text": "How do users contribute to OSM?\n\nA dashboard showing how groups contribute to OSMInitial findings show differences in how women contribute to OSM.\n\nWe’ve created a dashboard showing how a group of users contribute to OSM so we can compare how similar or different are the contributions patterns of certain users."
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#inclusive-cartographies",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#inclusive-cartographies",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "Inclusive cartographies",
+    "text": "Inclusive cartographies\n\n\nPlanning a series of workhops aimed at creating maps that address particular needs of underrepresented minorities using data that is available in OpenStreetMap\nPrompts:\n\nAim: what would you want the map to help you with?\nIconography: how are the icons being used?\nInformation being displayed or not: what do you want to be seen? How would you like it to be represented?\n\nAudience:\n\nPeople from non-hegemonic demographics (women, racialized, LGTBQ+) who feel that current maps do not sufficiently address their needs.\nMap enthusiasts, Data visualization enthusiasts and OpenStreetMap users with a keen interest in EDI issues.\nActivists, Researchers, or people sensitive to EDI issues and inequalities (we will particularly welcome people interested in issues related to gender, race or queer topics).\n\nYou are invited!\n\n\n\n\nWEB Dubois map of Philadelphia"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#chart-types",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#chart-types",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "Chart types",
+    "text": "Chart types\n\nSource: Abela (2006)"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-28",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-28",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Source: (Financial Times 2021)"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#tools",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#tools",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "Tools",
+    "text": "Tools\n\n\n\nRawGraphs (&lt;https://www.rawgraphs.io/&gt;)"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-29",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-29",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "DataWrapper (&lt;https://www.datawrapper.de/&gt;)"
+  },
+  {
+    "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-30",
+    "href": "slides/2025-06-24_dgn-doctoral-school/index.html#section-30",
+    "title": "Data visualizations as methods …for discovering dinosaurs!",
+    "section": "",
+    "text": "Plotly’s [Chart Studio](https://chart-studio.plotly.com/)\n\n\nPlotly is an opensource library for interactive visualisations using R and Python. Chart Studio provides an interface to generate visualisations and code for free."
   },
   {
     "objectID": "about.html",
@@ -40,61 +523,5 @@
     "title": "About",
     "section": "Research Profile",
     "text": "Research Profile\nThe combination of such diverse experiences, interests, and skills has articulated my research agenda within the Urban Studies, structured around two pillars: 1) the commodifications between cities, technology, and society, and 2) co-production and collective-action. So far, I have applied a spatial reading with a social perspective to the topic of urban, spatial inequities, and, more specifically, on urban mobility for disabled people and urban commons to find ways in which cities can be more resilient and egalitarian.\nWorking at CIM as Senior Research Software Engineer has given me the opportunity of bridging my passions by applying technology and software through an social perspective and within a collaborative setting to the existing diverse and interdisciplinar research culture and teaching of the Centre.\nAreas of Interest: Urban Studies, Open Science, Commons, Co-production, Data Visualisation, Spatial Justice"
-  },
-  {
-    "objectID": "readme.html",
-    "href": "readme.html",
-    "title": "Data Lab",
-    "section": "",
-    "text": "Carlos’ Data Lab\n\nPublish site\nquarto publish gh-pages"
-  },
-  {
-    "objectID": "posts/2023-03-02_matrix-effect/index.html",
-    "href": "posts/2023-03-02_matrix-effect/index.html",
-    "title": "Matrix effect using Imagemagick",
-    "section": "",
-    "text": "The iconic film series “The Matrix” (and sequels) can be recognized by a number of technical and aesthetical features, but probably, the most unique one is their green cascading code1 that is present throughout the films and also its promotional imagery and fanart.1 Actually, I have to admit that I find this resource as an excellent metaphor about how coding works. In those films, the Matrix (i.e., the software ruling the virtual world where humans are trapped) is often represented as a series of illegible combinations of green symbols (Figure 1 (a)). This is, Matrix’s binary code. In a crucial moment of the first film, the main character has a revelation-like moment where he can suddenly understand (de-compile) the code and he can not only “see” what the code does (Figure 1 (b)), but also become extremely powerful: by manipulating the rules (compiling) he can do things no other human can.\nIt is no wonder, then, that the Internet is flooded by a number of tutorials or even web tools aimed at reproducing those aesthetics. However, all of them require Image Editing software such as Photoshop, like this excellent tutorial from Abbey Esparza which was an inspiration for me.\nIn this case, however, I will not be using any editing software. Instead, I will be solely using code to produce a Matrix-like image like the one below (Figure 2), and some bonus output, too. Specifically, I’m going to use R and {magick} (Ooms 2023), which is an R interface for Imagemagik developed by the rOpensCi community."
-  },
-  {
-    "objectID": "posts/2023-03-02_matrix-effect/index.html#why-would-we-want-to-do-this-using-r",
-    "href": "posts/2023-03-02_matrix-effect/index.html#why-would-we-want-to-do-this-using-r",
-    "title": "Matrix effect using Imagemagick",
-    "section": "Why would we want to do this using R?",
-    "text": "Why would we want to do this using R?\nBefore starting with the tutorial, though, I need to be crystal clear. I do not think that R and any of their image-manipulation packages or, more generally, a programming language, can fully replace an image editing software such as Photoshop or GIMP2. After all, they are made for different purposes and with different audiences in mind.2 GIMP is an excellent Free/Libre OpenSource software for image manipulation, very similar (feature-wise) to Photoshop. You can visit the official website https://gimp.org\n\nHowever, that doesn’t mean that using R for handling images doesn’t make sense at all. On the contrary! There are a number of cases where manipulating images from code makes a lot of sense:\n\nBatch manipulation\nImage transformation based on some kind of data (either metadata or linked data)\nIncluding images as part of our data visualisation workflow/outputs\n…\n\nTherefore, this tutorial is a proof of concept and a demonstration about how can R be used for creative tasks and manipulation. It is also an exploration of the limits3.3 Given my background as an architect, I’ve used Photoshop and GIMP extensively in the past, with a great deal of success. However, as someone who is interested in coding, I could see how destructive and non-reproducible the workflows can be. So, this is also a selfish exercise where I wanted to see how far I could go using R in a creative context and understanding their limits."
-  },
-  {
-    "objectID": "posts/2023-03-02_matrix-effect/index.html#why-this-image",
-    "href": "posts/2023-03-02_matrix-effect/index.html#why-this-image",
-    "title": "Matrix effect using Imagemagick",
-    "section": "Why this image?",
-    "text": "Why this image?\nWhen thinking about the first image for my pixelfed account on data visualisation, it was clear to me that I had to start with a mention to the work of Justin Matejka and George Fitzmaurice with their Datasaurus Dozen (Matejka and Fitzmaurice 2017) to demonstrate the importance of Data Visualisation to detect patterns in data that summary statistics cannot reveal. But because I was also aware that this is a well-known topic within the field, which has received quite a lot of attention, I wanted to find a different image to those illustrating the blog posts accompanying an explanation.\n\n\n\nFigure 3: Graphical explanation of the Datasaurus Dozen by their authors (Matejka & Fitzmaurice)\n\n\nSo when reflecting on how to represent a dinosaur hidden in data, or images appearing out of a messy dataset, I suddenly remembered the Matrix scene where Neo learns how the Matrix works and how, immediately, what used to be inscrutable code turns into recognizable images.\nI was immediately seduced by the idea of creating a Dinosaur (ideally similar to that in the datasaurus) emerging from what could be a Matrix-like dataset, and using data visualisation tools for that seemed the most logic (and most meta) thing to do. The text describing that (with a pun) just emphasizes that idea."
-  },
-  {
-    "objectID": "posts/2023-03-02_matrix-effect/index.html#step-by-step",
-    "href": "posts/2023-03-02_matrix-effect/index.html#step-by-step",
-    "title": "Matrix effect using Imagemagick",
-    "section": "Step by step",
-    "text": "Step by step\nI started the process with the following outline in mind:\n\nwe need to combine a background image and a dinosaur (ideally with little or no colors)\nwe need to add some effects to the dinosaur\nwe need to add some text to it\n\nAs you will see, it turned out to be more complex (I needed to create more intermediate steps), but the essence is the same. The GIF4 below is probably the best description of what we are going to do.4 This GIF has also been generated with R, refer to Section 3.11 for details.\n\n\n\nFigure 4: Graphic overview of what we will be doing in this tutorial.\n\n\n\nLoading dependencies\nin this case, we will only be using a single library: {magick}, developed by Jeroen Ooms. According to its website, [Magick provides]:\n\nBindings to ImageMagick: the most comprehensive open-source image processing library available. Supports many common formats (png, jpeg, tiff, pdf, etc) and manipulations (rotate, scale, crop, trim, flip, blur, etc). All operations are vectorized via the Magick++ STL meaning they operate either on a single frame or a series of frames for working with layers, collages, or animation. In RStudio images are automatically previewed when printed to the console, resulting in an interactive editing environment.\n\nSo the only thing we need to do is installing the package normally and then adding a call to library() at the beginning of our document:\n\nlibrary(magick)\n\nLinking to ImageMagick 6.9.12.3\nEnabled features: cairo, fontconfig, freetype, heic, lcms, pango, raw, rsvg, webp\nDisabled features: fftw, ghostscript, x11\n\n# Also save some variables.\ncol_matrix <- \"#00dc00\"\n\n\n\n\n\n\n\nImportant\n\n\n\n\n\nNote that because magick is just an interface, we need to have ImageMagick library installed in our system if it’s not already installed (i.e., in Linux Machines). magick’s Readme file covers that https://docs.ropensci.org/magick/articles/intro.html#installing-magick\n\n\n\n\n\nLoad images\nOnly two images are needed for this tutorial: a background image and a dinousaur with a transparent background5. I downloaded the T-Rex image from Unsplash (thanks to the author, Amy-Leigh Barnard, for releasing it under the Unsplash License), and I fond the matrix-like background using DuckDuckGo’s search for Images under Creative Commons, which pointed me towards Peter DeHaas’ website.5 Actually, the dinousar image is the only image I failed to generate using R. I used GIMP to create an alpha channel and remove the background from the original Photo by Amy-Leigh Barnard on Unsplash:\n\nYou can read a tutorial on how to do that using GIMP here: https://www.guidingtech.com/remove-background-gimp-layer-mask/\nSo, once we get the images stored in a folder within our project, we need to load them to R’s environment:\n\n# Load images\ndino <- image_read(\"img/amy-leigh-barnard-SByb8Ch9XcQ-unsplash.png\") \nmatrix_bg <- image_read(\"img/matrix01.webp\") \n\n# Put them together in a vector\nimages_clips <- c(dino, matrix_bg)\n\n# Display the images side by side\nimage_append(image_scale(images_clips, \"x200\"))\n\n\n\n# Display images' properties\nprint(images_clips)\n\n  format width height colorspace matte filesize density\n1    PNG  4608   3072       sRGB  TRUE  8293810   72x72\n2   WEBP  2000   1000       sRGB FALSE   373842   72x72\n\n\n\n\n\nNote the different output from calling the images directly or using print(): the first one displays the image, whereas the later will show the image’s properties as well as the image. There are two things that it’s worth paying attention to judging from the images’ properties:\n\nThey have different sizes. This would be an issue when combining images, so we need to scale them to similar sizes before doing that.\nDinousaur is stored in a PNG format. These type of formats are usually used because they have an alpha channel (in this case, a transparent background), which is extremely useful for our purposes.\n\n\n\nScaling images\nDue to the dinosaur being considerable larger than the background, we need to resize the image before combining them. There are a number of ways to alter the size of an image (with or without distortions)6, but we will be using image_scale():6 For an explanation of the available options, refer to https://docs.ropensci.org/magick/reference/transform.html\n\n# Remove the extra background.\ndino <- image_trim(dino) \n\n# Scale proportionally to a height of 800px.\ndino <- image_scale(dino, \"x800\")\n\n\n\nCombining images (first attempt)\nBecause the dinosaur doesn’t have any background, we can combine them by overlying it on top of the background using image_composite():\n\nimage_composite(matrix_bg, dino)\n\n\n\n\nFigure 5: First attempt at compositing two images\n\n\n\n\n\n\n\n\n\n\nOrder matters!\n\n\n\n\n\nPay attention to the order of the images, as it does matter! The first one will be placed on top of the second.\n\nimage_composite(dino, matrix_bg) \n\n\n\n\nFigure 6: Resuling image with wrong order: the background is completely covering the dinousaur\n\n\n\n\nActually, this output is very similar to something we will want to achieve at a latter point.\n\n\n\nAs you can see, by default composite image gets the size of the first image and adds a second one aligned from its top left position. Because both images have different sizes, the dinosaur seems to be floating. We can control the alignment using the gravity pattern, which accepts several strings7.7 For the full list of accepted strings refer to this page at ImageMagick’s documentation https://www.imagemagick.org/Magick++/Enumerations.html#GravityType\n\n# We can use gravity to control alignment\nimage_composite(matrix_bg, dino, gravity = \"SouthEast\") \n\n\n\n\nFigure 7: Controlling images alignment with gravity parameter\n\n\n\n\nNow it’s slightly better, but the dinosaur stands out too much, and it is clear that there are two juxtaposed images that have nothing to do one with each other. We will try to address that by:\n\nDessaturating / coloring it\nAdding the code on top of it\n\n\n\nColor dessaturation\nOne of the outstanding features of The Matrix imagery is by the absence of colors except for green and black. This effect has been accentuated over time (see Figure 8 ), and has often implied using dessaturated images (the clearer examples are Figure 8 (c) and Figure 8 (d)). We are going to try to achieve that with our dinosaur.\n\n\n\n\n\n\n\n(a) The Matrix (1999)\n\n\n\n\n\n\n\n(b) The Matrix Reloaded (2003)\n\n\n\n\n\n\n\n(c) The Matrix Revolutions (2003)\n\n\n\n\n\n\n\n(d) 20th Anniversary poster (2019)\n\n\n\n\n\n\n\n(e) The Matrix Ressurrections (2021)\n\n\n\n\nFigure 8: Evolution of The Matrix series’ graphic image through its posters (1999) © Warner Bros. Entertainment\n\n\nThe most immediate way to remove the colours from an image is to convert it to a grayscale image:\n\n# Convert to grayscale\ndino_grey <- image_quantize(dino, colorspace = 'gray')\n\ndino_grey\n\n\n\n\n\n\n\n\n\n\nDessaturation\n\n\n\n\n\nAn alternative that gives more control is to change saturation. Moving the saturation somewhere between 100 (maximum value: all colors) and 1 (minimum value: grayscale) gives more control and interesting results.\n\n# Or better, partially dessaturate the image\ndino_grey2 <- image_modulate(dino, saturation = 20)\ndino_grey2\n\n\n\nimage_modulate(dino, saturation = 20, brightness = 200)\n\n\n\n\nThis result is probably more similar to Figure 8 (d)\n\n\n\n\n# We can use gravity to control alignment\nimage_composite(matrix_bg, dino_grey, gravity = \"SouthEast\") \n\n\n\n\nFigure 9: Composition with greyscale dino\n\n\n\n\nThis is getting better, but probably, it would be even better if the dinosaur was greener (something similar to Figure 8 (c) . One way to do that could be by colorizing the image:\n\n# We can use image colorize with low opacity values\ndino_green <- image_colorize(dino_grey2, opacity = 40, color =  \"#379b47\")\ndino_green\n\n\n\n\nFigure 10: Colorized image, with low opacity\n\n\n\n\nLet’s see how it looks when combined with our background.\n\nimage_composite(matrix_bg, dino_green, gravity = \"SouthEast\") \n\n\n\n\nFigure 11: Composition with coloured dino\n\n\n\n\nRegretfully, this doesn’t look particularly good: the dinosaur’s details seemed veiled (actually, that’s what we did: we covered the dinosaur with a thin, green veil).\nWe are going to use a slightly different approach now. This time we will be combining a greyscale version with a green image, but using multiply as the blend mode. Multiply will keep the same details of the original image, but will result in a darker image (which in this case, is also desired!)8 . Also, because we do not have a green image, we will need to create one from scratch using image_blank():8 For more information about multiply blend mode, refer to this tutorial https://digital-photography-school.com/multiply-blend-mode/ . Also, the wikipedia has information about different blend modes, including, but not limited to, multiply: https://en.wikipedia.org/wiki/Blend_modes\n\n# We need to create an image of the same size with just colour green.\ngreen_img <-  image_blank(2000, 1000, color = col_matrix)\n\n# Combine two images using Multiply blend mode.\ndino_green2 <- image_composite(dino_grey2, green_img, operator = \"Multiply\")\n\ndino_green2\n\n\n\n\nFigure 12: Multiply produces a sharper green dino, but transparency is lost.\n\n\n\n\nAs you can see, this dinosaur is darker and their details (shades) don’t look so washed away as the previous one (Figure 10). Regretfully, the colour is also added to the background, which used to be transparent, so we will need to restore the alpha channel. We will do that by creating yet another composite, but using copyopacity operator this time to copy the alpha channel from the original dinosaur.\n\n# Restoring alpha channel.\ndino_green2 <- image_composite(dino_green2, dino, operator = 'copyopacity')\n\n# Compare results\nimage_append(image_scale(c(dino_green, dino_green2), \"x250\"))\n\n\n\n\nFigure 13: Green dinos’ comparison: colorised (left) and mulitplied (right)\n\n\n\n\nAnd now, we can combine the green dinosaur with the background:\n\nimage_composite(matrix_bg, dino_green2, gravity = \"SouthEast\") \n\n\n\n\nFigure 14: Composition with coloured dino (multiply version)\n\n\n\n\n\n\nAdding code texture to the dinosaur\nBecause we wanted to recreate the effect on Figure 1 (b) that suggests that the dinosaur is also made of code, we will need to over impress the source code over the T-Rex. To do that, we could apply the same technique we used for Figure 13 and merge the background with the dinosaur using the copyopacity operator.\n\ndino_matrix <- image_composite(matrix_bg, dino_green2, operator = 'copyopacity', \n                               gravity = \"SouthEast\")\n\ndino_matrix\n\n\n\n\nFigure 15: Matrix code within the dinosaur silhouette.\n\n\n\n\nWe are almost there! We have the code applied to the dinosaur, but the texture and details have been lost, only its silhouette has been preserved! We will combine two images, but using the dissolve blend mode:\n\ndino_matrix <- image_composite(dino_matrix, dino_green2, compose_args = \"60%\", \n                               operator = \"dissolve\", gravity = \"SouthEast\")\n\ndino_matrix\n\n\n\n\nFigure 16: A green dinosaur with the Matrix code and its texture applied.\n\n\n\n\nThis looks nice9, so now we can combine that with the background:9 Probably, the dinosaur is too green now. If that’s the case, we could try to overlay the code on top of the grey dinosaur or the slightly dessaturated version, instead of the green T-Rex. However, for the sake of better illustrating the next step, I will be using this version.\n\nimage_composite(matrix_bg, dino_matrix, gravity = \"SouthEast\") \n\n\n\n\nFigure 17: Composition with the dino with code. Not nice.\n\n\n\n\nThe resulting image is way less impressive that what he had imagined, right? Why isn’t it looking as good as the previous compositions if the dinosaur with the code looked even better than the previous ones? Basically, the problem is that because we have used the same image for the background and as a texture over the dinosaur, the background and foreground are matching and it seems we just added it on top of a green dinosaur, which is not what we wanted to achieve (it seems that there’s a dinosaur behind a curtain of raining letters).\nThere are different ways to overcome that issue:\n\nUse different (but similar) images for the background and the code texture (that would be ideal, but I didn’t have much time to find images, also, it will be good for teaching purposes)\nModify the background so it looks slightly different.\n\n\n\nModifying the background\nIn order to make the background look like a different image than the code from the foreground, we are going to do these two transformations:\n\nDisplace it\nBlur it\n\nBecause this is getting long, I’m becoming lazier, and in this case I will use the pipe operator to chain several transformations and I will also use image_flop() instead of moving the background using some of the image transformations provided by {magick}\n\nmatrix_bg2 <- matrix_bg %>% \n  image_flop() %>% # This creates a vertical mirror, which is a lazy way to move the background\n  image_blur(10, 10) \n\nimage_composite(matrix_bg2, dino_matrix, gravity = \"SouthEast\") \n\n\n\n\nFigure 18: Composition with the dino with code, after altering the background\n\n\n\n\nNow we can see that dinosaur! However, I realised that in some recent posters, the images are not completely green, but have some greyish texture. We could try to do the same, but instead of having an entirely green dinosaur, using one of the grey versions with code overlayed on them.\n\ndino_matrix2 <- image_composite(dino_matrix, dino_grey2, compose_args = \"40%\", \n                                operator = \"dissolve\", gravity = \"SouthEast\")\n\nimage_composite(matrix_bg2, dino_matrix2, gravity = \"SouthEast\") \n\n\n\n\nFigure 19: Same composition, but the dino is not completely green.\n\n\n\n\nWay better now! We can see that the dinosaur now stands out against the background, but we could do better: we could add a light green glow around the dinosaur, just like the original imagery does.\n\n\nGlow effect\nThis is probably one of the trickiest parts of this tutorial. Imagemagik (and therefore, {magick}) allow a limited range of effects (check all of them here), but none of them consists of projecting an inner or outer glow, which is what you’d do in Photoshop or GIMP. For a while I played with the idea of projecting an outer shadow using image_shadow() (but it would only project square shadows) or image_shadow_mask() but only seems to work for vector images.\nSo, instead, we will be achieving that in several steps:\n\nCreate a light green silhouette\nScale it to make it slightly bigger than the original, so it seems like a contour\nBlur the contour image\nAdd it below the dinosaur\n\n\n# Create a glow effect\ndino_glow_tmp1 <- dino_green %>% \n  image_colorize(color = \"#00dc00\", opacity = 100) %>% \n  image_blur(200, sigma = 20)\n\n# We are ready to add the dino on top of it!\ndino_glow_tmp2 <- dino_glow_tmp1 %>% \n  image_composite(dino_grey2, gravity = \"southeast\") # Using grey version to highlight the effect.\n\n# Compare results\nimage_append(image_scale(c(dino_glow_tmp1, dino_glow_tmp2), \"x250\"))\n\n\n\n\nFigure 20: Glowing silouetthe (left) and glowing dino (right). First attempt.\n\n\n\n\nFigure on the left shows a perfectly green T-Rex with blurry contour, so wen we overlay a dinosaur on top of it, it looks like if it was glowing. It looks pretty neat, right? Well… except that there is an issue. Look at the upper border and left side of the image: the glow looks trimmed! Actually, because the glow exceeds the size of the original image, the glow also exceeds the canvas and it is not shown on those areas.\nTo fix this we will need to make the canvas (not the image) a little bit bigger, making room for the glow to grow without being trimmed. We will do that using image_extent(), paying attention to make the canvas grow from the bottom right corner (because that’s the point we are using to align the dino within the background). Once we are done with that, we can then remove any extra white space using image_trim() and proceed to add the dinosaur with the code on top of it.\n\ndino_matrix_glow <- dino_green %>% \n  image_colorize(color = \"#00dc00\", opacity = 100) %>% \n  image_extent(\"1200x900\", gravity = \"southeast\") %>% # Increase the canvas' size.\n  image_blur(200, sigma = 20) %>% \n  image_trim() %>%  # Remove the extra canvas space\n  image_composite(image_trim(dino_matrix2), gravity = \"southeast\")\n\ndino_matrix_glow\n\n\n\n\nFigure 21: Glowing T-Rex, now without trimmed glows.\n\n\n\n\nAnd this is how the the final composition would look like when we add the glowing dinosaur to the background (compare it to Figure 19)\n\nimage_composite(matrix_bg2, dino_matrix_glow, gravity = \"SouthEast\")\n\n\n\n\nFigure 22: Adding the glowing dinosaur to the composition\n\n\n\n\nAnd we are almost done, now! We could add some text on top of the image, and that would be it.\n\n\nAdding text\nAdding text over images is pretty straightforward using image_annotate(), but there are some considerations to be made for this particular case:\n\nWe have a dark image, so we will need to give the text a light color, as opposed to the default black color\nThe image is quite big, so we will have to either scale it down or use big fonts\n\n\nannotated_dino <- image_composite(matrix_bg2, dino_matrix_glow, gravity = \"SouthEast\") %>% \n  image_annotate(\n    text = \"This text is shown in the top left corner\",\n    color = \"white\",\n    size = 30\n  )\n\nannotated_dino\n\n\n\n\nFigure 23: Adding our first text.\n\n\n\n\nAs you can see, the text is positioned on the top left corner of the image, but we can control that with the parameters gravity and location.\n\nannotated_dino2 <- image_composite(matrix_bg2, dino_matrix_glow, gravity = \"SouthEast\") %>% \n  image_annotate(\n    text = \"This text is shown in the top left corner (with padding)\",\n    color = \"white\",\n    size = 30,\n    location = \"+100+100\"\n  ) %>% \n  image_annotate(\n    text = \"This text is shown in the center, slightly rotated\",\n    color = \"white\",\n    size = 30,\n    gravity = \"center\",\n    degrees = 20\n  ) %>% \n  image_annotate(\n    text = \"This text is shown in the bottom right\",\n    color = \"white\",\n    size = 30,\n    gravity = \"southeast\",\n    location = \"+100+100\"\n  )\n\nannotated_dino2\n\n\n\n\nFigure 24: Combining several text strings and controlling their position\n\n\n\n\nThese are the basics, but there are other interesting parameters we can use with image_annotate() to control the font family, text rotation, style, decoration, kerning… but I’m sure you get the idea.\nIn the example below, I’m using two custom font types that are Matrix-theme inspired and are also free to use:\n\nMiltown II by Apostrophic Labs\nWhite rabbit by Matthew Welch\n\n\nfinal_image <- image_composite(matrix_bg2, dino_matrix_glow, gravity = \"SouthEast\")  %>% \n  image_annotate(\n    text = \"Data visualisation use cases:\",\n    font = \"white rabbit\",\n    color = \"white\",\n    strokecolor = \"#A7F4A7\",\n    size = 30,\n    weight = 700,\n    location = \"+90+90\"\n  ) %>% \n  image_annotate(\n    text = \"#1: to find dinosaurs\", \n    font = \"miltown ii\",\n    color = \"white\",\n    strokecolor = \"#A7F4A7\",\n    size = 70, \n    weight = 700,\n    location =\"+90+120\") %>% \n  image_annotate(\n    text = \"Data can contain hidden \\nand suprising patterns \\nthat only visualisations \\ncan reveal\",\n    font = \"white rabbit\",\n    color = \"white\",\n    strokecolor = \"#A7F4A7\",\n    size = 40,\n    location = \"+90+400\"\n  ) %>% \n  image_annotate(\n    text = \"Great examples of this are the Anscombe quartet \\nor the Datasaurus Dozen (Matejka & Fitzmaurice, 2017)\",\n    font = \"white rabbit\",\n    color = \"white\",\n     strokecolor = \"#A7F4A7\",\n    size = 28,\n    gravity = \"southwest\",\n    location = \"+90+90\"\n  ) %>% \n  image_annotate(\n    text = \"Source: datasaurus@pixelfed.social\",\n    color = \"white\",\n    gravity = \"southeast\",\n    location = \"+50+50\",\n    size = 18\n  )\n\nfinal_image\n\n\n\n\nFigure 25: The final image\n\n\n\n\nSo this is it! We made it! Now we only need to save the image and start using it!\n\nimage_write(final_image, \"img/datasaurus_matrix.png\")\n\n\n\nPutting everything together\nWe could try to replicate the same image in a more compressed way:\n\ncol_matrix <- \"#00dc00\"\n\nmatrix_bg <- image_read(\"img/matrix01.webp\") \n\ndino <- image_read(\"img/amy-leigh-barnard-SByb8Ch9XcQ-unsplash.png\") %>% \n  image_trim() %>% \n  image_scale(\"x800\") %>% \n  image_modulate(saturation = 15)\n\ndino_matrix <- image_composite(matrix_bg, dino, operator = 'copyopacity', \n                               gravity = \"SouthEast\") %>% \n  image_composite(dino, compose_args = \"50%\", \n                               operator = \"dissolve\", gravity = \"SouthEast\")\n\ndino_matrix_glow <- dino_matrix %>% \n  image_colorize(color = col_matrix, opacity = 100) %>% \n  image_extent(\"1200x900\", gravity = \"southeast\") %>% # Increase the canvas' size.\n  image_blur(200, sigma = 20) %>% \n  image_trim() %>%  # Remove the extra canvas space\n  image_composite(image_trim(dino_matrix), gravity = \"southeast\")\n\nmatrix_bg2 <- matrix_bg %>% \n  image_flop() %>% \n  image_blur(10, 10) \n\nimage_composite(matrix_bg2, dino_matrix_glow, gravity = \"SouthEast\") %>% \n  image_annotate(\n    text = \"Data visualisation use cases:\",\n    font = \"white rabbit\",\n    color = \"white\",\n    strokecolor = \"#A7F4A7\",\n    size = 30,\n    weight = 700,\n    location = \"+90+90\"\n  ) %>% \n  image_annotate(\n    text = \"#1: to find dinosaurs\", \n    font = \"miltown ii\",\n    color = \"white\",\n    strokecolor = \"#A7F4A7\",\n    size = 70, \n    weight = 700,\n    location =\"+90+120\") %>% \n  image_annotate(\n    text = \"Data can contain hidden \\nand suprising patterns \\nthat only visualisations \\ncan reveal\",\n    font = \"white rabbit\",\n    color = \"white\",\n    strokecolor = \"#A7F4A7\",\n    #strokecolor = \"#379b47\",\n    size = 40,\n    location = \"+90+400\"\n  ) %>% \n  image_annotate(\n    text = \"Great examples of this are the Anscombe quartet \\nor the Datasaurus Dozen (Matejka & Fitzmaurice, 2017)\",\n    font = \"white rabbit\",\n    color = \"white\",\n     strokecolor = \"#A7F4A7\",\n    size = 28,\n    gravity = \"southwest\",\n    location = \"+90+90\"\n  ) %>% \n  image_annotate(\n    text = \"Source: datasaurus@pixelfed.social\",\n    color = \"white\",\n    gravity = \"southeast\",\n    location = \"+50+50\",\n    size = 18\n  ) %>% \n  image_scale(\"1000x\")\n\n\n\n\nFigure 26: The same image, created from scratch in 69 lines of code\n\n\n\n\n\n\n\n\n\n\nSpot the difference?\n\n\n\nDespite I said images Figure 25 and Figure 26 are the same, they are slightly different. Can you spot the difference? Would you be able to make changes in the code to make them look the same?\n\n\n\n\nBonus: Animated GIF\nCreating an animated GIF of the entire process is really straightforward. We just need to add the relevant images to a vector, and then use image_animate() to generate the GIF.\n\n# Add key images to a vector.\nimages_clips <- c(\n  matrix_bg,\n  image_extent(dino, \"2000x1000\", gravity = \"southeast\"),\n  image_composite(matrix_bg, dino, gravity = \"SouthEast\"),\n  image_extent(dino_grey, \"2000x1000\", gravity = \"southeast\"),\n  image_extent(dino_grey2, \"2000x1000\", gravity = \"southeast\"),\n  image_composite(matrix_bg, dino_grey2, gravity = \"SouthEast\"),\n  image_extent(image_colorize(dino_grey2, opacity = 40, color =  \"#379b47\"),\n               \"2000x1000\", gravity = \"southeast\"),\n  image_extent(dino_green2, \"2000x1000\", gravity = \"southeast\"),\n  image_composite(matrix_bg, dino_green2, gravity = \"SouthEast\"),\n  image_composite(matrix_bg, dino_green2, operator = 'copyopacity', \n                               gravity = \"SouthEast\"),\n  image_extent(dino_matrix, \"2000x1000\", gravity = \"southeast\"),\n  # dino_matrix2,\n  image_composite(matrix_bg, dino_matrix, gravity = \"SouthEast\"),\n  matrix_bg2,\n  image_composite(matrix_bg2, dino_matrix2, gravity = \"SouthEast\"),\n  image_extent(dino_glow_tmp1, \"2000x1000\", gravity = \"southeast\"),\n  image_extent(dino_glow_tmp2, \"2000x1000\", gravity = \"southeast\"),\n  image_extent(dino_matrix_glow, \"2000x1000\", gravity = \"southeast\"),\n  image_composite(matrix_bg2, dino_matrix_glow, gravity = \"SouthEast\"),\n  annotated_dino,\n  annotated_dino2,\n  final_image,\n  final_image\n)\n\n# Generate the animation\nprocess_gif <- image_animate(image_scale(images_clips, \"x500\"), fps = 2)\n\n# Visualise the animation\nprocess_gif\n\n# Save it as a GIF\nimage_write(process_gif, \"img/dino-matrix-process.gif\")\n\n\n\n\nFigure 27: Animated GIF of the process"
-  },
-  {
-    "objectID": "posts/2023-03-02_matrix-effect/index.html#conclusion",
-    "href": "posts/2023-03-02_matrix-effect/index.html#conclusion",
-    "title": "Matrix effect using Imagemagick",
-    "section": "Conclusion",
-    "text": "Conclusion\nThroughout this post, we’ve learnt that we can use R (and coding) for creative purposes. There are several takeaways from this experience:\n\nManipulating images with R is relatively straightforward from a technical standpoint: it works pretty much in the same way you’d work with regular data (we can even use tidyverse’s pipe operators for that!). Proof is that creating that image would only require 69 lines of very readable code, as demonstrated in Section 3.10\nHowever, that doesn’t mean it’s easy or fast. Admittedly, I spent a lot of time doing this, way more than if I would have used GIMP instead. It’s true that I’m way more experienced using GIMP and it is my first experience using magick in R (not bad for a first timer!), so that shouldn’t be a surprise. Where I pent most time of was planning what I wanted to do, and repeating it by trial and error. Admittedly, this is true from every creative process and not very different from what would have happened with GIMP or Phosothop. However, not having a GUI makes you perform some extra steps. On the bright side, repeating the same tasks while changing some parameters is extremely fast and easy when you are coding.\nThere are some things where I feel I could have done better with GIMP, as I’d have full control over the image (i.e., by working with level curves, or applying some gradients in some areas), not to mention that there are way more effects I can apply.\nProbably the reasons for manipulating code are better summarised in the code used to generate Figure 27 : I really love the idea of having a creative process that can be entirely reproduced in a matter of seconds. And what is more, it is a non-destructive process which can also be easily tweaked (i.e. using a different image for the background, changing the text, changing the green colour…). This is particularly true if we were to repeat the process a number of times with minor tweaks or wanted to make sure of the process’ provenance, something where Image Editors fail at doing, and the only way to overcome that is to keep intermediate steps stored in their native file format. To make things worse those files are usually huge in terms of file size.\nStoring all the steps in code ensures the process’ provenance in a more efficient way: code is stored in text files which are very small in terms of file size and can be version controlled.\n\nSo, all in all, while not that popular, using coding for image manipulation makes a lot of sense in some cases like the ones outlined before, and it’s a practice I am willing to use more frequently."
-  },
-  {
-    "objectID": "posts/2023-03-02_matrix-effect/index.html#resources",
-    "href": "posts/2023-03-02_matrix-effect/index.html#resources",
-    "title": "Matrix effect using Imagemagick",
-    "section": "Resources",
-    "text": "Resources\n\nhttps://ropensci.org/blog/2019/09/27/ropensci-docs/"
-  },
-  {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To my Data Lab",
-    "section": "",
-    "text": "This is just a placeholder post that I will update at some point to explain what this site is, what motivated to create it and probably other stuff such about how did I create it (spoiler alert: quarto) or who I am.\nI just created this experimental site to experiment with computational notebooks and share code and text with others, but also with myself.\nOften times, I found myself wanting to do something I knew I did in the past, or trying to reproduce some code I’ve seen elsewhere, but I do not know where to find it. This site will address that.\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
   }
 ]
