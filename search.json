@@ -333,7 +333,7 @@
     "href": "slides/2025-06-24_dgn-doctoral-school/index.html#example",
     "title": "Data visualizations as methods …for discovering dinosaurs!",
     "section": "Example",
-    "text": "Example\nConsider this dataset containing three columns and 1846 rows:\n\n\n\n\n\n\n\ncategory\nx\ny\n\n\n\n\n1\n28.00332\n46.67219\n\n\n12\n78.12852\n23.13923\n\n\n3\n52.52055\n51.50244\n\n\n2\n40.61013\n89.13624\n\n\n8\n75.14152\n73.81967\n\n\n13\n67.94870\n8.71800\n\n\n10\n27.56084\n72.84783\n\n\n5\n45.31723\n10.49587\n\n\n11\n39.58257\n17.64845\n\n\n12\n45.22574\n30.55523\n\n\n8\n73.00149\n24.07381\n\n\n8\n68.85102\n39.57343\n\n\n6\n44.67676\n80.23829\n\n\n1\n78.07942\n93.13332\n\n\n7\n59.20348\n41.27068\n\n\n\n\n\nFigure 1: Table showing random 15 rows of our dataset to have a sense of our data."
+    "text": "Example\nConsider this dataset containing three columns and 1846 rows:\n\n\n\n\n\n\n\ncategory\nx\ny\n\n\n\n\n7\n24.99748\n75.441562\n\n\n9\n56.92584\n79.206319\n\n\n8\n55.90592\n54.252673\n\n\n10\n36.89433\n47.706556\n\n\n8\n20.20978\n67.516642\n\n\n4\n69.51934\n47.384534\n\n\n7\n39.79590\n28.443219\n\n\n1\n43.54278\n62.460311\n\n\n9\n70.98194\n21.145888\n\n\n9\n68.74563\n75.790055\n\n\n7\n62.51177\n7.491232\n\n\n4\n50.42091\n43.347957\n\n\n10\n65.04433\n11.000841\n\n\n9\n58.98825\n78.917259\n\n\n5\n51.68030\n89.997028\n\n\n\n\n\nFigure 1: Table showing random 15 rows of our dataset to have a sense of our data."
   },
   {
     "objectID": "slides/2025-06-24_dgn-doctoral-school/index.html#section-18",
