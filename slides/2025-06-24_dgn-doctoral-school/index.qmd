@@ -1,13 +1,18 @@
 ---
 title: "Data visualizations as methods ...for discovering dinosaurs!"
-subtitle: "Digital Good Network - Summer School"
+subtitle: "Digital Good Network Summer School <br/> 24-06-2025, Sheffield"
 author: "Carlos Cámara-Menoyo"
 institute: Centre for Interdisciplinary Methodologies (University of Warwick)
 
 title-slide-attributes:
   data-background-color: "#BBDF46"
-  # data-background-image: "https://datalab.carloscamara.es/posts/2023-03-02_matrix-effect/img/datasaurus_matrix.png"
-  data-background-opacity: "0.30"
+  data-background-image: "assets/datasaurus_matrix_clean.png"
+  data-background-opacity: "0.40"
+  data-notes: >
+    Hello, my name is Carlos Cámara and I am a Senior Research Software Engineer at CIM.
+    
+    With this cryptic title I intend to get you started in something I am passionate for: data visualisations. And also, dinosaurs.
+
 format: 
   revealjs:
     #theme: serif
@@ -21,6 +26,7 @@ bibliography: references.bib
 
 ```{r}
 library(dplyr)
+library(forcats)
 library(ggplot2)
 library(knitr)
 
@@ -42,7 +48,7 @@ datasaurus <- read.csv("data/datasaurus.csv")
 
 -   This is not a course on how to do (good) data visualisations (there are entire degrees for that!)
 
--   Impossible to provide a training on data vis in 1h.
+-   Impossible to provide a training on data vis in 2h.
 
     -   Plenty of training and videos that promise tools or tricks about data vis
 :::
@@ -51,74 +57,69 @@ datasaurus <- read.csv("data/datasaurus.csv")
 
 ![](assets/data-visualization-training-Google-Search.png)
 
-## The usual approach
-
-:::::: columns
-::: {.column width="33%"}
-### Tools
-
--   Tableau
--   
--   DS libraries
--   Observable
--   R
--   Python
-:::
-
-::: {.column width="33%"}
-### Chart types
-
-\![\]
-:::
-
-::: {.column width="33%"}
-### Recipes / Tricks
-
-![Source](assets/Chart-Infographic.jpg)
-:::
-::::::
-
-## The usual approach
-
--   Tools:
-
--   Recipes / Tricks
-
--   Chart types
-
-## About types
+## The usual approach {auto-animate="true"}
 
 ::::: columns
 ::: {.column width="50%"}
-### Yes
+-   **Tools:** Tableau, Power BI, Javascript libraries, Observable, Python, R...
 
-About Types are impo
+-   **Chart types**: sunburst, sankey, spyder, violin, lollypop...
+
+-   **Recipes / Tricks:** to do specific tasks: sorting, adding interactivity, compositing images...
 :::
 
 ::: {.column width="50%"}
-### ...but
-
--   Trends
-
--   New types appear from time to time
-
-![Replace: Forence's nightingale's coxcomb](assets/Screenshot%202023-04-05%20at%2010-03-45%20Five%20charts%20that%20changed%20the%20world%20-%20BBC%20Ideas.png)
+![Radial histogram. Source: https://www.datylon.com/blog/types-of-charts-graphs-examples-data-visualization#radial-histogram](assets/datylon-blog-60-types-of-charts-radial-histogram-example.webp)
 :::
 :::::
 
+##  {.smaller data-menu-title="Yes... but"}
+
+:::::: columns
+::: {.column width="50%"}
+### Yes
+
+They all are important stuff:
+
+-   **Tools** define what we can and can't do, and how we do it (consider affordances, workflows, price, features...)
+
+-   Choosing the right **Chart types** is not trivial, and play a key role in succeeding or failing at what we want to do with data vis.
+
+-   **Recipes / Tricks** are ideal to quickly learn specific, frequent tasks.
+:::
+
+:::: {.column width="50%"}
+::: {.fragment fragment-index="1"}
+### ...But
+
+-   They are usually subject to trends or commercial interests (Newer != better)
+
+    -   New chart types and software are constantly created (also, see @wickham2010)
+
+-   Too specific, difficult to generalise from or start from
+
+-   Data visualisations are way [more than a series of technical choices]{.highlight-text}.
+
+![Florence Nightingale created the famous (and still trendy!) Coxcomb diagram in 1858!](https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Nightingale-mortality.jpg/1024px-Nightingale-mortality.jpg)
+:::
+::::
+::::::
+
 # Aims {background-color="rgba(81,215,193,0.8)"}
 
-Hopefully, I will deconstruct the way they understand data vis, and leave them at the start point, but with a refreshed undersanding of what they are, and wehere to get started.
+-   Critically understand data visualisations
 
--   Critically understand how can we use data visualisations in research
+    - how can we use them in research
 
--   No solutions
+- Provide criteria to get started
 
--   More questions than answers
 
--   But..
+::: fragment
+Do not expect recipes, and expect to leave with more questions than when you started.
 
-    -   You'll leave with key concepts to critically understand data visualisations and to get started in this exciting journey, and tools
+...but do expect to learn and enjoy this introductory session.
+:::
+
 
 # Question time! {background-image="assets/question-time.jpg" background-color="#000" background-opacity="50%"}
 
@@ -308,7 +309,6 @@ We can create great data visualisations with totally wrong data!. Source: Tyler 
 
 > [Computer-based]{.highlight-text} visualization systems provide [visual representations]{.highlight-text} of datasets designed to help people carry out [tasks]{.highlight-text} [more effectively]{.highlight-text}. [@munzner2015, p. 1]
 
-
 ##  {#def-mcinerny .center data-menu-title="Greg McInerny"}
 
 > ::: {style=".r-fit-text"}
@@ -403,9 +403,9 @@ Hans Rosling's famous presentation skills include the use of good data visualisa
 
 ::::: columns
 ::: {.column width="40%"}
-This comes at early stages of the research process.
+This comes at [early stages]{.highlight-text} of the research process.
 
-Here, we want data visualisations to be quick and provide **insights** **to inform** our research.
+Here, we want data visualisations to be [quick]{.highlight-text} and provide [**insights** **to inform** our research]{.highlight-text} .
 
 We may want to interrogate our data to:
 
@@ -435,10 +435,13 @@ Consider this dataset containing three columns and `r nrow(datasaurus)` rows:
 #| fig-cap: Table showing random 15 rows of our dataset to have a sense of our data.
 #| label: fig-datasaurus
 
-
-datasaurus$category <- as.factor(as.integer(as.factor(datasaurus$dataset)))
-
-datasaurus <- as_tibble(datasaurus)
+datasaurus <- datasaurus |> 
+  mutate(
+    category = as.factor(dataset),
+    category = fct_relevel(category,  "away", "wide_lines", "dots", "v_lines", "h_lines", "high_lines", "slant_down", "slant_up", "circle", "bullseye",  "star", "x_shape", "dino"),
+    category = as.factor(as.integer(category))
+  ) |> 
+  as_tibble()
 
 datasaurus |> 
   select(category, x, y) |> 
@@ -480,7 +483,7 @@ ggplot(datasaurus, aes(x = x, y = y, color = category)) +
   geom_point()
 ```
 
-If you have good sight, you may be able to see something, but still difficult. Let's try something different: let's create small multiples per category (i.e., an array of independent plots for each category)
+Still not very useful unless you have extraordinary sight for pattern recognition. Let's try something different: let's create small multiples per category (i.e., an array of independent plots for each category)
 
 ##  {.smaller data-menu-title="Visual summary statistics (cont)"}
 
@@ -492,6 +495,8 @@ ggplot(datasaurus, aes(x = x, y = y, color = category)) +
 ```
 
 This famous dataset is called [`datasaurus dozen`](https://en.wikipedia.org/wiki/Datasaurus_dozen) and was constructed in 2016 by [Alberto Cairo](https://en.wikipedia.org/wiki/Alberto_Cairo) for illustrative purposes (see @matejka2017)
+
+##  {background-image="https://datalab.carloscamara.es/posts/2023-03-02_matrix-effect/img/datasaurus_matrix.png" background-size="contain" background-color="#000" data-menu-title="You fund a dinosaur!"}
 
 ## Correlations
 
@@ -554,13 +559,11 @@ Here the importance lies more on Speed than aesthetics:
 ::: {.column width="45%"}
 Halfway between the previous examples. This is a whole research process.
 
-
 Because Data vis need data which can be represented in different ways, and different representations convey different messages, [they are excellent mechanisms to]{.highlight-text}:
 
-- **articulate discussions** about the data that is available or is missing, and how is represented or hidden... and what is it telling
-- **enquiry about data** and surfacing key concepts that may have been hidden otherwise.
-- **empower** communities involved
-
+-   **articulate discussions** about the data that is available or is missing, and how is represented or hidden... and what is it telling
+-   **enquiry about data** and surfacing key concepts that may have been hidden otherwise.
+-   **empower** communities involved
 :::
 
 ::: {.column width="55%"}
@@ -733,7 +736,6 @@ You are invited!
 ::: {.column width="40%"}
 ![WEB Dubois map of Philadelphia](http://berkeleyjournal.org/wp-content/uploads/2016/01/Philadelphia.jpg)
 
-![Kelly 2020](img/iconography.png){width="300"}
 :::
 :::::
 
@@ -755,12 +757,45 @@ You are invited!
 
 [![RawGraphs (\<https://www.rawgraphs.io/\>)](assets/RAWGraphs.png)](https://www.rawgraphs.io/)
 
-## 
+##  {data-menu-title="DataWrapper"}
 
 [![DataWrapper (\<https://www.datawrapper.de/\>)](assets/Datawrapper-Create-charts-maps-and-tables.png)](https://www.datawrapper.de/)
 
+##  {.smaller data-menu-title="Plotly"}
+
+[![Plotly's \[Chart Studio\](https://chart-studio.plotly.com/)](assets/Online-Graph-Maker-Plotly-Chart-Studio.png){height="600"}](https://chart-studio.plotly.com/)
+
+Plotly is an opensource library for interactive visualisations using R and Python. Chart Studio provides an interface to generate visualisations and code for free.
+
 # Conclusions {background-color="rgba(108,183,255,0.4)"}
 
+After deconstructing how we understand data vis, it may seem we are agin at the start point, but we have acquired a refreshed undersanding about:
+
+-   What data visualisations are and how are can be used (in research)
+    -   They can be way more than mere communicative artifacts that come at the end of the process
+-   Some criteria and key concepts to consider when creating good<sup>*</sup> data visualisations
+
+
+Also: 
+
+- You've learnt about useful tools and resources to get started with!
+
+You're now equipped with the basics to get started this amazing path! (if you want to)
+
+::: {.small-text}
+<sup>*</sup> Good as in "successfully achieving their goal", not as in an aesthetical sense.
+:::
+
 # Thanks! {background-color="rgba(68,3,121,0.8)"}
+
+**Carlos Cámara-Menoyo**
+
+*Senior Research Software Engineer*
+
+[carlos.camara\@warwick.ac.uk](mailto:carlos.camara@warwick.ac.uk){.email}
+
+<i class="fa-brands fa-mastodon"></i> [\@ccamara.scholar.social](https://scholar.social/@ccamara)
+
+<i class="fa-brands fa-bluesky"></i> [\@ccamara.scholar.social.ap.brid.gy](https://bsky.app/profile/ccamara.scholar.social.ap.brid.gy)
 
 # References {.scrollable}
