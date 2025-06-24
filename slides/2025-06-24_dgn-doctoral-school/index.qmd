@@ -109,17 +109,15 @@ They all are important stuff:
 
 -   Critically understand data visualisations
 
-    - how can we use them in research
+    -   how can we use them in research
 
-- Provide criteria to get started
-
+-   Provide criteria to get started
 
 ::: fragment
 Do not expect recipes, and expect to leave with more questions than when you started.
 
 ...but do expect to learn and enjoy this introductory session.
 :::
-
 
 # Question time! {background-image="assets/question-time.jpg" background-color="#000" background-opacity="50%"}
 
@@ -142,7 +140,9 @@ Let's see some examples. Are these data visualisations?
 ##  {data-menu-title="Basic Scatterplot"}
 
 ```{r}
-plot(datasaurus$x, datasaurus$y)
+df <- datasaurus
+
+plot(df$x, df$y)
 ```
 
 ::: fragment
@@ -735,7 +735,6 @@ You are invited!
 
 ::: {.column width="40%"}
 ![WEB Dubois map of Philadelphia](http://berkeleyjournal.org/wp-content/uploads/2016/01/Philadelphia.jpg)
-
 :::
 :::::
 
@@ -755,15 +754,15 @@ You are invited!
 
 ## Tools
 
-[![RawGraphs (\<https://www.rawgraphs.io/\>)](assets/RAWGraphs.png)](https://www.rawgraphs.io/)
+[![RawGraphs (<https://www.rawgraphs.io/>)](assets/RAWGraphs.png)](https://www.rawgraphs.io/)
 
 ##  {data-menu-title="DataWrapper"}
 
-[![DataWrapper (\<https://www.datawrapper.de/\>)](assets/Datawrapper-Create-charts-maps-and-tables.png)](https://www.datawrapper.de/)
+[![DataWrapper (<https://www.datawrapper.de/>)](assets/Datawrapper-Create-charts-maps-and-tables.png)](https://www.datawrapper.de/)
 
 ##  {.smaller data-menu-title="Plotly"}
 
-[![Plotly's \[Chart Studio\](https://chart-studio.plotly.com/)](assets/Online-Graph-Maker-Plotly-Chart-Studio.png){height="600"}](https://chart-studio.plotly.com/)
+[![Plotly's [Chart Studio](https://chart-studio.plotly.com/)](assets/Online-Graph-Maker-Plotly-Chart-Studio.png){height="600"}](https://chart-studio.plotly.com/)
 
 Plotly is an opensource library for interactive visualisations using R and Python. Chart Studio provides an interface to generate visualisations and code for free.
 
@@ -773,17 +772,16 @@ After deconstructing how we understand data vis, it may seem we are agin at the 
 
 -   What data visualisations are and how are can be used (in research)
     -   They can be way more than mere communicative artifacts that come at the end of the process
--   Some criteria and key concepts to consider when creating good<sup>*</sup> data visualisations
+-   Some criteria and key concepts to consider when creating good<sup>\*</sup> data visualisations
 
+Also:
 
-Also: 
-
-- You've learnt about useful tools and resources to get started with!
+-   You've learnt about useful tools and resources to get started with!
 
 You're now equipped with the basics to get started this amazing path! (if you want to)
 
-::: {.small-text}
-<sup>*</sup> Good as in "successfully achieving their goal", not as in an aesthetical sense.
+::: small-text
+<sup>\*</sup> Good as in "successfully achieving their goal", not as in an aesthetical sense.
 :::
 
 # Thanks! {background-color="rgba(68,3,121,0.8)"}
@@ -797,5 +795,49 @@ You're now equipped with the basics to get started this amazing path! (if you wa
 <i class="fa-brands fa-mastodon"></i> [\@ccamara.scholar.social](https://scholar.social/@ccamara)
 
 <i class="fa-brands fa-bluesky"></i> [\@ccamara.scholar.social.ap.brid.gy](https://bsky.app/profile/ccamara.scholar.social.ap.brid.gy)
+
+# Task {.smaller}
+
+::::: columns
+::: {.column width="60%"}
+**30': Create a data visualisation for given task**
+
+1.  Choose a dataset
+2.  Think of a task you want to do with it
+    1.  Explore
+    2.  Analyse
+    3.  Communicate
+    4.  ...
+3.  Think of a target audience you want to engage with
+4.  Using a software of your choice, develop a data visualisation aimed at adressing your task (#2) for the desired audience (#3)
+
+**15': Share your experience**
+
+1.  How happy are with the results?
+2.  How easy/difficult was to use the tool?
+3.  Could you do everything you wanted to do with the tool?
+4.  Is there anything you would have done differently?
+:::
+
+::: {.column width="40%"}
+**Data**
+
+-   Our World in Data: <https://ourworldindata.org/data>
+
+-   London Data Store: <https://data.london.gov.uk/dataset/> (you can use this [exploration tool](https://data.london.gov.uk/london-area-profiles/))
+
+-   Your own data!
+
+**Software:**
+
+-   RawGraphs: <https://www.rawgraphs.io/>
+
+-   DataWrapper: <https://www.datawrapper.de/>
+
+-   PLotly 's Chart Studio: <https://chart-studio.plotly.com/>
+
+-   Your preferred software!
+:::
+:::::
 
 # References {.scrollable}
