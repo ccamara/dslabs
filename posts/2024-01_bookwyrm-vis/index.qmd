@@ -2,7 +2,7 @@
 title: "Bookywrm Visualisations"
 description: "A pilot"
 abstract: |
-  This tutorial provides a detailed step-by-step process that demonstrates how to use R and Imagemagik to produce a Matrix-like image as well as highlights some key take away lessons I learnt from this experiencefrom doing that.
+  A proof of concept.
 date: 2024-03-05
 # title-block-banner: true
 author: 
@@ -23,16 +23,105 @@ format:
     toc: true
     #code-line-numbers: true
     reference-location: margin
+    code-fold: true
 editor: visual
 ---
 
 ```{python}
+#| label: setup
 import pandas as pd
 import altair as alt
 
-df = pd.read_csv("data/bookwyrm-export.csv")
+col_bw_green = "#00D1B2"
+```
+
+```{python}
+df = pd.read_csv(
+    "posts/2024-01_bookwyrm-vis/data/bookwyrm-export.csv", 
+    parse_dates=['shelf_date', 'start_date', 'finish_date', 'stopped_date']
+)
+
+df = df.sort_values('shelf_date')
+
+# Filter for rows where shelf is 'read'
+df_read = df[df['shelf'] == 'read'].copy()
 
 df.head()
+```
+
+## Overview
+
+Show lollypop chart showing number of books finished by year, and the size of the dot is the number of pages.
+
+Given a dataframe `df` that contains a column `date` and `pages` , and where every row represents a book, I would like you to write a code using pandas and altair that creates an interactive barplot where the x axis shows the years in `date`column, and y number of books read by year. At the top of each bar, I would also like to see a point whose size is proportional to the sum of pages of all the books in that particular year
+
+```{python}
+# Prepare dataframe
+df_read_year = df_read.copy()
+# Assign books with no pages a value = mean pages.
+df_read_year['pages'] = df_read_year['pages'].fillna(df_read_year['pages'].mean().round())
+
+
+df_read_year = (
+    df_read_year.assign(year=df['finish_date'].dt.year)          # extract year
+      .groupby('year')
+      .agg(
+          books=('pages', 'size'),               # number of rows = books
+          pages_sum=('pages', 'sum')             # total pages per year
+      )
+      .reset_index()
+)
+
+# -------------------------------------------------
+#  Build the Altair chart
+# -------------------------------------------------
+# Base selection for interactivity (hover tooltip)
+hover = alt.selection_point(
+    fields=['year'],
+    nearest=True,
+    on='mouseover',
+    empty='none',
+    clear='mouseout'
+)
+
+# Bar layer: count of books per year
+bars = alt.Chart(df_read_year).mark_bar(size=2, color= col_bw_green).encode(
+    x=alt.X(
+        'year:O',
+        title='Year',
+
+    ),
+    y=alt.Y('books:Q', title='Number of books read'),
+    tooltip=[
+        alt.Tooltip('year:O', title='Year'),
+        alt.Tooltip('books:Q', title='Books read'),
+        alt.Tooltip('pages_sum:Q', title='Pages total')
+    ]
+).add_params(hover)
+
+# Point layer: size reflects total pages
+points = alt.Chart(df_read_year).mark_point(filled=True, color=col_bw_green).encode(
+    x='year:O',
+    y='books:Q',
+    size=alt.Size('pages_sum:Q',
+                  scale=alt.Scale(range=[30, 300]),   # adjust visual range
+                  legend=alt.Legend(title='Total pages')),
+    opacity=alt.condition(hover, alt.value(1), alt.value(0.6)),
+    tooltip=[
+        alt.Tooltip('year:O', title='Year'),
+        alt.Tooltip('pages_sum:Q', title='Pages total')
+    ]
+)
+
+# Combine layers
+chart = (bars + points).properties(
+    width=600,
+    height=400,
+    title='Books read per year (bar) with total pages (point size)'
+).interactive()   # enables pan/zoom
+
+chart
+
 ```
 
 ## Number of pages
@@ -40,6 +129,47 @@ df.head()
 ## Authors
 
 Favourite authors
+
+```{python}
+authors_summary = (
+    df[['author_text', 'pages']]
+    .dropna(subset=['author_text'])
+    .assign(author_text=lambda d: d['author_text'].str.split(','))
+    .explode('author_text')
+    .assign(author_text=lambda d: d['author_text'].str.strip())
+    .loc[lambda d: d['author_text'] != '']
+    .reset_index(drop=True)
+    .groupby(['author_text'], as_index=False)['pages']
+    .agg(pages_total='sum', n='count')
+    .sort_values('pages_total', ascending=False)
+)
+
+
+```
+
+```{python}
+#| label: fig-top-authors-page
+#| fig: Top authors by number of read pages
+top_authors_pages = authors_summary.nlargest(15, "pages_total").reset_index(drop=True)
+
+# build horizontal bar chart (largest at top)
+chart = (
+    alt.Chart(top_authors_pages)
+    .mark_bar(color=col_bw_green)
+    .encode(
+        x=alt.X("pages_total:Q", title="Pages (total)"),
+        y=alt.Y("author_text:N", title="", sort="-x"),
+        tooltip=[
+            alt.Tooltip("author_text:N", title="Author"),
+            alt.Tooltip("pages_total:Q", title="Pages total")
+        ],
+    )
+    .properties(width=700, height=350, title="Top 15 Authors by Pages Read")
+    .configure_title(fontSize=14, anchor="start")
+)
+
+chart
+```
 
 ```{python}
 
@@ -63,13 +193,12 @@ https://query.wikidata.org/
 
 Python modules:
 
-- https://pypi.org/project/Wikidata/
-- https://pypi.org/project/sparqldataframe/
-
+-   https://pypi.org/project/Wikidata/
+-   https://pypi.org/project/sparqldataframe/
 
 From chatgpt: https://w.wiki/93Sf
 
-```sparql
+``` sparql
 SELECT ?human ?humanLabel ?dob ?gender ?wikidataUrl
 WHERE {
   ?human rdfs:label "Haruki Murakami"@en.
@@ -81,17 +210,13 @@ WHERE {
   BIND(wd:Q42 AS ?wikidataUrl)  # Replace Q42 with the actual QID of Haruki Murakami
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
 }
-
-
 ```
-
 
 https://www.markhneedham.com/blog/2020/01/29/newbie-guide-querying-wikidata/
 
-
 Query: https://w.wiki/93RX
 
-```rdf
+``` rdf
 SELECT DISTINCT ?item ?itemLabel ?sex_or_gender ?sex_or_genderLabel ?date_of_birth ?date_of_death ?occupation ?occupationLabel ?sexual_orientation ?sexual_orientationLabel ?personal_pronoun ?statement1Label WHERE {
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   {
@@ -113,8 +238,12 @@ SELECT DISTINCT ?item ?itemLabel ?sex_or_gender ?sex_or_genderLabel ?date_of_bir
 ```
 
 ```{python}
+#| eval: false
+
 # pip install sparqlwrapper
 # https://rdflib.github.io/sparqlwrapper/
+
+
 
 import sys
 from SPARQLWrapper import SPARQLWrapper, JSON
@@ -156,6 +285,8 @@ for result in results["results"]["bindings"]:
 ```
 
 ```{python}
+#| eval: false
+
 from SPARQLWrapper import SPARQLWrapper, JSON
 
 NAME_FRAGMENT = "Andreotti"
@@ -187,8 +318,8 @@ for link in result["results"]["bindings"]:
     print(link["uri"]["value"])
 ```
 
-
 ```{python}
+#| eval: false
 from SPARQLWrapper import SPARQLWrapper, JSON
 
 def get_wikidata_info(selected_author="Haruki Murakami"):
@@ -241,13 +372,10 @@ get_wikidata_info(selected_author)
 
 ```
 
-
 Info:
 
-- https://www.jcchouinard.com/wikidata-api-python/
-- https://pypi.org/project/sparqldataframe/
-- https://itnext.io/extracting-data-from-wikidata-using-sparql-and-python-59e0037996f
-- https://people.wikimedia.org/~bearloga/notes/wdqs-python.html
-Publication Year
-- https://stackoverflow.com/questions/39773812/how-to-query-for-people-using-wikidata-and-sparql
-
+-   https://www.jcchouinard.com/wikidata-api-python/
+-   https://pypi.org/project/sparqldataframe/
+-   https://itnext.io/extracting-data-from-wikidata-using-sparql-and-python-59e0037996f
+-   https://people.wikimedia.org/\~bearloga/notes/wdqs-python.html Publication Year
+-   https://stackoverflow.com/questions/39773812/how-to-query-for-people-using-wikidata-and-sparql
