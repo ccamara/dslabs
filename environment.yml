@@ -4,9 +4,12 @@ channels:
   - defaults
 dependencies:
   - altair
-  - pandas = 2.*
+  - nbclient
+  - nbformat
+  - pandas
   - pip
-  - python = 3.11.5
+  - python
+  - pyyaml
   - pip:
     - sparqlwrapper
  
