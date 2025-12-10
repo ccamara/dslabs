@@ -31,6 +31,10 @@ editor: visual
 #| label: setup
 import pandas as pd
 import altair as alt
+import requests
+import time
+
+from typing import Optional, Dict
 
 col_bw_green = "#00D1B2"
 ```
@@ -139,12 +143,278 @@ authors_summary = (
     .assign(author_text=lambda d: d['author_text'].str.strip())
     .loc[lambda d: d['author_text'] != '']
     .reset_index(drop=True)
-    .groupby(['author_text'], as_index=False)['pages']
-    .agg(pages_total='sum', n='count')
+    .groupby(['author_text'], as_index=False)
+    .agg(pages_total=('pages','sum'), n=('author_text','count'))
     .sort_values('pages_total', ascending=False)
 )
 
+```
 
+
+
+```{python}
+#| label: wikidata-qid
+
+import requests
+import time
+import pandas as pd
+from datetime import datetime
+from typing import Iterable, List, Optional, Dict, Set
+
+WIKIDATA_SEARCH_URL = "https://www.wikidata.org/w/api.php"
+WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
+HEADERS = {"User-Agent": "dslabs-wikidata-query/1.0 (contact: youremail@example.com)"}
+
+PREF_OCC_WRITER = "Q36180"     # writer
+PREF_OCC_NOVELIST = "Q6625963" # novelist
+HUMAN_Q = "Q5"
+
+def wbsearch_candidates(name: str, language: str = "en", limit: int = 5, timeout: int = 30) -> List[str]:
+    """
+    Given a name string, return a list of candidate QIDs from Wikidata search.
+    """
+    if name is None or (isinstance(name, float) and pd.isna(name)) or str(name).strip() == "":
+        return []
+    params = {
+        "action": "wbsearchentities",
+        "format": "json",
+        "language": language,
+        "search": name,
+        "type": "item",
+        "limit": limit
+    }
+    resp = requests.get(WIKIDATA_SEARCH_URL, params=params, headers=HEADERS, timeout=timeout)
+    resp.raise_for_status()
+    data = resp.json()
+    return [item["id"] for item in data.get("search", []) if "id" in item]
+
+def query_human_occupations_for_qids(qids: Iterable[str], timeout: int = 60) -> Dict[str, Set[str]]:
+    """
+    Given an iterable of QIDs (e.g. ['Q123','Q456']), return a mapping
+    qid -> set of occupation QIDs for items that are humans (P31 = Q5).
+
+    Items that are not humans will NOT appear in the mapping.
+    """
+    qid_list = [q for q in qids]
+    if not qid_list:
+        return {}
+    values = " ".join(f"wd:{q}" for q in qid_list)
+    sparql = f"""
+    SELECT ?item ?occ WHERE {{
+      VALUES ?item {{ {values} }}
+      ?item wdt:P31 wd:{HUMAN_Q}.
+      OPTIONAL {{ ?item wdt:P106 ?occ. }}
+    }}
+    """
+    resp = requests.get(WIKIDATA_SPARQL_URL, params={"query": sparql, "format": "json"}, headers=HEADERS, timeout=timeout)
+    resp.raise_for_status()
+    results = resp.json().get("results", {}).get("bindings", [])
+    mapping: Dict[str, Set[str]] = {}
+    for row in results:
+        item_url = row["item"]["value"]
+        qid = item_url.rsplit("/", 1)[-1]
+        occ_val = row.get("occ")
+        occ_qid = None
+        if occ_val:
+            occ_qid = occ_val["value"].rsplit("/", 1)[-1]
+        mapping.setdefault(qid, set())
+        if occ_qid:
+            mapping[qid].add(occ_qid)
+    return mapping
+
+def choose_preferred_qid(candidates: List[str], human_occ_map: Dict[str, Set[str]]) -> Optional[str]:
+    """
+    Given candidate IDs (in search order) and a mapping of human QIDs to their occupation sets,
+    return a single preferred qid or None.
+    Preference order:
+      1) first candidate that is human and has occupation writer (Q36180)
+      2) first candidate that is human and has occupation novelist (Q6625963)
+      3) first candidate that is human (any occupation)
+      4) else None
+    """
+    # 1) writer
+    for q in candidates:
+        occs = human_occ_map.get(q)
+        if occs and PREF_OCC_WRITER in occs:
+            return q
+    # 2) novelist
+    for q in candidates:
+        occs = human_occ_map.get(q)
+        if occs and PREF_OCC_NOVELIST in occs:
+            return q
+    # 3) any human
+    for q in candidates:
+        if q in human_occ_map:
+            return q
+    return None
+
+def resolve_name_to_qid(name: str, pause_seconds: float = 0.5) -> Optional[str]:
+    """
+    Resolve a single name to a preferred QID following the rules described.
+    """
+    candidates = wbsearch_candidates(name)
+    if not candidates:
+        return None
+    # Query occupations for all candidates at once and restrict to humans
+    human_occ_map = query_human_occupations_for_qids(candidates)
+    chosen = choose_preferred_qid(candidates, human_occ_map)
+    time.sleep(pause_seconds)
+    return chosen
+
+def get_authors_qids(names: Iterable[str], pause_seconds: float = 0.5) -> pd.DataFrame:
+    """
+    Resolve an iterable of names to QIDs. Returns DataFrame with columns:
+      - author_text: the original name
+      - qid: chosen QID or None
+    Maintains the order of first appearance of unique names in `names`.
+    """
+    seen = {}
+    records = []
+    for name in pd.Index(list(names)):
+        if pd.isna(name) or str(name).strip() == "":
+            records.append({"author_text": name, "qid": None})
+            continue
+        if name in seen:
+            records.append({"author_text": name, "qid": seen[name]})
+            continue
+        qid = resolve_name_to_qid(name, pause_seconds=pause_seconds)
+        seen[name] = qid
+        records.append({"author_text": name, "qid": qid, "query_date": datetime.today().strftime('%Y-%m-%d')})
+    return pd.DataFrame.from_records(records)
+
+
+# test_names_series = ['Mike Parker', 'J.K. Rowling', 'Mark Fisher', 'Mark Graham', 'Unknown Author', None, '']
+
+# Run the function for authors that we do not know their QIDs yet.
+
+authors_qids_csv = 'posts/2024-01_bookwyrm-vis/data/authors_wikidata_qids.csv'
+
+qid_df=pd.read_csv(authors_qids_csv)
+
+new_authors = list(set(authors_summary['author_text'].to_list()).difference(qid_df['author_text'].to_list()))
+
+qid_df_new = get_authors_qids(new_authors, pause_seconds=0.5)
+
+# Append new authors and QIDs to existing dataframe and save it.
+qid_df = pd.concat([qid_df, qid_df_new]).reset_index(drop=True)
+
+qid_df.to_csv(authors_qids_csv, index=False)
+
+```
+
+```{python}
+#| label: authors_metadata
+
+
+# Retrieve wikidata properties for authors with known QIDs from previous step.
+
+
+
+```
+
+```{python}
+#| label: authors_properties
+WIKIDATA_SEARCH_URL = "https://www.wikidata.org/w/api.php"
+WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
+HEADERS = {"User-Agent": "dslabs-wikidata-query/1.0 (contact: youremail@example.com)"}
+
+def get_wikidata_qid(name: str, language: str = "en", max_retries: int = 2) -> Optional[str]:
+    params = {
+        "action": "wbsearchentities",
+        "format": "json",
+        "language": language,
+        "search": name,
+        "type": "item",
+        "limit": 1
+    }
+    for attempt in range(max_retries + 1):
+        resp = requests.get(WIKIDATA_SEARCH_URL, params=params, headers=HEADERS, timeout=30)
+        if resp.status_code == 200:
+            data = resp.json()
+            if data.get("search"):
+                return data["search"][0].get("id")
+            return None
+        else:
+            time.sleep(1 + attempt)
+    return None
+
+def get_wikidata_props(qid: str) -> Dict[str, Optional[str]]:
+    # SPARQL: optional gender (P21), ethnicity (P172), sexual orientation (P91),
+    # place of birth (P19) -> place wdt:P17 country.
+    q = f"""
+    SELECT ?genderLabel ?countryLabel ?ethnicityLabel ?sexOrientLabel WHERE {{
+      OPTIONAL {{ wd:{qid} wdt:P21 ?gender. }}
+      OPTIONAL {{ wd:{qid} wdt:P19 ?place. ?place wdt:P17 ?country. }}
+      OPTIONAL {{ wd:{qid} wdt:P27 ?countryCitizenship}}
+      OPTIONAL {{ wd:{qid} wdt:P172 ?ethnicity. }}
+      OPTIONAL {{ wd:{qid} wdt:P91 ?sexOrient. }}
+      SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}
+    }}
+    LIMIT 1
+    """
+    resp = requests.get(WIKIDATA_SPARQL_URL, params={"query": q, "format": "json"}, headers=HEADERS, timeout=60)
+    if resp.status_code != 200:
+        return {"gender": None, "country_of_birth": None, "country_of_citizenship": None, "ethnicity": None, "sexual_orientation": None}
+    results = resp.json().get("results", {}).get("bindings", [])
+    if not results:
+        return {"gender": None, "country_of_birth": None, "country_of_citizenship": None, "ethnicity": None, "sexual_orientation": None}
+    row = results[0]
+    def get_label(key):
+        v = row.get(key)
+        return v.get("value") if v else None
+    return {
+        "gender": get_label("genderLabel"),
+        "country_of_birth": get_label("countryLabel"),
+        "country_of_citizenship":  get_label("countryCitizenshipLabel"),
+        "ethnicity": get_label("ethnicityLabel"),
+        "sexual_orientation": get_label("sexOrientLabel")
+    }
+
+def get_author_wikidata_info(names, pause_seconds: float = 0.5):
+    """Query Wikidata for a list/iterable of author names. Returns DataFrame with columns:
+       author_name, qid, gender, country_of_birth, ethnicity, sexual_orientation
+    """
+    records = []
+    seen = {}
+    for name in pd.Index(names).unique():
+        if pd.isna(name) or str(name).strip() == "":
+            records.append({
+                "author_name": name,
+                "qid": None,
+                "gender": None,
+                "country_of_birth": None,
+                "country_of_citizenship": None,
+                "ethnicity": None,
+                "sexual_orientation": None
+            })
+            continue
+        if name in seen:
+            records.append({"author_name": name, **seen[name]})
+            continue
+        # 1) search for qid
+        qid = get_wikidata_qid(name)
+        if qid is None:
+            rec = {"qid": None, "gender": None, "country_of_birth": None, "ethnicity": None, "sexual_orientation": None}
+            seen[name] = rec
+            records.append({"author_name": name, **rec})
+            time.sleep(pause_seconds)
+            continue
+        # 2) fetch properties
+        props = get_wikidata_props(qid)
+        rec = {"qid": qid, **props}
+        seen[name] = rec
+        records.append({"author_name": name, **rec})
+        time.sleep(pause_seconds)
+    return pd.DataFrame.from_records(records)
+
+
+authors_metadata = get_author_wikidata_info(authors_summary['author_text'])
+
+# Merge mapping back into original df (left join)
+authors_summary_metadata = pd.merge(authors_summary, authors_metadata, left_on="author_text", right_on='author_name', how="left").copy()
+
+
+authors_summary_metadata
 ```
 
 ```{python}
