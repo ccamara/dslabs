@@ -10,6 +10,7 @@ dependencies:
   - pip
   - python
   - pyyaml
+  - vega_datasets
   - pip:
     - sparqlwrapper
  
