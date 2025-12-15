@@ -35,219 +35,14 @@ import altair as alt
 import requests
 import time
 
-from typing import Optional, Dict
+from datetime import datetime
+from typing import Iterable, List, Optional, Dict, Set
 
 col_bw_green = "#00D1B2"
 ```
 
 ```{python}
-#| label: books_data
-
-books_df = pd.read_csv(
-    "posts/2024-01_bookwyrm-vis/data/bookwyrm-export.csv", 
-    parse_dates=['shelf_date', 'start_date', 'finish_date', 'stopped_date']
-)
-
-books_df = books_df.sort_values('shelf_date')
-
-# Filter for rows where shelf is 'read'
-books_read_df = books_df[books_df['shelf'] == 'read'].copy()
-
-books_df.head()
-
-authors_df = (
-    books_df
-    .dropna(subset=['author_text'])
-    .assign(author_text=lambda d: d['author_text'].str.split(','))
-    .explode('author_text')
-    .assign(author_text=lambda d: d['author_text'].str.strip())
-    .loc[lambda d: d['author_text'] != '']
-    .reset_index(drop=True)
-)
-
-```
-
-
-
-## Overview
-
-Show lollypop chart showing number of books finished by year, and the size of the dot is the number of pages.
-
-Given a dataframe `df` that contains a column `date` and `pages` , and where every row represents a book, I would like you to write a code using pandas and altair that creates an interactive barplot where the x axis shows the years in `date`column, and y number of books read by year. At the top of each bar, I would also like to see a point whose size is proportional to the sum of pages of all the books in that particular year
-
-```{python}
-# Prepare dataframe
-books_read_df_year = books_read_df.copy()
-# Assign books with no pages a value = mean pages.
-books_read_df_year['pages'] = books_read_df_year['pages'].fillna(books_read_df_year['pages'].mean().round())
-
-
-books_read_df_year = (
-    books_read_df_year.assign(year=books_read_df_year['finish_date'].dt.year)          # extract year
-      .groupby('year')
-      .agg(
-          books=('pages', 'size'),               # number of rows = books
-          pages_sum=('pages', 'sum')             # total pages per year
-      )
-      .reset_index()
-)
-
-# -------------------------------------------------
-#  Build the Altair chart
-# -------------------------------------------------
-# Base selection for interactivity (hover tooltip)
-hover = alt.selection_point(
-    fields=['year'],
-    nearest=True,
-    on='mouseover',
-    empty='none',
-    clear='mouseout'
-)
-
-# Bar layer: count of books per year
-bars = alt.Chart(books_read_df_year).mark_bar(size=2, color= col_bw_green).encode(
-    x=alt.X(
-        'year:O',
-        title='Year',
-
-    ),
-    y=alt.Y('books:Q', title='Number of books read'),
-    tooltip=[
-        alt.Tooltip('year:O', title='Year'),
-        alt.Tooltip('books:Q', title='Books read'),
-        alt.Tooltip('pages_sum:Q', title='Pages total')
-    ]
-).add_params(hover)
-
-# Point layer: size reflects total pages
-points = alt.Chart(books_read_df_year).mark_point(filled=True, color=col_bw_green).encode(
-    x='year:O',
-    y='books:Q',
-    size=alt.Size('pages_sum:Q',
-                  scale=alt.Scale(range=[30, 300]),   # adjust visual range
-                  legend=alt.Legend(title='Total pages')),
-    opacity=alt.condition(hover, alt.value(1), alt.value(0.6)),
-    tooltip=[
-        alt.Tooltip('year:O', title='Year'),
-        alt.Tooltip('pages_sum:Q', title='Pages total')
-    ]
-)
-
-# Combine layers
-chart = (bars + points).properties(
-    width=600,
-    height=400,
-    title='Books read per year (bar) with total pages (point size)'
-).interactive()   # enables pan/zoom
-
-chart
-
-```
-
-Add colour to map language
-
-## Number of pages
-
-## Authors
-
-Favourite authors
-
-```{python}
-#| label: authors_summary
-
-authors_summary = (
-    authors_df
-    .groupby(['author_text'], as_index=False)
-    .agg(pages_total=('pages','sum'), n=('author_text','count'))
-    .sort_values('pages_total', ascending=False)
-)
-
-```
-
-
-```{python}
-#| label: fig-top-authors-page
-#| fig: Top authors by number of read pages
-top_authors_pages = authors_summary.nlargest(15, "pages_total").reset_index(drop=True)
-
-# build horizontal bar chart (largest at top)
-chart = (
-    alt.Chart(top_authors_pages)
-    .mark_bar(color=col_bw_green)
-    .encode(
-        x=alt.X("pages_total:Q", title="Pages (total)"),
-        y=alt.Y("author_text:N", title="", sort="-x"),
-        tooltip=[
-            alt.Tooltip("author_text:N", title="Author"),
-            alt.Tooltip("pages_total:Q", title="Pages total")
-        ],
-    )
-    .properties(width=700, height=350, title="Top 15 Authors by Pages Read")
-    .configure_title(fontSize=14, anchor="start")
-)
-
-chart
-```
-
-```{python}
-
-top_authors = authors_summary.nlargest(20, 'n').reset_index(drop=True)
-
-# Bar layer: count of books per year
-bars = (
-    alt.Chart(top_authors)
-    .mark_bar(size=2, color= col_bw_green)
-    .encode(
-        x=alt.X("n:Q", title="Number of books"),
-        y=alt.Y("author_text:N", title="", sort="-x"),
-        tooltip=[
-            alt.Tooltip('n:Q', title='Books read'),
-            alt.Tooltip('pages_total:Q', title='Pages total')
-        ]
-    )
-) 
-
-# Point layer: size reflects total pages
-points = (
-    alt.Chart(top_authors)
-    .mark_point(filled=True, color=col_bw_green)
-    .encode(
-        x=alt.X("n:Q", title="Number of books"),
-        y=alt.Y("author_text:N", title="", sort="-x"),
-        size=alt.Size('pages_total:Q',
-                    scale=alt.Scale(range=[30, 300]),   # adjust visual range
-                    legend=alt.Legend(title='Total pages')),
-        #opacity=alt.condition(hover, alt.value(1), alt.value(0.6)),
-        tooltip=[
-            alt.Tooltip('n:Q', title='Books read'),
-            alt.Tooltip('pages_total:Q', title='Pages total')
-        ]
-    )
-)
-
- 
-# Combine layers
-chart = (bars + points).properties(
-    width=600,
-    height=400,
-    title='Most read authors'
-).interactive()   # enables pan/zoom
-
-chart
-```
-
-### Incorporating an EDI approach to reads
-
-
-
-```{python}
-#| label: wikidata-qid
-
-import requests
-import time
-import pandas as pd
-from datetime import datetime
-from typing import Iterable, List, Optional, Dict, Set
+#| label: wikidata-qid-definition
 
 WIKIDATA_SEARCH_URL = "https://www.wikidata.org/w/api.php"
 WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
@@ -373,20 +168,7 @@ def get_authors_qids(names: Iterable[str], pause_seconds: float = 0.5) -> pd.Dat
 
 # test_names_series = ['Mike Parker', 'J.K. Rowling', 'Mark Fisher', 'Mark Graham', 'Unknown Author', None, '']
 
-# Run the function for authors that we do not know their QIDs yet.
 
-authors_qids_csv = 'posts/2024-01_bookwyrm-vis/data/authors_wikidata_qids.csv'
-
-qid_df=pd.read_csv(authors_qids_csv)
-
-new_authors = list(set(authors_summary['author_text'].to_list()).difference(qid_df['author_text'].to_list()))
-
-qid_df_new = get_authors_qids(new_authors, pause_seconds=0.5)
-
-# Append new authors and QIDs to existing dataframe and save it.
-qid_df = pd.concat([qid_df, qid_df_new]).reset_index(drop=True)
-
-qid_df.to_csv(authors_qids_csv, index=False)
 
 ```
 
@@ -506,6 +288,74 @@ def crate_wikidata_properties_df(qid_df: pd.DataFrame, qid_col: str = "qid", aut
 
 #result_df.to_csv('posts/2024-01_bookwyrm-vis/data/authors_wikidata_properties.csv', index=False)
 
+
+```
+
+```{python}
+#| label: books_data
+
+books_df = pd.read_csv(
+    "posts/2024-01_bookwyrm-vis/data/bookwyrm-export.csv", 
+    parse_dates=['shelf_date', 'start_date', 'finish_date', 'stopped_date']
+)
+
+books_df = books_df.sort_values('shelf_date')
+
+# Filter for rows where shelf is 'read'
+books_read_df = books_df[books_df['shelf'] == 'read'].copy()
+
+books_df.head()
+
+books_df_exploded = (
+    books_df
+    .dropna(subset=['author_text'])
+    .assign(author_text=lambda d: d['author_text'].str.split(','))
+    .explode('author_text')
+    .assign(author_text=lambda d: d['author_text'].str.strip())
+    .loc[lambda d: d['author_text'] != '']
+    .drop_duplicates() # Some authors are duplicate in bookwyrm, so removing duplicate names.
+    .reset_index(drop=True)
+)
+
+```
+
+```{python}
+#| label: authors_summary
+authors = books_df_exploded['author_text'].drop_duplicates()
+
+authors_summary = (
+    books_df_exploded
+    .groupby(['author_text'], as_index=False)
+    .agg(pages_total=('pages','sum'), n=('author_text','count'))
+    .sort_values('pages_total', ascending=False)
+)
+
+```
+
+```{python}
+#| label: authors_data
+
+# Retrieve authors' Wikidata QIDs
+# Run the function for authors that we do not know their QIDs yet.
+
+authors_qids_csv = 'posts/2024-01_bookwyrm-vis/data/authors_wikidata_qids.csv'
+
+qid_df=pd.read_csv(authors_qids_csv)
+
+new_authors = list(set(authors.to_list()).difference(qid_df['author_text'].to_list()))
+
+if len(new_authors)> 0:
+    qid_df_new = get_authors_qids(new_authors, pause_seconds=0.5)
+    qid_df_new['query_date'] = datetime.today().strftime('%Y-%m-%d')
+    # Append new authors and QIDs to existing dataframe and save it.
+    qid_df = pd.concat([qid_df, qid_df_new]).reset_index(drop=True)
+    qid_df.to_csv(authors_qids_csv, index=False)
+
+# Cleanup
+del(new_authors)
+
+# Retrieve authors' Wikidata properties
+
 # Run the function for authors that we do not know their properties yet.
 
 authors_props_csv = 'posts/2024-01_bookwyrm-vis/data/authors_wikidata_properties.csv'
@@ -515,17 +365,192 @@ wikidata_props_df=pd.read_csv(authors_props_csv)
 new_props = list(set(qid_df['author_text'].to_list()).difference(wikidata_props_df['author_text'].to_list()))
 
 if len(new_props) > 0:
+    new_props = pd.DataFrame(new_props, columns = ['author_text'])
+
+    new_props = pd.merge(
+        new_props,
+        qid_df,
+        on = 'author_text',
+        how = 'left'
+    )
+
     wikidata_props_df_new = crate_wikidata_properties_df(new_props, qid_col='qid', author_col='author_text', pause_seconds=0.6)
 
     get_authors_qids(new_props, pause_seconds=0.5)
 
     # Append new authors and QIDs to existing dataframe and save it.
-    wikidata_props_df = pd.concat([qid_df, wikidata_props_df_new]).reset_index(drop=True)
+    wikidata_props_df = pd.concat([wikidata_props_df, wikidata_props_df_new]).reset_index(drop=True)
     
-    wikidata_props_df.to_csv(authors_qids_csv, index=False)
+    wikidata_props_df.to_csv(authors_props_csv, index=False)
 
 wikidata_props_df
+
 ```
+
+## Overview
+
+Show lollypop chart showing number of books finished by year, and the size of the dot is the number of pages.
+
+Given a dataframe `df` that contains a column `date` and `pages` , and where every row represents a book, I would like you to write a code using pandas and altair that creates an interactive barplot where the x axis shows the years in `date`column, and y number of books read by year. At the top of each bar, I would also like to see a point whose size is proportional to the sum of pages of all the books in that particular year
+
+```{python}
+# Prepare dataframe
+books_read_df_year = books_read_df.copy()
+# Assign books with no pages a value = mean pages.
+books_read_df_year['pages'] = books_read_df_year['pages'].fillna(books_read_df_year['pages'].mean().round())
+
+
+books_read_df_year = (
+    books_read_df_year.assign(year=books_read_df_year['finish_date'].dt.year)          # extract year
+      .groupby('year')
+      .agg(
+          books=('pages', 'size'),               # number of rows = books
+          pages_sum=('pages', 'sum')             # total pages per year
+      )
+      .reset_index()
+)
+
+# -------------------------------------------------
+#  Build the Altair chart
+# -------------------------------------------------
+# Base selection for interactivity (hover tooltip)
+hover = alt.selection_point(
+    fields=['year'],
+    nearest=True,
+    on='mouseover',
+    empty='none',
+    clear='mouseout'
+)
+
+# Bar layer: count of books per year
+bars = alt.Chart(books_read_df_year).mark_bar(size=2, color= col_bw_green).encode(
+    x=alt.X(
+        'year:O',
+        title='Year',
+
+    ),
+    y=alt.Y('books:Q', title='Number of books read'),
+    tooltip=[
+        alt.Tooltip('year:O', title='Year'),
+        alt.Tooltip('books:Q', title='Books read'),
+        alt.Tooltip('pages_sum:Q', title='Pages total')
+    ]
+).add_params(hover)
+
+# Point layer: size reflects total pages
+points = alt.Chart(books_read_df_year).mark_point(filled=True, color=col_bw_green).encode(
+    x='year:O',
+    y='books:Q',
+    size=alt.Size('pages_sum:Q',
+                  scale=alt.Scale(range=[30, 300]),   # adjust visual range
+                  legend=alt.Legend(title='Total pages')),
+    opacity=alt.condition(hover, alt.value(1), alt.value(0.6)),
+    tooltip=[
+        alt.Tooltip('year:O', title='Year'),
+        alt.Tooltip('pages_sum:Q', title='Pages total')
+    ]
+)
+
+# Combine layers
+chart = (bars + points).properties(
+    width=600,
+    height=400,
+    title='Books read per year (bar) with total pages (point size)'
+).interactive()   # enables pan/zoom
+
+chart
+
+```
+
+Histogram about how long the books tend to be
+
+```{python}
+alt.Chart(books_df).mark_bar(color=col_bw_green).encode(
+    alt.X("pages:Q", bin=True),
+    y='count()',
+)
+```
+
+Add colour to map language
+
+## Number of pages
+
+## Authors
+
+Favourite authors
+
+```{python}
+#| label: fig-top-authors-page
+#| fig: Top authors by number of read pages
+top_authors_pages = authors_summary.nlargest(15, "pages_total").reset_index(drop=True)
+
+# build horizontal bar chart (largest at top)
+chart = (
+    alt.Chart(top_authors_pages)
+    .mark_bar(color=col_bw_green)
+    .encode(
+        x=alt.X("pages_total:Q", title="Pages (total)"),
+        y=alt.Y("author_text:N", title="", sort="-x"),
+        tooltip=[
+            alt.Tooltip("author_text:N", title="Author"),
+            alt.Tooltip("pages_total:Q", title="Pages total")
+        ],
+    )
+    .properties(width=700, height=350, title="Top 15 Authors by Pages Read")
+    .configure_title(fontSize=14, anchor="start")
+)
+
+chart
+```
+
+```{python}
+
+top_authors = authors_summary.nlargest(20, 'n').reset_index(drop=True)
+
+# Bar layer: count of books per year
+bars = (
+    alt.Chart(top_authors)
+    .mark_bar(size=2, color= col_bw_green)
+    .encode(
+        x=alt.X("n:Q", title="Number of books"),
+        y=alt.Y("author_text:N", title="", sort="-x"),
+        tooltip=[
+            alt.Tooltip('n:Q', title='Books read'),
+            alt.Tooltip('pages_total:Q', title='Pages total')
+        ]
+    )
+) 
+
+# Point layer: size reflects total pages
+points = (
+    alt.Chart(top_authors)
+    .mark_point(filled=True, color=col_bw_green)
+    .encode(
+        x=alt.X("n:Q", title="Number of books"),
+        y=alt.Y("author_text:N", title="", sort="-x"),
+        size=alt.Size('pages_total:Q',
+                    scale=alt.Scale(range=[30, 300]),   # adjust visual range
+                    legend=alt.Legend(title='Total pages')),
+        #opacity=alt.condition(hover, alt.value(1), alt.value(0.6)),
+        tooltip=[
+            alt.Tooltip('n:Q', title='Books read'),
+            alt.Tooltip('pages_total:Q', title='Pages total')
+        ]
+    )
+)
+
+ 
+# Combine layers
+chart = (bars + points).properties(
+    width=600,
+    height=400,
+    title='Most read authors'
+).interactive()   # enables pan/zoom
+
+chart
+```
+
+### Incorporating an EDI approach to reads
 
 ```{python}
 #| label: authors_properties
@@ -627,12 +652,17 @@ def get_author_wikidata_info(names, pause_seconds: float = 0.5):
 authors_metadata = get_author_wikidata_info(authors_summary['author_text'])
 
 # Merge mapping back into original df (left join)
-authors_summary_metadata = pd.merge(authors_summary, authors_metadata, left_on="author_text", right_on='author_name', how="left").copy()
-
+authors_summary_metadata = pd.merge(
+    authors_summary, 
+    authors_metadata, 
+    left_on="author_text", 
+    right_on='author_name', 
+    
+    how="left"
+).copy()
 
 authors_summary_metadata
 ```
-
 
 ```{python}
 
@@ -691,7 +721,6 @@ chart = (bars + points).properties(
 chart
 ```
 
-
 ### Authors by gender
 
 ```{python}
@@ -702,17 +731,16 @@ books_metadata_df = pd.merge(
     wikidata_props_df,
     on = 'author_text',
     how = 'left'
-)
+).drop_duplicates()
 
-alt.Chart(source).mark_area().encode(
-    x="year:T",
-    y=alt.Y("net_generation:Q").stack("normalize"),
+alt.Chart(books_metadata_df).mark_area().encode(
+    x="finish_date:T",
+    y=alt.Y("gender:Q").stack("normalize"),
     color="source:N"
 )
 ```
 
 ### Authors by country
-
 
 ```{python}
 #| label: fig-authors-map
@@ -739,7 +767,7 @@ alt.Chart(countries).mark_geoshape(
 #df = df.filter()
 
 
-alt.Chart(df[df[['author_text']].notnull().all(1)]
+alt.Chart(books_df_exploded[books_df_exploded[['author_text']].notnull().all(1)]
 ).mark_bar().encode(
     x='count()',
     y=alt.Y('author_text').sort('-x').title('Author')
@@ -754,7 +782,7 @@ Authors by gender
 
 Or books written in different languages
 
-# retrieve info from wikidata
+## retrieve info from wikidata
 
 https://query.wikidata.org/
 
@@ -946,3 +974,17 @@ Info:
 -   https://itnext.io/extracting-data-from-wikidata-using-sparql-and-python-59e0037996f
 -   https://people.wikimedia.org/\~bearloga/notes/wdqs-python.html Publication Year
 -   https://stackoverflow.com/questions/39773812/how-to-query-for-people-using-wikidata-and-sparql
+
+## Some considerations about bookwyrm data
+
+-   Due to lack of enough libraries than curate the database, Some books and authors are duplicated at bookwyrm.social. This means that books like <https://bookwyrm.social/book/957796> have two entries for each of the authors, so they are linked to/from the book's description. However, as they both refer to the same person (Even though bookwyrm.social treats them as different entities), the code filters removal. Ideally, there should be mechanisms in place to merge duplicated authors (and books!)
+
+-   Lack of multilingual approach to authors and books
+
+    -   Some authors are spelled differently: <https://github.com/bookwyrm-social/bookwyrm/issues/3278>
+
+    -   Some languages are written in different names
+
+-   This code had to query Wikidata to retrieve author's qid and, then, their properties. Given that Qid are stored in Bookywrm, it should be easier to retrieve their properties. Ideally, we would want to store some properties in Bookwyrm, though? (maybe populating them from wikidata, in a similar fashion to how populating book's properties from inventaire.
+
+-   There's no field to store translators, editors... all humans related to a book are currently stored as authors, and that is missleading. Open an issue!
