@@ -292,7 +292,7 @@ def crate_wikidata_properties_df(qid_df: pd.DataFrame, qid_col: str = "qid", aut
 ```
 
 ```{python}
-#| label: books_data
+#| label: def_books_data
 
 books_df = pd.read_csv(
     "posts/2024-01_bookwyrm-vis/data/bookwyrm-export.csv", 
@@ -333,7 +333,7 @@ authors_summary = (
 ```
 
 ```{python}
-#| label: authors_data
+#| label: def_authors_data
 
 # Retrieve authors' Wikidata QIDs
 # Run the function for authors that we do not know their QIDs yet.
