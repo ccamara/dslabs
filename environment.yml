@@ -4,6 +4,7 @@ channels:
   - defaults
 dependencies:
   - altair
+  - jupyter
   - nbclient
   - nbformat
   - pandas
