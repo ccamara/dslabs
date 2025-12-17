@@ -325,7 +325,7 @@ authors = books_df_exploded['author_text'].drop_duplicates()
 
 authors_summary = (
     books_df_exploded
-    .groupby(['author_text'], as_index=False)
+    .groupby(['author_text', 'shelf'], as_index=False)
     .agg(pages_total=('pages','sum'), n=('author_text','count'))
     .sort_values('pages_total', ascending=False)
 )
@@ -394,6 +394,7 @@ Show lollypop chart showing number of books finished by year, and the size of th
 Given a dataframe `df` that contains a column `date` and `pages` , and where every row represents a book, I would like you to write a code using pandas and altair that creates an interactive barplot where the x axis shows the years in `date`column, and y number of books read by year. At the top of each bar, I would also like to see a point whose size is proportional to the sum of pages of all the books in that particular year
 
 ```{python}
+#| label: fig-books-read-year
 # Prepare dataframe
 books_read_df_year = books_read_df.copy()
 # Assign books with no pages a value = mean pages.
@@ -482,7 +483,7 @@ Favourite authors
 ```{python}
 #| label: fig-top-authors-page
 #| fig: Top authors by number of read pages
-top_authors_pages = authors_summary.nlargest(15, "pages_total").reset_index(drop=True)
+top_authors_pages = authors_summary[authors_summary['shelf'] == 'read'].nlargest(15, "pages_total").reset_index(drop=True)
 
 # build horizontal bar chart (largest at top)
 chart = (
@@ -505,7 +506,7 @@ chart
 
 ```{python}
 
-top_authors = authors_summary.nlargest(20, 'n').reset_index(drop=True)
+top_authors = authors_summary[authors_summary['shelf'] == 'read'].nlargest(20, 'n').reset_index(drop=True)
 
 # Bar layer: count of books per year
 bars = (
@@ -554,8 +555,6 @@ chart
 
 
 ```{python}
-
-
 
 top_authors = authors_summary[authors_summary['shelf'] == 'read'].nlargest(20, 'n').reset_index(drop=True)
 
