@@ -640,6 +640,51 @@ alt.Chart(books_metadata_df).mark_bar().encode(
 ```
 
 ```{python}
+
+# Assuming books_df is your dataframe with columns: finish_date, author_text, gender
+# Extract year from finish_date
+books_metadata_df['year'] = pd.to_datetime(books_metadata_df['finish_date']).dt.year
+books_metadata_df['gender'] = books_metadata_df['gender'].fillna('Unknown')
+
+# Count books by year and gender
+gender_by_year = books_metadata_df.groupby(['year', 'gender']).size().reset_index(name='count')
+
+# Calculate percentage for each gender within each year
+gender_by_year['total_by_year'] = gender_by_year.groupby('year')['count'].transform('sum')
+gender_by_year['percentage'] = (gender_by_year['count'] / gender_by_year['total_by_year']) * 100
+
+# Create normalized stacked area chart
+chart = alt.Chart(gender_by_year).mark_area(
+    opacity=0.8,
+    interpolate='monotone'
+).encode(
+    x=alt.X('year:Q', 
+            title='Year',
+            axis=alt.Axis(format='d', tickCount=10)),
+    y=alt.Y('percentage:Q',
+            title='Percentage of Authors (%)',
+            stack='normalize',
+            axis=alt.Axis(format='.0f')),
+    color=alt.Color('gender:N',
+                    title='Gender',
+                    scale=alt.Scale(scheme='category10')),
+    tooltip=[
+        alt.Tooltip('year:Q', title='Year', format='d'),
+        alt.Tooltip('gender:N', title='Gender'),
+        alt.Tooltip('count:Q', title='Books Read'),
+        alt.Tooltip('percentage:Q', title='Percentage', format='.1f')
+    ]
+).properties(
+    width=700,
+    height=400,
+    title='Author Gender Distribution Over Time (Normalized)'
+).interactive()
+
+chart
+
+```
+
+```{python}
 books_gender_year = (
     books_metadata_df[['finish_date', 'gender', 'pages']]
     .copy()
@@ -701,17 +746,38 @@ alt.Chart(countries).mark_geoshape(
 ```
 
 ```{python}
+from vega_datasets import data
+import altair as alt
 
-#df = df.filter()
-
-
-alt.Chart(books_df_exploded[books_df_exploded[['author_text']].notnull().all(1)]
-).mark_bar().encode(
-    x='count()',
-    y=alt.Y('author_text').sort('-x').title('Author')
-).properties(
-  title='Top Authors'
+# Aggregate unique authors per country_of_birth
+authors_country = (
+    books_metadata_df[['author_text', 'country_of_birth']]
+    .dropna(subset=['country_of_birth'])
+    .drop_duplicates()
+    .groupby('country_of_birth', as_index=False)
+    .agg(authors=('author_text', 'size'))
 )
+
+# World topojson features
+countries = alt.topo_feature(data.world_110m.url, 'countries')
+
+# Choropleth: lookup by feature property 'properties.name' -> your country names
+choropleth = (
+    alt.Chart(countries)
+    .mark_geoshape(stroke='white')
+    .transform_lookup(
+        lookup='properties.name',
+        from_=alt.LookupData(authors_country, key='country_of_birth', fields=['authors'])
+    )
+    .encode(
+        color=alt.Color('authors:Q', title='Number of authors', scale=alt.Scale(scheme='greens')),
+        tooltip=[alt.Tooltip('properties.name:N', title='Country'), alt.Tooltip('authors:Q', title='Authors')]
+    )
+    .project('equirectangular')
+    .properties(width=900, height=500, title='Number of Authors by Country (country_of_birth)')
+)
+
+choropleth
 ```
 
 Authors by gender
