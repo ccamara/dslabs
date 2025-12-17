@@ -308,7 +308,7 @@ books_df.head()
 
 books_df_exploded = (
     books_df
-    .dropna(subset=['author_text'])
+    .dropna(subset=['author_text', 'shelf'])
     .assign(author_text=lambda d: d['author_text'].str.split(','))
     .explode('author_text')
     .assign(author_text=lambda d: d['author_text'].str.strip())
@@ -452,7 +452,7 @@ points = alt.Chart(books_read_df_year).mark_point(filled=True, color=col_bw_gree
 )
 
 # Combine layers
-chart = (bars + points).properties(
+chart = (points + bars).properties(
     width=600,
     height=400,
     title='Books read per year (bar) with total pages (point size)'
@@ -552,121 +552,12 @@ chart
 
 ### Incorporating an EDI approach to reads
 
-```{python}
-#| label: authors_properties
-#| eval: false
-WIKIDATA_SEARCH_URL = "https://www.wikidata.org/w/api.php"
-WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
-HEADERS = {"User-Agent": "dslabs-wikidata-query/1.0 (contact: youremail@example.com)"}
-
-def get_wikidata_qid(name: str, language: str = "en", max_retries: int = 2) -> Optional[str]:
-    params = {
-        "action": "wbsearchentities",
-        "format": "json",
-        "language": language,
-        "search": name,
-        "type": "item",
-        "limit": 1
-    }
-    for attempt in range(max_retries + 1):
-        resp = requests.get(WIKIDATA_SEARCH_URL, params=params, headers=HEADERS, timeout=30)
-        if resp.status_code == 200:
-            data = resp.json()
-            if data.get("search"):
-                return data["search"][0].get("id")
-            return None
-        else:
-            time.sleep(1 + attempt)
-    return None
-
-def get_wikidata_props(qid: str) -> Dict[str, Optional[str]]:
-    # SPARQL: optional gender (P21), ethnicity (P172), sexual orientation (P91),
-    # place of birth (P19) -> place wdt:P17 country.
-    q = f"""
-    SELECT ?genderLabel ?countryLabel ?ethnicityLabel ?sexOrientLabel WHERE {{
-      OPTIONAL {{ wd:{qid} wdt:P21 ?gender. }}
-      OPTIONAL {{ wd:{qid} wdt:P19 ?place. ?place wdt:P17 ?country. }}
-      OPTIONAL {{ wd:{qid} wdt:P27 ?countryCitizenship}}
-      OPTIONAL {{ wd:{qid} wdt:P172 ?ethnicity. }}
-      OPTIONAL {{ wd:{qid} wdt:P91 ?sexOrient. }}
-      SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}
-    }}
-    LIMIT 1
-    """
-    resp = requests.get(WIKIDATA_SPARQL_URL, params={"query": q, "format": "json"}, headers=HEADERS, timeout=60)
-    if resp.status_code != 200:
-        return {"gender": None, "country_of_birth": None, "country_of_citizenship": None, "ethnicity": None, "sexual_orientation": None}
-    results = resp.json().get("results", {}).get("bindings", [])
-    if not results:
-        return {"gender": None, "country_of_birth": None, "country_of_citizenship": None, "ethnicity": None, "sexual_orientation": None}
-    row = results[0]
-    def get_label(key):
-        v = row.get(key)
-        return v.get("value") if v else None
-    return {
-        "gender": get_label("genderLabel"),
-        "country_of_birth": get_label("countryLabel"),
-        "country_of_citizenship":  get_label("countryCitizenshipLabel"),
-        "ethnicity": get_label("ethnicityLabel"),
-        "sexual_orientation": get_label("sexOrientLabel")
-    }
-
-def get_author_wikidata_info(names, pause_seconds: float = 0.5):
-    """Query Wikidata for a list/iterable of author names. Returns DataFrame with columns:
-       author_name, qid, gender, country_of_birth, ethnicity, sexual_orientation
-    """
-    records = []
-    seen = {}
-    for name in pd.Index(names).unique():
-        if pd.isna(name) or str(name).strip() == "":
-            records.append({
-                "author_name": name,
-                "qid": None,
-                "gender": None,
-                "country_of_birth": None,
-                "country_of_citizenship": None,
-                "ethnicity": None,
-                "sexual_orientation": None
-            })
-            continue
-        if name in seen:
-            records.append({"author_name": name, **seen[name]})
-            continue
-        # 1) search for qid
-        qid = get_wikidata_qid(name)
-        if qid is None:
-            rec = {"qid": None, "gender": None, "country_of_birth": None, "ethnicity": None, "sexual_orientation": None}
-            seen[name] = rec
-            records.append({"author_name": name, **rec})
-            time.sleep(pause_seconds)
-            continue
-        # 2) fetch properties
-        props = get_wikidata_props(qid)
-        rec = {"qid": qid, **props}
-        seen[name] = rec
-        records.append({"author_name": name, **rec})
-        time.sleep(pause_seconds)
-    return pd.DataFrame.from_records(records)
-
-
-authors_metadata = get_author_wikidata_info(authors_summary['author_text'])
-
-# Merge mapping back into original df (left join)
-authors_summary_metadata = pd.merge(
-    authors_summary, 
-    authors_metadata, 
-    left_on="author_text", 
-    right_on='author_name', 
-    
-    how="left"
-).copy()
-
-authors_summary_metadata
-```
 
 ```{python}
 
-top_authors = authors_summary.nlargest(20, 'n').reset_index(drop=True)
+
+
+top_authors = authors_summary[authors_summary['shelf'] == 'read'].nlargest(20, 'n').reset_index(drop=True)
 
 top_authors_metadata = pd.merge(
     top_authors,
@@ -733,10 +624,47 @@ books_metadata_df = pd.merge(
     how = 'left'
 ).drop_duplicates()
 
+
 alt.Chart(books_metadata_df).mark_area().encode(
-    x="finish_date:T",
-    y=alt.Y("gender:Q").stack("normalize"),
-    color="source:N"
+    x="finish_date",
+    y=alt.Y("count(gender)").stack("normalize"),
+    color="gender"
+)
+
+
+alt.Chart(books_metadata_df).mark_bar().encode(
+    color=alt.Color('gender'),
+    x='finish_date',
+    y=alt.Y('count()', stack='normalize')
+)
+
+```
+
+```{python}
+books_gender_year = (
+    books_metadata_df[['finish_date', 'gender', 'pages']]
+    .copy()
+    .assign(year=books_metadata_df['finish_date'].dt.year)  # extract year
+    .groupby(['year', 'gender'])
+    .agg(
+        books=('pages', 'size'),               # number of rows = books
+        pages_sum=('pages', 'sum')             # total pages per year
+    )
+    .reset_index()
+) 
+
+
+alt.Chart(books_gender_year).mark_area().encode(
+    x="year",
+    y=alt.Y("gender").stack("normalize"),
+    color="gender"
+)
+
+
+alt.Chart(books_gender_year).mark_bar().encode(
+    color=alt.Color('gender'),
+    x='year',
+    y=alt.Y('count()', stack='normalize')
 )
 ```
 
@@ -748,6 +676,17 @@ alt.Chart(books_metadata_df).mark_area().encode(
 from vega_datasets import data
 
 countries = alt.topo_feature(data.world_110m.url, 'countries')
+
+authors_country = (
+    books_metadata_df[['author_text', 'country_of_birth']]
+    .dropna()
+    .copy()
+    .groupby('country_of_birth')
+    .agg(
+        n=('country_of_birth', 'size')            # number of rows = books
+    )
+    .reset_index()
+) 
 
 alt.Chart(countries).mark_geoshape(
     fill='lightgray',
