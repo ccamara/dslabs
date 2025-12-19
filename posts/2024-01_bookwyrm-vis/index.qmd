@@ -717,9 +717,9 @@ alt.Chart(books_gender_year).mark_bar().encode(
 ```{python}
 #| label: fig-authors-map
 
-from vega_datasets import data
+import geopandas as gpd
 
-countries = alt.topo_feature(data.world_110m.url, 'countries')
+gdf = gpd.read_file('posts/2024-01_bookwyrm-vis/data/ne_110m_admin_0_countries.zip')
 
 authors_country = (
     books_metadata_df[['author_text', 'country_of_birth']]
@@ -732,55 +732,40 @@ authors_country = (
     .reset_index()
 ) 
 
-alt.Chart(countries).mark_geoshape(
+gdf = gdf.merge(
+    authors_country,
+    left_on='NAME_EN',
+    right_on='country_of_birth',
+    how='left'
+)
+
+basemap = alt.Chart(gdf).mark_geoshape(
     fill='lightgray',
     stroke='white'
 ).project(
     "equirectangular"
 ).properties(
-    width=500,
-    height=300
+    width=700,
+    height=400
 )
 
-#alt.Chart()
+choro = alt.Chart(gdf).mark_geoshape().encode(
+    alt.Color('n:Q', 
+              type='quantitative', 
+              scale=alt.Scale(scheme='greens'),
+              title = "Number of Authors"),
+    tooltip=['NAME_LONG', 'n:Q']
+).project(
+    "equirectangular"
+).properties(
+    width=700,
+    height=400,
+    title='Number of Authors by Country (country_of_birth)'
+)
+
+basemap + choro
 ```
 
-```{python}
-from vega_datasets import data
-import altair as alt
-
-# Aggregate unique authors per country_of_birth
-authors_country = (
-    books_metadata_df[['author_text', 'country_of_birth']]
-    .dropna(subset=['country_of_birth'])
-    .drop_duplicates()
-    .groupby('country_of_birth', as_index=False)
-    .agg(authors=('author_text', 'size'))
-)
-
-# World topojson features
-countries = alt.topo_feature(data.world_110m.url, 'countries')
-
-# Choropleth: lookup by feature property 'properties.name' -> your country names
-choropleth = (
-    alt.Chart(countries)
-    .mark_geoshape(stroke='white')
-    .transform_lookup(
-        lookup='properties.name',
-        from_=alt.LookupData(authors_country, key='country_of_birth', fields=['authors'])
-    )
-    .encode(
-        color=alt.Color('authors:Q', title='Number of authors', scale=alt.Scale(scheme='greens')),
-        tooltip=[alt.Tooltip('properties.name:N', title='Country'), alt.Tooltip('authors:Q', title='Authors')]
-    )
-    .project('equirectangular')
-    .properties(width=900, height=500, title='Number of Authors by Country (country_of_birth)')
-)
-
-choropleth
-```
-
-Authors by gender
 
 ## Authors by language
 
