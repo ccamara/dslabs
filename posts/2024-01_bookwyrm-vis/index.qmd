@@ -389,7 +389,23 @@ wikidata_props_df
 
 ## Overview
 
-Show lollypop chart showing number of books finished by year, and the size of the dot is the number of pages.
+```{python}
+#| label: overview-stats
+total_pages = int(round(books_read_df['pages'].sum()))
+total_books = books_read_df.shape[0]
+
+date_start = books_read_df['finish_date'].min().date().year
+date_end = books_read_df['finish_date'].max().date().year
+
+total_authors = authors.shape[0]
+
+books_year = round(total_books / (date_end - date_start))
+pages_year = round(total_pages / (date_end - date_start))
+
+# f"Since {date_start}, I have read a total of {total_books} books and {total_pages} pages, authored by {total_authors} different authors."
+```
+
+> **Since `{python} date_start`, I have read a total of `{python} total_books` books from `{python} total_authors` different authors, accounting `{python} total_pages` pages. This averages to `{python} books_year` books per year and `{python} pages_year` pages per year.**
 
 Given a dataframe `df` that contains a column `date` and `pages` , and where every row represents a book, I would like you to write a code using pandas and altair that creates an interactive barplot where the x axis shows the years in `date`column, and y number of books read by year. At the top of each bar, I would also like to see a point whose size is proportional to the sum of pages of all the books in that particular year
 
@@ -697,18 +713,14 @@ books_gender_year = (
     .reset_index()
 ) 
 
-
-alt.Chart(books_gender_year).mark_area().encode(
-    x="year",
-    y=alt.Y("gender").stack("normalize"),
-    color="gender"
-)
-
-
 alt.Chart(books_gender_year).mark_bar().encode(
     color=alt.Color('gender'),
     x='year',
     y=alt.Y('count()', stack='normalize')
+).properties(
+    width=600,
+    height=400,
+    title="Books by author's gender and year"
 )
 ```
 
@@ -734,7 +746,7 @@ authors_country = (
 
 gdf = gdf.merge(
     authors_country,
-    left_on='NAME_EN',
+    left_on='NAME_LONG',
     right_on='country_of_birth',
     how='left'
 )
@@ -749,7 +761,7 @@ basemap = alt.Chart(gdf).mark_geoshape(
     height=400
 )
 
-choro = alt.Chart(gdf).mark_geoshape().encode(
+choro = alt.Chart(gdf).mark_geoshape(stroke='white').encode(
     alt.Color('n:Q', 
               type='quantitative', 
               scale=alt.Scale(scheme='greens'),
@@ -766,10 +778,20 @@ choro = alt.Chart(gdf).mark_geoshape().encode(
 basemap + choro
 ```
 
+I should now multiply authors by number of books read from each author to get a better estimate of countries.
 
 ## Authors by language
 
-Or books written in different languages
+```{python}
+alt.Chart(books_df[books_df['shelf'] == 'read']).mark_bar(color=col_bw_green).encode(
+    y=alt.Y("language:N", title="Language", sort = '-x'),
+    x=alt.X('count()', title='Number of books'),
+).properties(
+    width=600, 
+    height=400,
+    title='Read Books by language'
+)
+```
 
 
 ## Some considerations about bookwyrm data
