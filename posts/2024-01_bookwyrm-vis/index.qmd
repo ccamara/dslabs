@@ -631,7 +631,6 @@ chart
 
 ```{python}
 
-
 books_metadata_df = pd.merge(
     books_df,
     wikidata_props_df,
@@ -640,22 +639,6 @@ books_metadata_df = pd.merge(
 ).drop_duplicates()
 
 
-alt.Chart(books_metadata_df).mark_area().encode(
-    x="finish_date",
-    y=alt.Y("count(gender)").stack("normalize"),
-    color="gender"
-)
-
-
-alt.Chart(books_metadata_df).mark_bar().encode(
-    color=alt.Color('gender'),
-    x='finish_date',
-    y=alt.Y('count()', stack='normalize')
-)
-
-```
-
-```{python}
 
 # Assuming books_df is your dataframe with columns: finish_date, author_text, gender
 # Extract year from finish_date
@@ -676,7 +659,7 @@ chart = alt.Chart(gender_by_year).mark_area(
 ).encode(
     x=alt.X('year:Q', 
             title='Year',
-            axis=alt.Axis(format='d', tickCount=10)),
+            axis=alt.Axis(format='d', tickCount=5)),
     y=alt.Y('percentage:Q',
             title='Percentage of Authors (%)',
             stack='normalize',
@@ -701,28 +684,32 @@ chart
 ```
 
 ```{python}
-books_gender_year = (
-    books_metadata_df[['finish_date', 'gender', 'pages']]
-    .copy()
-    .assign(year=books_metadata_df['finish_date'].dt.year)  # extract year
-    .groupby(['year', 'gender'])
-    .agg(
-        books=('pages', 'size'),               # number of rows = books
-        pages_sum=('pages', 'sum')             # total pages per year
-    )
-    .reset_index()
-) 
 
-alt.Chart(books_gender_year).mark_bar().encode(
+alt.Chart(gender_by_year).mark_bar().encode(
     color=alt.Color('gender'),
-    x='year',
-    y=alt.Y('count()', stack='normalize')
+    x=alt.X(
+        'year',
+        title='',
+        axis = alt.Axis(format='d', tickCount=10)
+    ),
+    y=alt.Y('percentage:Q',
+            title='',
+            stack='normalize',
+            axis=alt.Axis(format='.0f')),
+    tooltip=[
+        alt.Tooltip('year:Q', title='Year', format='d'),
+        alt.Tooltip('gender:N', title='Gender'),
+        alt.Tooltip('count:Q', title='Books Read'),
+        alt.Tooltip('percentage:Q', title='Percentage', format='.1f')
+    ]
 ).properties(
     width=600,
     height=400,
     title="Books by author's gender and year"
-)
+).interactive()
+
 ```
+
 
 ### Authors by country
 
