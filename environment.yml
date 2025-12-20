@@ -11,8 +11,4 @@ dependencies:
   - pandas
   - pip
   - python
-  - pyyaml
-  - vega_datasets
-  - pip:
-    - sparqlwrapper
  
