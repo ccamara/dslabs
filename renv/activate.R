@@ -6,7 +6,9 @@ local({
   attr(version, "sha") <- NULL
 
   # the project directory
-  project <- getwd()
+  project <- Sys.getenv("RENV_PROJECT")
+  if (!nzchar(project))
+    project <- getwd()
 
   # use start-up diagnostics if enabled
   diagnostics <- Sys.getenv("RENV_STARTUP_DIAGNOSTICS", unset = "FALSE")
