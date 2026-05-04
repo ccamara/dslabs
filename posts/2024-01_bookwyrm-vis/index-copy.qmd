@@ -1,0 +1,839 @@
+---
+title: "Getting insights from my Bookywrm reads using Data Visualisations"
+description: "How I used altair to create data visualisations using Bookwyrm data to decolonise my reading patterns"
+abstract: |
+  We are now in that time of the year where every app and service is showing some statistics and insight about how you've used them in the past year. In this post, I will be creating some data visualisations to get some insights about my reads at Bookwyrm and inform decision to decolonise my readings.
+date: 2024-03-05
+# title-block-banner: true
+author: 
+  - name: "Carlos Cámara"
+    orcid: 0000-0002-9378-0549
+    email: carlos.camara@warwick.ac.uk
+    affiliations:
+    - name: University of Warwick
+      address: Centre for Interdisciplinary Methodologies (CIM), Social Sciences Building
+      city: Coventry
+      postal-code: CV4 7AL
+categories:
+  - Python
+  - bookyrm
+  - dataviz
+  - data visualisation
+format:
+  html:
+    toc: true
+    toc-expand: 2
+    #code-line-numbers: true
+    reference-location: margin
+    code-fold: true
+editor: visual
+---
+
+As a proponent of alternative social media and the [Fediverse](https://en.wikipedia.org/wiki/Fediverse) who happens to love books (although I read way less books than I'd love to), I was immediately in love when I heard about [Bookwyrm](https://joinbookwyrm.com/), . Bookwyrm is "a social network for tracking your reading, talking about books, writing reviews, and discovering what to read next"[^1], but, unlike GoodReads, which is owned by Amazon, it is developed and maintained by a community of contributors led by [Mouse Reeve](https://www.mousereeve.com/), using a collaborative and anti-corporate[^2] approach. Another notable difference is that it is decentralised, which means that...
+
+[^1]: Source: <https://joinbookwyrm.com>
+
+[^2]: Bookwyrm uses an uncommon, and very concise [anti-capitalist license](https://raw.githubusercontent.com/bookwyrm-social/join-bookwyrm/main/LICENSE.md), which basically grants free use of the software and distribution to anyone that fits within these groups: An individual person, laboring for themselves; A non-profit organization; An educational institution; An organization that seeks shared profit for all of its members, and allows non-members to set the cost of their labor.
+
+    While this is inclusive enough except for organisations seeking their own profit, it is restrictive enough not to be considered Free/Libre OpenSource.
+
+Because of that, back in 2020 I created an account at [Bookwyrm.social](https://bookwyrm.social/) and I imported all my books and ratings from Goodreads and I've been very happy with it. Besides missing some friends here, I only miss one feature: I wish there were some data visualisations to provide insight about reading patterns. But, given that bookwyrm is collaborative, and given that I happen to be a data visualisation enthusiast, I took this not as a flaw but as an opportunity to contribute to an already excellent software, service and community. Given that I'm not familiar with how [django](https://www.djangoproject.com/) (the framework underlying Bookwyrm) works, nor with python, I'm going to use this as a proof of concept and an exercise to force myself to leave the comfort of my beloved R to create data visualisations and get familiar with atair for python. Hopefully, I will be able to ingrate this (or some parts) into bookwyrm, provided there's acceptance, and I receive some guidance.
+
+So, this post serves three aims: First, I want to force myself to leave the comfort of my beloved R to create data visualisations and get familiar with atair for python. Second, I want to better understand my reading patterns and make informed decisions. And, third, I would want this to be useful for the bookwy
+
+## Overview
+
+[![A hidden gem that only shows every December: The yearly summary](media/bookywrm_yearly_wrap.png){#fig-year-review fig-alt="A hidden gem that only shows every December: The yearly summary"} A hidden gem that only shows every December: The yearly summary]{.aside}
+
+Bookwyrm has a nice way to show how users are progressing in their reads, as shown in their user profiles (@fig-profile-overview) or in the yearly summary that only appears every December. Even though they are very visual and well made, I am missing a visual summary that answers questions such as:
+
+-   How much have I read this year? How does it compare in relation to my previous history?
+
+-   And speaking of which... How does my reading history look like? What do I read, do I prefer long books or short ones? Do I prefer recent ones or classics?
+
+![Profile showing books stored in shelves and progress made](media/bookywrm_profile.png){#fig-profile-overview fig-alt="User profile showing books stored in shelves and progress made."}
+
+To answer these questions we will be using Bookyrm's feature to export the reading history as a `.csv`, which, in my case, looks like this:
+
+```{python}
+#| label: setup
+import pandas as pd
+import altair as alt
+import requests
+import time
+
+from datetime import datetime
+from typing import Iterable, List, Optional, Dict, Set
+
+col_bw_green = "#00D1B2"
+
+# Load books' dataset
+books_df = pd.read_csv(
+    "posts/2024-01_bookwyrm-vis/data/bookwyrm-export.csv", 
+    parse_dates=['shelf_date', 'start_date', 'finish_date', 'stopped_date']
+)
+
+books_df = books_df.sort_values('shelf_date')
+
+# Filter for rows where shelf is 'read'
+books_read_df = books_df[books_df['shelf'] == 'read'].copy()
+
+books_df.head()
+
+
+
+
+
+```
+
+### How much have I read this year? How does it compare to previous years?
+
+
+
+
+```{python}
+#| label: wikidata-qid-definition
+
+WIKIDATA_SEARCH_URL = "https://www.wikidata.org/w/api.php"
+WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
+HEADERS = {"User-Agent": "dslabs-wikidata-query/1.0 (contact: youremail@example.com)"}
+
+PREF_OCC_WRITER = "Q36180"     # writer
+PREF_OCC_NOVELIST = "Q6625963" # novelist
+HUMAN_Q = "Q5"
+
+def wbsearch_candidates(name: str, language: str = "en", limit: int = 5, timeout: int = 30) -> List[str]:
+    """
+    Given a name string, return a list of candidate QIDs from Wikidata search.
+    """
+    if name is None or (isinstance(name, float) and pd.isna(name)) or str(name).strip() == "":
+        return []
+    params = {
+        "action": "wbsearchentities",
+        "format": "json",
+        "language": language,
+        "search": name,
+        "type": "item",
+        "limit": limit
+    }
+    resp = requests.get(WIKIDATA_SEARCH_URL, params=params, headers=HEADERS, timeout=timeout)
+    resp.raise_for_status()
+    data = resp.json()
+    return [item["id"] for item in data.get("search", []) if "id" in item]
+
+def query_human_occupations_for_qids(qids: Iterable[str], timeout: int = 60) -> Dict[str, Set[str]]:
+    """
+    Given an iterable of QIDs (e.g. ['Q123','Q456']), return a mapping
+    qid -> set of occupation QIDs for items that are humans (P31 = Q5).
+
+    Items that are not humans will NOT appear in the mapping.
+    """
+    qid_list = [q for q in qids]
+    if not qid_list:
+        return {}
+    values = " ".join(f"wd:{q}" for q in qid_list)
+    sparql = f"""
+    SELECT ?item ?occ WHERE {{
+      VALUES ?item {{ {values} }}
+      ?item wdt:P31 wd:{HUMAN_Q}.
+      OPTIONAL {{ ?item wdt:P106 ?occ. }}
+    }}
+    """
+    resp = requests.get(WIKIDATA_SPARQL_URL, params={"query": sparql, "format": "json"}, headers=HEADERS, timeout=timeout)
+    resp.raise_for_status()
+    results = resp.json().get("results", {}).get("bindings", [])
+    mapping: Dict[str, Set[str]] = {}
+    for row in results:
+        item_url = row["item"]["value"]
+        qid = item_url.rsplit("/", 1)[-1]
+        occ_val = row.get("occ")
+        occ_qid = None
+        if occ_val:
+            occ_qid = occ_val["value"].rsplit("/", 1)[-1]
+        mapping.setdefault(qid, set())
+        if occ_qid:
+            mapping[qid].add(occ_qid)
+    return mapping
+
+def choose_preferred_qid(candidates: List[str], human_occ_map: Dict[str, Set[str]]) -> Optional[str]:
+    """
+    Given candidate IDs (in search order) and a mapping of human QIDs to their occupation sets,
+    return a single preferred qid or None.
+    Preference order:
+      1) first candidate that is human and has occupation writer (Q36180)
+      2) first candidate that is human and has occupation novelist (Q6625963)
+      3) first candidate that is human (any occupation)
+      4) else None
+    """
+    # 1) writer
+    for q in candidates:
+        occs = human_occ_map.get(q)
+        if occs and PREF_OCC_WRITER in occs:
+            return q
+    # 2) novelist
+    for q in candidates:
+        occs = human_occ_map.get(q)
+        if occs and PREF_OCC_NOVELIST in occs:
+            return q
+    # 3) any human
+    for q in candidates:
+        if q in human_occ_map:
+            return q
+    return None
+
+def resolve_name_to_qid(name: str, pause_seconds: float = 0.5) -> Optional[str]:
+    """
+    Resolve a single name to a preferred QID following the rules described.
+    """
+    candidates = wbsearch_candidates(name)
+    if not candidates:
+        return None
+    # Query occupations for all candidates at once and restrict to humans
+    human_occ_map = query_human_occupations_for_qids(candidates)
+    chosen = choose_preferred_qid(candidates, human_occ_map)
+    time.sleep(pause_seconds)
+    return chosen
+
+def get_authors_qids(names: Iterable[str], pause_seconds: float = 0.5) -> pd.DataFrame:
+    """
+    Resolve an iterable of names to QIDs. Returns DataFrame with columns:
+      - author_text: the original name
+      - qid: chosen QID or None
+    Maintains the order of first appearance of unique names in `names`.
+    """
+    seen = {}
+    records = []
+    for name in pd.Index(list(names)):
+        if pd.isna(name) or str(name).strip() == "":
+            records.append({"author_text": name, "qid": None})
+            continue
+        if name in seen:
+            records.append({"author_text": name, "qid": seen[name]})
+            continue
+        qid = resolve_name_to_qid(name, pause_seconds=pause_seconds)
+        seen[name] = qid
+        records.append({"author_text": name, "qid": qid, "query_date": datetime.today().strftime('%Y-%m-%d')})
+    return pd.DataFrame.from_records(records)
+
+
+# test_names_series = ['Mike Parker', 'J.K. Rowling', 'Mark Fisher', 'Mark Graham', 'Unknown Author', None, '']
+
+
+
+```
+
+```{python}
+#| label: authors_metadata
+
+
+# Retrieve wikidata properties for authors with known QIDs from previous step.
+def get_props_for_qid(qid: str, retries: int = 2, timeout: int = 60) -> Dict[str, Optional[str]]:
+    if qid is None or (isinstance(qid, float) and pd.isna(qid)) or str(qid).strip() == "":
+        return {
+            "country_of_birth": None,
+            "gender": None,
+            "country_of_citizenship": None,
+            "ethnicity": None,
+            "sexual_orientation": None,
+            "date_of_birth": None,
+            "date_of_death": None
+        }
+
+    q = f"""
+    SELECT ?genderLabel ?countryLabel ?countryCitizenshipLabel ?ethnicityLabel ?sexOrientLabel ?dob ?dod WHERE {{
+      OPTIONAL {{ wd:{qid} wdt:P21 ?gender. }}
+      OPTIONAL {{ wd:{qid} wdt:P19 ?place. ?place wdt:P17 ?country. }}
+      OPTIONAL {{ wd:{qid} wdt:P27 ?countryCitizenship. }}
+      OPTIONAL {{ wd:{qid} wdt:P172 ?ethnicity. }}
+      OPTIONAL {{ wd:{qid} wdt:P91 ?sexOrient. }}
+      OPTIONAL {{ wd:{qid} wdt:P569 ?dob. }}
+      OPTIONAL {{ wd:{qid} wdt:P570 ?dod. }}
+      SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en". }}
+    }}
+    LIMIT 1
+    """
+
+    attempt = 0
+    while True:
+        try:
+            resp = requests.get(WIKIDATA_SPARQL_URL, params={"query": q, "format": "json"}, headers=HEADERS, timeout=timeout)
+            if resp.status_code == 200:
+                data = resp.json()
+                bindings = data.get("results", {}).get("bindings", [])
+                if not bindings:
+                    return {
+                        "country_of_birth": None,
+                        "gender": None,
+                        "country_of_citizenship": None,
+                        "ethnicity": None,
+                        "sexual_orientation": None,
+                        "date_of_birth": None,
+                        "date_of_death": None
+                    }
+                row = bindings[0]
+                def _get(key):
+                    v = row.get(key)
+                    return v.get("value") if v else None
+                return {
+                    "country_of_birth": _get("countryLabel"),
+                    "gender": _get("genderLabel"),
+                    "country_of_citizenship": _get("countryCitizenshipLabel"),
+                    "ethnicity": _get("ethnicityLabel"),
+                    "sexual_orientation": _get("sexOrientLabel"),
+                    "date_of_birth": _get("dob"),
+                    "date_of_death": _get("dod")
+                }
+            elif resp.status_code in (429, 503):
+                # rate limited or service unavailable: back off and retry
+                attempt += 1
+                if attempt > retries:
+                    return {k: None for k in ["country_of_birth","gender","country_of_citizenship","ethnicity","sexual_orientation","date_of_birth","date_of_death"]}
+                time.sleep(2 ** attempt)
+                continue
+            else:
+                resp.raise_for_status()
+        except (requests.RequestException, ValueError):
+            attempt += 1
+            if attempt > retries:
+                return {k: None for k in ["country_of_birth","gender","country_of_citizenship","ethnicity","sexual_orientation","date_of_birth","date_of_death"]}
+            time.sleep(1 + attempt)
+
+def crate_wikidata_properties_df(qid_df: pd.DataFrame, qid_col: str = "qid", author_col: str = "author_text", pause_seconds: float = 0.5) -> pd.DataFrame:
+    """
+    Given a dataframe with columns `author_text` and `qid`, query Wikidata for each qid
+    and return a new dataframe with the following columns:
+      - author_text
+      - qid
+      - country_of_birth
+      - gender
+      - country_of_citizenship
+      - ethnicity
+      - sexual_orientation
+      - date_of_birth
+      - date_of_death
+
+    The function preserves the order of rows in `qid_df`. If `qid` is missing or invalid,
+    property values will be None.
+    """
+    required_cols = [author_col, qid_col]
+    for c in required_cols:
+        if c not in qid_df.columns:
+            raise KeyError(f"Column {c!r} not found in qid_df")
+
+    records = []
+    for _, row in qid_df.iterrows():
+        author = row[author_col]
+        qid = row[qid_col]
+        props = get_props_for_qid(qid)
+        # be polite to the wikidata servers
+        time.sleep(pause_seconds)
+        record = {"author_text": author, "qid": qid}
+        record.update(props)
+        records.append(record)
+
+    return pd.DataFrame.from_records(records)
+
+# Example usage:
+#result_df = crate_wikidata_properties_df(qid_df, qid_col='qid', author_col='author_text', pause_seconds=0.6)
+
+#result_df.to_csv('posts/2024-01_bookwyrm-vis/data/authors_wikidata_properties.csv', index=False)
+
+
+```
+
+```{python}
+#| label: def_books_data
+
+
+books_df_exploded = (
+    books_df
+    .dropna(subset=['author_text', 'shelf'])
+    .assign(author_text=lambda d: d['author_text'].str.split(','))
+    .explode('author_text')
+    .assign(author_text=lambda d: d['author_text'].str.strip())
+    .loc[lambda d: d['author_text'] != '']
+    .drop_duplicates() # Some authors are duplicate in bookwyrm, so removing duplicate names.
+    .reset_index(drop=True)
+)
+```
+
+```{python}
+#| label: authors_summary
+authors = books_df_exploded['author_text'].drop_duplicates()
+
+authors_summary = (
+    books_df_exploded
+    .groupby(['author_text', 'shelf'], as_index=False)
+    .agg(pages_total=('pages','sum'), n=('author_text','count'))
+    .sort_values('pages_total', ascending=False)
+)
+
+```
+
+```{python}
+#| label: def_authors_data
+
+# Retrieve authors' Wikidata QIDs
+# Run the function for authors that we do not know their QIDs yet.
+
+authors_qids_csv = 'posts/2024-01_bookwyrm-vis/data/authors_wikidata_qids.csv'
+
+qid_df=pd.read_csv(authors_qids_csv)
+
+new_authors = list(set(authors.to_list()).difference(qid_df['author_text'].to_list()))
+
+if len(new_authors)> 0:
+    qid_df_new = get_authors_qids(new_authors, pause_seconds=0.5)
+    qid_df_new['query_date'] = datetime.today().strftime('%Y-%m-%d')
+    # Append new authors and QIDs to existing dataframe and save it.
+    qid_df = pd.concat([qid_df, qid_df_new]).reset_index(drop=True)
+    qid_df.to_csv(authors_qids_csv, index=False)
+
+# Cleanup
+del(new_authors)
+
+# Retrieve authors' Wikidata properties
+
+# Run the function for authors that we do not know their properties yet.
+
+authors_props_csv = 'posts/2024-01_bookwyrm-vis/data/authors_wikidata_properties.csv'
+
+wikidata_props_df=pd.read_csv(authors_props_csv)
+
+new_props = list(set(qid_df['author_text'].to_list()).difference(wikidata_props_df['author_text'].to_list()))
+
+if len(new_props) > 0:
+    new_props = pd.DataFrame(new_props, columns = ['author_text'])
+
+    new_props = pd.merge(
+        new_props,
+        qid_df,
+        on = 'author_text',
+        how = 'left'
+    )
+
+    wikidata_props_df_new = crate_wikidata_properties_df(new_props, qid_col='qid', author_col='author_text', pause_seconds=0.6)
+
+    get_authors_qids(new_props, pause_seconds=0.5)
+
+    # Append new authors and QIDs to existing dataframe and save it.
+    wikidata_props_df = pd.concat([wikidata_props_df, wikidata_props_df_new]).reset_index(drop=True)
+    
+    wikidata_props_df.to_csv(authors_props_csv, index=False)
+
+wikidata_props_df
+
+```
+
+We are now in that time of the year where every app and service is showing some statistics and insight about how you've used them in the past year. In this post, I will be creating some data visualisations to get some insights about my reads at Bookwyrm.
+
+## Overview
+
+```{python}
+#| label: overview-stats
+total_pages = int(round(books_read_df['pages'].sum()))
+total_books = books_read_df.shape[0]
+
+date_start = books_read_df['finish_date'].min().date().year
+date_end = books_read_df['finish_date'].max().date().year
+
+total_authors = authors.shape[0]
+
+books_year = round(total_books / (date_end - date_start))
+pages_year = round(total_pages / (date_end - date_start))
+
+# f"Since {date_start}, I have read a total of {total_books} books and {total_pages} pages, authored by {total_authors} different authors."
+```
+
+> **Since `{python} date_start`, I have read a total of `{python} total_books` books from `{python} total_authors` different authors, accounting `{python} total_pages` pages. This averages to `{python} books_year` books per year and `{python} pages_year` pages per year.**
+
+Given a dataframe `df` that contains a column `date` and `pages` , and where every row represents a book, I would like you to write a code using pandas and altair that creates an interactive barplot where the x axis shows the years in `date`column, and y number of books read by year. At the top of each bar, I would also like to see a point whose size is proportional to the sum of pages of all the books in that particular year
+
+```{python}
+#| label: fig-books-read-year
+# Prepare dataframe
+books_read_df_year = books_read_df.copy()
+# Assign books with no pages a value = mean pages.
+books_read_df_year['pages'] = books_read_df_year['pages'].fillna(books_read_df_year['pages'].mean().round())
+
+
+books_read_df_year = (
+    books_read_df_year.assign(year=books_read_df_year['finish_date'].dt.year)          # extract year
+      .groupby('year')
+      .agg(
+          books=('pages', 'size'),               # number of rows = books
+          pages_sum=('pages', 'sum')             # total pages per year
+      )
+      .reset_index()
+)
+
+# -------------------------------------------------
+#  Build the Altair chart
+# -------------------------------------------------
+# Base selection for interactivity (hover tooltip)
+hover = alt.selection_point(
+    fields=['year'],
+    nearest=True,
+    on='mouseover',
+    empty='none',
+    clear='mouseout'
+)
+
+# Bar layer: count of books per year
+bars = alt.Chart(books_read_df_year).mark_bar(size=2, color= col_bw_green).encode(
+    x=alt.X(
+        'year:O',
+        title='Year',
+
+    ),
+    y=alt.Y('books:Q', title='Number of books read'),
+    tooltip=[
+        alt.Tooltip('year:O', title='Year'),
+        alt.Tooltip('books:Q', title='Books read'),
+        alt.Tooltip('pages_sum:Q', title='Pages total')
+    ]
+).add_params(hover)
+
+# Point layer: size reflects total pages
+points = alt.Chart(books_read_df_year).mark_point(filled=True, color=col_bw_green).encode(
+    x='year:O',
+    y='books:Q',
+    size=alt.Size('pages_sum:Q',
+                  scale=alt.Scale(range=[30, 300]),   # adjust visual range
+                  legend=alt.Legend(title='Total pages')),
+    opacity=alt.condition(hover, alt.value(1), alt.value(0.6)),
+    tooltip=[
+        alt.Tooltip('year:O', title='Year'),
+        alt.Tooltip('pages_sum:Q', title='Pages total')
+    ]
+)
+
+# Combine layers
+chart = (points + bars).properties(
+    width=600,
+    height=400,
+    title='Books read per year (bar) with total pages (point size)'
+).interactive()   # enables pan/zoom
+
+chart
+
+```
+
+Histogram about how long the books tend to be
+
+```{python}
+alt.Chart(books_df).mark_bar(color=col_bw_green).encode(
+    alt.X("pages:Q", bin=True),
+    y='count()',
+)
+```
+
+Add colour to map language
+
+## Number of pages
+
+## Authors
+
+Favourite authors
+
+```{python}
+#| label: fig-top-authors-page
+#| fig: Top authors by number of read pages
+top_authors_pages = authors_summary[authors_summary['shelf'] == 'read'].nlargest(15, "pages_total").reset_index(drop=True)
+
+# build horizontal bar chart (largest at top)
+chart = (
+    alt.Chart(top_authors_pages)
+    .mark_bar(color=col_bw_green)
+    .encode(
+        x=alt.X("pages_total:Q", title="Pages (total)"),
+        y=alt.Y("author_text:N", title="", sort="-x"),
+        tooltip=[
+            alt.Tooltip("author_text:N", title="Author"),
+            alt.Tooltip("pages_total:Q", title="Pages total")
+        ],
+    )
+    .properties(width=700, height=350, title="Top 15 Authors by Pages Read")
+    .configure_title(fontSize=14, anchor="start")
+)
+
+chart
+```
+
+```{python}
+
+top_authors = authors_summary[authors_summary['shelf'] == 'read'].nlargest(20, 'n').reset_index(drop=True)
+
+# Bar layer: count of books per year
+bars = (
+    alt.Chart(top_authors)
+    .mark_bar(size=2, color= col_bw_green)
+    .encode(
+        x=alt.X("n:Q", title="Number of books"),
+        y=alt.Y("author_text:N", title="", sort="-x"),
+        tooltip=[
+            alt.Tooltip('n:Q', title='Books read'),
+            alt.Tooltip('pages_total:Q', title='Pages total')
+        ]
+    )
+) 
+
+# Point layer: size reflects total pages
+points = (
+    alt.Chart(top_authors)
+    .mark_point(filled=True, color=col_bw_green)
+    .encode(
+        x=alt.X("n:Q", title="Number of books"),
+        y=alt.Y("author_text:N", title="", sort="-x"),
+        size=alt.Size('pages_total:Q',
+                    scale=alt.Scale(range=[30, 300]),   # adjust visual range
+                    legend=alt.Legend(title='Total pages')),
+        #opacity=alt.condition(hover, alt.value(1), alt.value(0.6)),
+        tooltip=[
+            alt.Tooltip('n:Q', title='Books read'),
+            alt.Tooltip('pages_total:Q', title='Pages total')
+        ]
+    )
+)
+
+ 
+# Combine layers
+chart = (bars + points).properties(
+    width=600,
+    height=400,
+    title='Most read authors'
+).interactive()   # enables pan/zoom
+
+chart
+```
+
+### Incorporating an EDI approach to reads
+
+```{python}
+
+top_authors = authors_summary[authors_summary['shelf'] == 'read'].nlargest(20, 'n').reset_index(drop=True)
+
+top_authors_metadata = pd.merge(
+    top_authors,
+    wikidata_props_df,
+    left_on="author_text",
+    right_on='author_text',
+    how="left"
+).copy()
+
+# Bar layer: count of books per year
+bars = (
+    alt.Chart(top_authors_metadata)
+    .mark_bar(size=2, color= col_bw_green)
+    .encode(
+        x=alt.X("n:Q", title="Number of books"),
+        y=alt.Y("author_text:N", title="", sort="-x"),
+        color="gender:N",
+        tooltip=[
+            alt.Tooltip('n:Q', title='Books read'),
+            alt.Tooltip('pages_total:Q', title='Pages total')
+        ]
+    )
+) 
+
+# Point layer: size reflects total pages
+points = (
+    alt.Chart(top_authors_metadata)
+    .mark_point(filled=True, color=col_bw_green)
+    .encode(
+        x=alt.X("n:Q", title="Number of books"),
+        y=alt.Y("author_text:N", title="", sort="-x"),
+        color="gender:N",
+        size=alt.Size('pages_total:Q',
+                    scale=alt.Scale(range=[30, 300]),   # adjust visual range
+                    legend=alt.Legend(title='Total pages')),
+        #opacity=alt.condition(hover, alt.value(1), alt.value(0.6)),
+        tooltip=[
+            alt.Tooltip('n:Q', title='Books read'),
+            alt.Tooltip('pages_total:Q', title='Pages total')
+        ]
+    )
+)
+
+ 
+# Combine layers
+chart = (bars + points).properties(
+    width=600,
+    height=400,
+    title='Most read authors'
+).interactive()   # enables pan/zoom
+
+chart
+```
+
+### Authors by gender
+
+```{python}
+#| label: fig-authors-gender-area
+books_metadata_df = pd.merge(
+    books_df,
+    wikidata_props_df,
+    on = 'author_text',
+    how = 'left'
+).drop_duplicates()
+
+
+
+# Assuming books_df is your dataframe with columns: finish_date, author_text, gender
+# Extract year from finish_date
+books_metadata_df['year'] = pd.to_datetime(books_metadata_df['finish_date']).dt.year
+books_metadata_df['gender'] = books_metadata_df['gender'].fillna('Unknown')
+
+# Count books by year and gender 
+gender_by_year = books_metadata_df.groupby(['year', 'gender']).size().reset_index(name='count')
+
+# Calculate percentage for each gender within each year
+gender_by_year['total_by_year'] = gender_by_year.groupby('year')['count'].transform('sum')
+gender_by_year['percentage'] = (gender_by_year['count'] / gender_by_year['total_by_year']) * 100
+
+# Create normalized stacked area chart
+chart = alt.Chart(gender_by_year).mark_area(
+    opacity=0.8,
+    #interpolate='monotone'
+).encode(
+    x=alt.X('year:Q', 
+            title='',
+            axis=alt.Axis(format='d', tickCount=5)),
+    y=alt.Y('percentage:Q',
+            title='',
+            stack='normalize',
+            axis=alt.Axis(format='.0f')),
+    color=alt.Color('gender:N',
+                    title='Gender',
+                    scale=alt.Scale(scheme='category10')),
+    tooltip=[
+        alt.Tooltip('year:Q', title='Year', format='d'),
+        alt.Tooltip('gender:N', title='Gender'),
+        alt.Tooltip('count:Q', title='Books Read'),
+        alt.Tooltip('percentage:Q', title='Percentage', format='.1f')
+    ]
+).properties(
+    width=700,
+    height=400,
+    title='Author Gender Distribution Over Time (Normalized)'
+).interactive()
+
+chart
+
+```
+
+```{python}
+#| label: fig-authors-gender-bar
+alt.Chart(gender_by_year).mark_bar(
+    size=12,
+    opacity=0.8
+).encode(
+    color=alt.Color('gender'),
+    x=alt.X(
+        'year:Q',
+        title='',
+        axis=alt.Axis(format='d', tickCount=10)
+    ),
+    y=alt.Y('percentage:Q',
+            title='',
+            stack='normalize',
+            axis=alt.Axis(format='.0f')),
+    tooltip=[
+        alt.Tooltip('year:Q', title='Year', format='d'),
+        alt.Tooltip('gender:N', title='Gender'),
+        alt.Tooltip('count:Q', title='Books Read'),
+        alt.Tooltip('percentage:Q', title='Percentage', format='.1f')
+    ]
+).properties(
+    width=600,
+    height=400,
+    title="Books by author's gender and year"
+).interactive()
+
+```
+
+### Authors by country
+
+```{python}
+#| label: fig-authors-map
+
+import geopandas as gpd
+
+gdf = gpd.read_file('posts/2024-01_bookwyrm-vis/data/ne_110m_admin_0_countries.zip')
+
+authors_country = (
+    books_metadata_df[['author_text', 'country_of_birth']]
+    .dropna()
+    .copy()
+    .groupby('country_of_birth')
+    .agg(
+        n=('country_of_birth', 'size')            # number of rows = books
+    )
+    .reset_index()
+) 
+
+gdf = gdf.merge(
+    authors_country,
+    left_on='NAME_LONG',
+    right_on='country_of_birth',
+    how='left'
+)
+
+basemap = alt.Chart(gdf).mark_geoshape(
+    fill='lightgray',
+    stroke='white'
+).project(
+    "equirectangular"
+).properties(
+    width=700,
+    height=400
+)
+
+choro = alt.Chart(gdf).mark_geoshape(stroke='white').encode(
+    alt.Color('n:Q', 
+              type='quantitative', 
+              scale=alt.Scale(scheme='greens'),
+              title = "Number of Authors"),
+    tooltip=[
+        alt.Tooltip('NAME_LONG', title='Country'),
+        alt.Tooltip('n:Q', title='Number of Authors')
+    ]
+).project(
+    "equirectangular"
+).properties(
+    width=700,
+    height=400,
+    title='Number of Authors by Country (country_of_birth)'
+)
+
+basemap + choro
+```
+
+I should now multiply authors by number of books read from each author to get a better estimate of countries.
+
+## Authors by language
+
+```{python}
+alt.Chart(books_df[books_df['shelf'] == 'read']).mark_bar(color=col_bw_green).encode(
+    y=alt.Y("language:N", title="Language", sort = '-x'),
+    x=alt.X('count()', title='Number of books'),
+).properties(
+    width=600, 
+    height=400,
+    title='Read Books by language'
+)
+```
+
+## Some considerations about bookwyrm data
+
+-   Due to lack of enough libraries than curate the database, Some books and authors are duplicated at bookwyrm.social. This means that books like <https://bookwyrm.social/book/957796> have two entries for each of the authors, so they are linked to/from the book's description. However, as they both refer to the same person (Even though bookwyrm.social treats them as different entities), the code filters removal. Ideally, there should be mechanisms in place to merge duplicated authors (and books!)
+
+-   Lack of multilingual approach to authors and books
+
+    -   Some authors are spelled differently: <https://github.com/bookwyrm-social/bookwyrm/issues/3278>
+
+    -   Some languages are written in different names
+
+-   This code had to query Wikidata to retrieve author's qid and, then, their properties. Given that Qid are stored in Bookywrm, it should be easier to retrieve their properties. Ideally, we would want to store some properties in Bookwyrm, though? (maybe populating them from wikidata, in a similar fashion to how populating book's properties from inventaire.
+
+-   There's no field to store translators, editors... all humans related to a book are currently stored as authors, and that is missleading. Open an issue!

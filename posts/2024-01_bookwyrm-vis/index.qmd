@@ -1,8 +1,8 @@
 ---
-title: "Bookywrm Visualisations"
-description: "A pilot"
+title: "Getting insights from my Bookywrm reads using Data Visualisations"
+description: "How I used altair to create data visualisations using Bookwyrm data to decolonise my reading patterns"
 abstract: |
-  A proof of concept.
+  We are now in that time of the year where every app and service is showing some statistics and insight about how you've used them in the past year. In this post, I will be creating some data visualisations to get some insights about my reads at Bookwyrm and inform decision to decolonise my readings.
 date: 2024-03-05
 # title-block-banner: true
 author: 
@@ -13,33 +13,455 @@ author:
     - name: University of Warwick
       address: Centre for Interdisciplinary Methodologies (CIM), Social Sciences Building
       city: Coventry
-      state: WA
       postal-code: CV4 7AL
 categories:
   - Python
   - bookyrm
+  - dataviz
+  - data visualisation
 format:
   html:
     toc: true
-    toc-expand: 2
+    toc-expand: 3
     #code-line-numbers: true
     reference-location: margin
     code-fold: true
 editor: visual
 ---
 
+As a proponent of alternative social media and the [Fediverse](https://en.wikipedia.org/wiki/Fediverse) who happens to love books (although I read way less books than I'd love to), I was immediately in love when I heard about [Bookwyrm](https://joinbookwyrm.com/). Bookwyrm is "a social network for tracking your reading, talking about books, writing reviews, and discovering what to read next"[^1], but, unlike GoodReads, which is owned by Amazon, it is developed and maintained by a community of contributors led by [Mouse Reeve](https://www.mousereeve.com/), using a collaborative and anti-corporate[^2] approach. Another notable difference is that it is decentralised, which means that...
+
+[^1]: Source: <https://joinbookwyrm.com>
+
+[^2]: Bookwyrm uses an uncommon, and very concise [anti-capitalist license](https://raw.githubusercontent.com/bookwyrm-social/join-bookwyrm/main/LICENSE.md), which basically grants free use of the software and distribution to anyone that fits within these groups: An individual person, laboring for themselves; A non-profit organization; An educational institution; An organization that seeks shared profit for all of its members, and allows non-members to set the cost of their labor.
+
+    While this is inclusive enough except for organisations seeking their own profit, it is restrictive enough not to be considered Free/Libre OpenSource.
+
+Because of that, back in 2020 I created an account at [Bookwyrm.social](https://bookwyrm.social/) and I imported all my books and ratings from Goodreads and I've been very happy with it. Besides missing some friends here, I only miss one feature: I wish there were some data visualisations to provide insight about reading patterns. But, given that bookwyrm is collaborative, and given that I happen to be a data visualisation enthusiast, I took this not as a flaw but as an opportunity to contribute to an already excellent software, service and community. Given that I'm not very familiar neither with [django](https://www.djangoproject.com/) (the framework underlying Bookwyrm) nor with python, I'm going to use this as a proof of concept and an exercise to force myself to leave the comfort of my beloved R to create data visualisations and get familiar with [altair](https://altair-viz.github.io/index.html) for python. Hopefully, I will be able to ingrate this (or some parts) into bookwyrm, provided there's acceptance, and I receive some guidance.
+
+So, this post serves three aims: First, I want to force myself to leave the comfort of my beloved R to create data visualisations and get familiar with atair for python. Second, I want to better understand my reading patterns and make informed decisions. And, third, I would want this to be useful for the bookwyrm community.
+
+## Overview
+
+[![A hidden gem that only shows every December: The yearly summary](media/bookywrm_yearly_wrap.png){#fig-year-review fig-alt="A hidden gem that only shows every December: The yearly summary"} A hidden gem that only shows every December: The yearly summary]{.aside}
+
+Bookwyrm has a nice way to show how users are progressing in their reads, as shown in their user profiles (@fig-profile-overview) or in the yearly summary that only appears every December. Even though they are very visual and well made, I am missing a visual summary that answers questions such as:
+
+-   How much have I read this year? How does it compare in relation to my previous history?
+
+-   And speaking of which... How does my reading history look like? Who are my favourite authors? What do I read, do I prefer long books or short ones? Do I prefer recent ones or classics?
+
+![Profile showing books stored in shelves and progress made](media/bookywrm_profile.png){#fig-profile-overview fig-alt="User profile showing books stored in shelves and progress made."}
+
+To answer these questions we will be using Bookyrm's feature to export the reading history as a `.csv`, which, in my case, looks like this:
+
 ```{python}
 #| label: setup
+#| column: page
+
 import pandas as pd
 import altair as alt
 import requests
 import time
+import geopandas as gpd
 
 from datetime import datetime
 from typing import Iterable, List, Optional, Dict, Set
 
+# Load world map for later use
+gdf = gpd.read_file('posts/2024-01_bookwyrm-vis/data/ne_110m_admin_0_countries.zip')
+
+
 col_bw_green = "#00D1B2"
+
+# Load books' dataset
+books_df = pd.read_csv(
+    "posts/2024-01_bookwyrm-vis/data/bookwyrm-export.csv", 
+    parse_dates=['shelf_date', 'start_date', 'finish_date', 'stopped_date']
+)
+
+books_df = books_df.sort_values('shelf_date')
+
+# Filter for rows where shelf is 'read'
+books_read_df = books_df[books_df['shelf'] == 'read'].copy()
+
+books_df.head()
 ```
+
+### How much have I read this year? How does it compare to previous years?
+
+I wanted to create a text that summarises the reading history with some relevant figures such as number of books and pages read, number of authors, and time frame. All this data is available in the dataset, but given that a book may have more than one author, I needed to separate the authors in different rows. This will also be useful to identify my favourite authors later.
+
+```{python}
+#| label: tbl_def_books_data
+#| tbl-cap: The exploded dataset, where authors have been separated and we have one author per row.
+#| column: page
+
+books_df_exploded = (
+    books_df
+    .dropna(subset=['author_text', 'shelf'])
+    .assign(author_text=lambda d: d['author_text'].str.split(','))
+    .explode('author_text')
+    .assign(author_text=lambda d: d['author_text'].str.strip())
+    .loc[lambda d: d['author_text'] != '']
+    .drop_duplicates() # Some authors are duplicate in bookwyrm, so removing duplicate names.
+    .reset_index(drop=True)
+)
+
+# Generate an authors dataframe
+authors = books_df_exploded['author_text'].drop_duplicates()
+
+authors_summary = (
+    books_df_exploded
+    .groupby(['author_text', 'shelf'], as_index=False)
+    .agg(pages_total=('pages','sum'), n=('author_text','count'))
+    .sort_values('pages_total', ascending=False)
+)
+
+books_df_exploded.head()
+```
+
+And with this, we can compute some basic statistics to generate the text below:
+
+```{python}
+#| label: overview-stats
+total_pages = int(round(books_read_df['pages'].sum()))
+total_books = books_read_df.shape[0]
+
+date_start = books_read_df['finish_date'].min().date().year
+date_end = books_read_df['finish_date'].max().date().year
+
+total_authors = authors.shape[0]
+
+books_year = round(total_books / (date_end - date_start))
+pages_year = round(total_pages / (date_end - date_start))
+
+# f"Since {date_start}, I have read a total of {total_books} books and {total_pages} pages, authored by {total_authors} different authors."
+```
+
+> **Since `{python} date_start`, I have read a total of `{python} total_books` books from `{python} total_authors` different authors, accounting `{python} total_pages` pages. This averages to `{python} books_year` books per year and `{python} pages_year` pages per year.**
+
+While this text provides very interesting figures, it has two main issues: it is not very visual, and it only provides a global snapshot that does not show how has it changed with the years. Also, it is only based on quantiative data and suggest a capitalist approach: more is better. I'll be talking more on this later.
+
+So let's create a data visualisation that shows **reading over time**. But how do we define and measure "readings over time"? Usually, the metrics used for that are number of books per year and number of pages, and usually they are presented as barplots that show one of the other. This is tricky, because one year we may have read several short books while the next one we may have read less, but longer ones. To overcome this, I wanted to have a single plot where I could see both metrics simultaneously, so I decided to use a lollypop plot (@fig-reads-year):
+
+```{python}
+#| label: fig-reads-year
+#| fig-cap: "Number of books and pages read by year"
+#| column: page-left
+
+# Prepare dataframe
+books_read_df_year = books_read_df.copy()
+# Assign books with no pages a value = mean pages.
+books_read_df_year['pages'] = books_read_df_year['pages'].fillna(
+  books_read_df_year['pages'].mean().round())
+  
+books_read_df_year = (
+    books_read_df_year
+    .assign(year=books_read_df_year['finish_date'].dt.year)          # extract year
+    .groupby('year')
+    .agg(
+        books=('pages', 'size'),               # number of rows = books
+        pages_sum=('pages', 'sum')             # total pages per year
+    )
+    .reset_index()
+)
+
+# Create lollypop plot in two steps: bars and dots
+bars = alt.Chart(books_read_df_year).mark_bar(
+    size=2, 
+    color=col_bw_green
+).encode(
+    x=alt.X(
+        'year:Q',
+        title='',
+        axis=alt.Axis(format='d', tickCount=5)
+    ),
+    y=alt.Y(
+        'books:Q', 
+        title='Number of books read'
+    ),
+)
+
+points=alt.Chart(books_read_df_year).mark_point(
+    filled=True,
+    color=col_bw_green
+).encode(
+    x=alt.X(
+        'year:Q',
+        title='',
+        axis=alt.Axis(format='d', tickCount=5)
+    ),
+    y=alt.Y(
+        'books:Q', 
+        title='Number of books read'
+    ),
+    size=alt.Size('pages_sum:Q', title='Number of pages')
+)
+
+(bars+points).encode(
+    tooltip=[
+        alt.Tooltip('year:Q', title='Year', format='d'),
+        alt.Tooltip('books:Q', title='Books Read'),
+        alt.Tooltip('pages_sum:Q', title='Pages Read')
+    ] 
+).properties(
+    width=700,
+    height=400,
+    title='Number of books and pages read by year'
+).interactive()
+```
+
+This plot provides a lot of information, and it allows identifying years like 2013, where I was very active (first year of my PhD!) and years like 2009 where I didn't record any read.
+
+::: {.callout-caution collapse="true" appearance="simple"}
+### To improve...
+
+There are some things I would want to improve from this plot, but I have not yet figured out how to do it.
+
+The first one is that the bubble in 2013 gets trimmed and I hate it. Apparently, Altair uses the maximum value as axis range by default. This means that the point does not fit within the range and gets trimmed. I would want to learn how to avoid this by adding some extra padding on top of the maximum value.
+
+The second thing I would want to do has to do with the axis range, in this case, the X. Because I set that I wanted ticks to be shown every 5 years, Altair has defined the range to be multiple of 5, meaning that it will stop in 2030, even though the maximum date is 2025.
+
+The third one is that I would want to add an horizontal legend, just below the title, and align the title, too. Ideally creating a theme that I can reuse in every subsequent plot.
+:::
+
+## How does my reading history look like?
+
+This is a very broad question, as there are many ways to define what "reading history" may mean. One way could be to show who are my favourite authors, the languages I read, or whether I prefer reading short books over long ones, or the other way around.
+
+### Favourite authors
+
+Again, here we can define favourite authors based on number of read books, or pages, so let's create a plot for each metric. Or even better, I can follow the same pattern and create a lollypop with both metrics.
+
+::: panel-tabset
+#### Books and pages
+
+```{python}
+#| label: fig-top-authors
+#| fig-cap: Top authors by number of read books and pages
+top_authors = authors_summary[authors_summary['shelf'] == 'read'].nlargest(20, 'n').reset_index(drop=True)
+
+# Bar layer: count of books per year
+bars = (
+    alt.Chart(top_authors)
+    .mark_bar(size=2, color= col_bw_green)
+    .encode(
+        x=alt.X("n:Q", title="Number of books"),
+        y=alt.Y("author_text:N", title="", sort="-x")
+    )
+) 
+
+# Point layer: size reflects total pages
+points = (
+    alt.Chart(top_authors)
+    .mark_point(filled=True, color=col_bw_green)
+    .encode(
+        x=alt.X(
+          "n:Q", 
+          title="Number of books",
+          axis=alt.Axis(tickCount=top_authors['n'].max() +1),
+        ),
+        y=alt.Y("author_text:N", title="", sort="-x"),
+        size=alt.Size('pages_total:Q',
+                    scale=alt.Scale(range=[30, 300]),   # adjust visual range
+                    legend=alt.Legend(title='Total pages')),
+        #opacity=alt.condition(hover, alt.value(1), alt.value(0.6)),
+    )
+)
+
+# Combine layers
+chart = (bars + points).properties(
+    width=550,
+    height=400,
+    title='Most read authors'
+).encode(
+  tooltip=[
+        alt.Tooltip('n:Q', title='Books read'),
+        alt.Tooltip('pages_total:Q', title='Pages total')
+  ]
+).interactive()   # enables pan/zoom
+
+chart
+```
+
+#### By books
+
+```{python}
+#| label: fig-top-authors-books
+#| fig-cap: Top authors by number of read books
+top_authors_books = authors_summary[authors_summary['shelf'] == 'read'].nlargest(15, "n").reset_index(drop=True)
+
+# build horizontal bar chart (largest at top)
+chart = (
+    alt.Chart(top_authors_books)
+    .mark_bar(color=col_bw_green)
+    .encode(
+        x=alt.X(
+            "n:Q", title="Reads (total)",
+            axis=alt.Axis(tickCount=top_authors_books['n'].max())
+        ),
+        y=alt.Y("author_text:N", title="", sort="-x"),
+        tooltip=[
+            alt.Tooltip("author_text:N", title="Author"),
+            alt.Tooltip("n:Q", title="Books")
+        ],
+    )
+    .properties(width=650, height=350, title="Top 15 Authors by # Books")
+    .configure_title(fontSize=14, anchor="start")
+)
+
+chart
+```
+
+#### By pages
+
+```{python}
+#| label: fig-top-authors-page
+#| fig-cap: Top authors by number of read pages
+top_authors_pages = authors_summary[authors_summary['shelf'] == 'read'].nlargest(15, "pages_total").reset_index(drop=True)
+
+# build horizontal bar chart (largest at top)
+chart = (
+    alt.Chart(top_authors_pages)
+    .mark_bar(color=col_bw_green)
+    .encode(
+        x=alt.X("pages_total:Q", title="Pages (total)"),
+        y=alt.Y("author_text:N", title="", sort="-x"),
+        tooltip=[
+            alt.Tooltip("author_text:N", title="Author"),
+            alt.Tooltip("pages_total:Q", title="Pages total")
+        ],
+    )
+    .properties(width=650, height=350, title="Top 15 Authors by Pages Read")
+    .configure_title(fontSize=14, anchor="start")
+)
+
+chart
+```
+
+### By ratings
+
+It would be good to show which are the authors that I've voted the best.
+:::
+
+::: {.callout-note collapse="false" appearance="simple"}
+One thing I can get from @fig-top-authors-books is that I tend not to favour some authors, and besides few exceptions such as Game of Thrones and the Lord of The Rings, I do not like book series.
+:::
+
+### How long are my reads?
+
+Histogram about how long the books tend to be
+
+```{python}
+alt.Chart(books_df).mark_bar(color=col_bw_green).encode(
+    alt.X("pages:Q", bin=True),
+    y='count()',
+)
+```
+
+### Reads by language
+
+```{python}
+#| label: fig-books-language
+#| fig-cap: Languages read by books and pages
+
+books_read_df_lang = (
+    books_read_df
+    .groupby('language', as_index=False)
+    .agg(
+        books=('pages', 'size'),               # number of rows = books
+        pages_sum=('pages', 'sum')             # total pages per year
+    )
+    .sort_values('books', ascending=False)
+)
+
+# Bar layer: count of books per year
+bars = (
+    alt.Chart(books_read_df_lang)
+    .mark_bar(size=2, color= col_bw_green)
+    .encode(
+        x=alt.X("books:Q", title="Number of books"),
+        y=alt.Y("language:N", title="", sort="-x")
+    )
+) 
+
+# Point layer: size reflects total pages
+points = (
+    alt.Chart(books_read_df_lang)
+    .mark_point(filled=True, color=col_bw_green)
+    .encode(
+        x=alt.X("books:Q", title="Number of books"),
+        y=alt.Y("language:N", title="", sort="-x"),
+        size=alt.Size('pages_sum:Q',
+                    scale=alt.Scale(range=[30, 300]),   # adjust visual range
+                    legend=alt.Legend(title='Total pages')),
+        #opacity=alt.condition(hover, alt.value(1), alt.value(0.6)),
+    )
+)
+
+# Combine layers
+chart = (bars + points).encode(
+    tooltip=[
+        alt.Tooltip('language:N', title='Language'),
+        alt.Tooltip('books:Q', title='Books Read'),
+        alt.Tooltip('pages_sum:Q', title='Pages Read')
+    ] 
+).properties(
+    width=650,
+    height=200,
+    title='Books by language'
+).interactive()   # enables pan/zoom
+
+chart
+```
+
+This shows that I only read in three languages. Besides reading less books in Catalan, I have read more pages in that language.
+
+### Do I prefer old or newer books?
+
+```{python}
+#alt.Chart()
+```
+
+### Ratings distribution
+
+```{python}
+alt.Chart(books_read_df).mark_bar(
+    color=col_bw_green
+).encode(
+    x = alt.X(
+        'rating', 
+        title='Rating',
+        axis=alt.Axis(tickCount=5),
+    ),
+    y = alt.Y('count()')
+)
+
+```
+
+I tend to like what I read, and I'm not usually a harsh critic, although it is also true that I do not give high-score ratings for free.
+
+```{python}
+alt.Chart(books_read_df, title='Normally distributed jitter').mark_circle(size=8).encode(
+    y="rating",
+    x="finish_date",
+    yOffset="jitter:Q",
+    color=alt.Color('rating:N').legend(None)
+).transform_calculate(
+    # Generate Gaussian jitter with a Box-Muller transform
+    jitter="sqrt(-2*log(random()))*cos(2*PI*random())"
+)
+
+```
+
+## Incorporating an EDI reading to my reading history
+
+As useful as the previous plots are, they have an important flaw: they approach reading from a merely quantative standpoint,suggesting that more = better. Reading should be way more than consuming books, so, following Bookwyrm's ethos, I wanted to produce some data visualisations that help me reflect on the diversity of my readings, and inform decisions to decolonise them.
+
+To do so, I needed to retrieve information about authors that is missing from the bookwyrm's exported dataset, such as country of birth, gender, ethnicity or sexual orientation. Some of those details are stored in Bookwyrm's database, but many others are not, so I decided to retrieve that information from Wikidata.
+
+The code below does that in several stages: first, checks if the authors' properties is already stored in a dataset. If they are missing, it will retrieve wikidata's QIDs based on the author's namesretrieves those properties from wikidata provides an approach to retrieve authors' Wikidata QIDs based on their names, and then retrieve relevant properties for those QIDs.
 
 ```{python}
 #| label: wikidata-qid-definition
@@ -292,47 +714,6 @@ def crate_wikidata_properties_df(qid_df: pd.DataFrame, qid_col: str = "qid", aut
 ```
 
 ```{python}
-#| label: def_books_data
-
-books_df = pd.read_csv(
-    "posts/2024-01_bookwyrm-vis/data/bookwyrm-export.csv", 
-    parse_dates=['shelf_date', 'start_date', 'finish_date', 'stopped_date']
-)
-
-books_df = books_df.sort_values('shelf_date')
-
-# Filter for rows where shelf is 'read'
-books_read_df = books_df[books_df['shelf'] == 'read'].copy()
-
-books_df.head()
-
-books_df_exploded = (
-    books_df
-    .dropna(subset=['author_text', 'shelf'])
-    .assign(author_text=lambda d: d['author_text'].str.split(','))
-    .explode('author_text')
-    .assign(author_text=lambda d: d['author_text'].str.strip())
-    .loc[lambda d: d['author_text'] != '']
-    .drop_duplicates() # Some authors are duplicate in bookwyrm, so removing duplicate names.
-    .reset_index(drop=True)
-)
-
-```
-
-```{python}
-#| label: authors_summary
-authors = books_df_exploded['author_text'].drop_duplicates()
-
-authors_summary = (
-    books_df_exploded
-    .groupby(['author_text', 'shelf'], as_index=False)
-    .agg(pages_total=('pages','sum'), n=('author_text','count'))
-    .sort_values('pages_total', ascending=False)
-)
-
-```
-
-```{python}
 #| label: def_authors_data
 
 # Retrieve authors' Wikidata QIDs
@@ -387,188 +768,9 @@ wikidata_props_df
 
 ```
 
-## Overview
+### Gender diversity
 
-```{python}
-#| label: overview-stats
-total_pages = int(round(books_read_df['pages'].sum()))
-total_books = books_read_df.shape[0]
-
-date_start = books_read_df['finish_date'].min().date().year
-date_end = books_read_df['finish_date'].max().date().year
-
-total_authors = authors.shape[0]
-
-books_year = round(total_books / (date_end - date_start))
-pages_year = round(total_pages / (date_end - date_start))
-
-# f"Since {date_start}, I have read a total of {total_books} books and {total_pages} pages, authored by {total_authors} different authors."
-```
-
-> **Since `{python} date_start`, I have read a total of `{python} total_books` books from `{python} total_authors` different authors, accounting `{python} total_pages` pages. This averages to `{python} books_year` books per year and `{python} pages_year` pages per year.**
-
-Given a dataframe `df` that contains a column `date` and `pages` , and where every row represents a book, I would like you to write a code using pandas and altair that creates an interactive barplot where the x axis shows the years in `date`column, and y number of books read by year. At the top of each bar, I would also like to see a point whose size is proportional to the sum of pages of all the books in that particular year
-
-```{python}
-#| label: fig-books-read-year
-# Prepare dataframe
-books_read_df_year = books_read_df.copy()
-# Assign books with no pages a value = mean pages.
-books_read_df_year['pages'] = books_read_df_year['pages'].fillna(books_read_df_year['pages'].mean().round())
-
-
-books_read_df_year = (
-    books_read_df_year.assign(year=books_read_df_year['finish_date'].dt.year)          # extract year
-      .groupby('year')
-      .agg(
-          books=('pages', 'size'),               # number of rows = books
-          pages_sum=('pages', 'sum')             # total pages per year
-      )
-      .reset_index()
-)
-
-# -------------------------------------------------
-#  Build the Altair chart
-# -------------------------------------------------
-# Base selection for interactivity (hover tooltip)
-hover = alt.selection_point(
-    fields=['year'],
-    nearest=True,
-    on='mouseover',
-    empty='none',
-    clear='mouseout'
-)
-
-# Bar layer: count of books per year
-bars = alt.Chart(books_read_df_year).mark_bar(size=2, color= col_bw_green).encode(
-    x=alt.X(
-        'year:O',
-        title='Year',
-
-    ),
-    y=alt.Y('books:Q', title='Number of books read'),
-    tooltip=[
-        alt.Tooltip('year:O', title='Year'),
-        alt.Tooltip('books:Q', title='Books read'),
-        alt.Tooltip('pages_sum:Q', title='Pages total')
-    ]
-).add_params(hover)
-
-# Point layer: size reflects total pages
-points = alt.Chart(books_read_df_year).mark_point(filled=True, color=col_bw_green).encode(
-    x='year:O',
-    y='books:Q',
-    size=alt.Size('pages_sum:Q',
-                  scale=alt.Scale(range=[30, 300]),   # adjust visual range
-                  legend=alt.Legend(title='Total pages')),
-    opacity=alt.condition(hover, alt.value(1), alt.value(0.6)),
-    tooltip=[
-        alt.Tooltip('year:O', title='Year'),
-        alt.Tooltip('pages_sum:Q', title='Pages total')
-    ]
-)
-
-# Combine layers
-chart = (points + bars).properties(
-    width=600,
-    height=400,
-    title='Books read per year (bar) with total pages (point size)'
-).interactive()   # enables pan/zoom
-
-chart
-
-```
-
-Histogram about how long the books tend to be
-
-```{python}
-alt.Chart(books_df).mark_bar(color=col_bw_green).encode(
-    alt.X("pages:Q", bin=True),
-    y='count()',
-)
-```
-
-Add colour to map language
-
-## Number of pages
-
-## Authors
-
-Favourite authors
-
-```{python}
-#| label: fig-top-authors-page
-#| fig: Top authors by number of read pages
-top_authors_pages = authors_summary[authors_summary['shelf'] == 'read'].nlargest(15, "pages_total").reset_index(drop=True)
-
-# build horizontal bar chart (largest at top)
-chart = (
-    alt.Chart(top_authors_pages)
-    .mark_bar(color=col_bw_green)
-    .encode(
-        x=alt.X("pages_total:Q", title="Pages (total)"),
-        y=alt.Y("author_text:N", title="", sort="-x"),
-        tooltip=[
-            alt.Tooltip("author_text:N", title="Author"),
-            alt.Tooltip("pages_total:Q", title="Pages total")
-        ],
-    )
-    .properties(width=700, height=350, title="Top 15 Authors by Pages Read")
-    .configure_title(fontSize=14, anchor="start")
-)
-
-chart
-```
-
-```{python}
-
-top_authors = authors_summary[authors_summary['shelf'] == 'read'].nlargest(20, 'n').reset_index(drop=True)
-
-# Bar layer: count of books per year
-bars = (
-    alt.Chart(top_authors)
-    .mark_bar(size=2, color= col_bw_green)
-    .encode(
-        x=alt.X("n:Q", title="Number of books"),
-        y=alt.Y("author_text:N", title="", sort="-x"),
-        tooltip=[
-            alt.Tooltip('n:Q', title='Books read'),
-            alt.Tooltip('pages_total:Q', title='Pages total')
-        ]
-    )
-) 
-
-# Point layer: size reflects total pages
-points = (
-    alt.Chart(top_authors)
-    .mark_point(filled=True, color=col_bw_green)
-    .encode(
-        x=alt.X("n:Q", title="Number of books"),
-        y=alt.Y("author_text:N", title="", sort="-x"),
-        size=alt.Size('pages_total:Q',
-                    scale=alt.Scale(range=[30, 300]),   # adjust visual range
-                    legend=alt.Legend(title='Total pages')),
-        #opacity=alt.condition(hover, alt.value(1), alt.value(0.6)),
-        tooltip=[
-            alt.Tooltip('n:Q', title='Books read'),
-            alt.Tooltip('pages_total:Q', title='Pages total')
-        ]
-    )
-)
-
- 
-# Combine layers
-chart = (bars + points).properties(
-    width=600,
-    height=400,
-    title='Most read authors'
-).interactive()   # enables pan/zoom
-
-chart
-```
-
-### Incorporating an EDI approach to reads
-
+Now that I have queried wikidata to retrieve metadata about authors, I can replicate @fig-top-authors, but also showing the gender of my top authors, making it even more insightful!
 
 ```{python}
 
@@ -627,9 +829,17 @@ chart = (bars + points).properties(
 chart
 ```
 
-### Authors by gender
+### Authors by gender and time
+
+And similarly, it would be interesting to see if the proportion of authors' genders has improved over time[^3]
+
+[^3]: Sadly, this is not my case. While some relative improvement can be seen over years to favour female authors, my reading history is still very biased.
+
+::: panel-tabset
+#### Bar
 
 ```{python}
+#| label: fig-authors-gender-bar
 
 books_metadata_df = pd.merge(
     books_df,
@@ -645,23 +855,58 @@ books_metadata_df = pd.merge(
 books_metadata_df['year'] = pd.to_datetime(books_metadata_df['finish_date']).dt.year
 books_metadata_df['gender'] = books_metadata_df['gender'].fillna('Unknown')
 
-# Count books by year and gender
+# Count books by year and gender 
 gender_by_year = books_metadata_df.groupby(['year', 'gender']).size().reset_index(name='count')
 
 # Calculate percentage for each gender within each year
 gender_by_year['total_by_year'] = gender_by_year.groupby('year')['count'].transform('sum')
 gender_by_year['percentage'] = (gender_by_year['count'] / gender_by_year['total_by_year']) * 100
 
+# Create a normalized stacked bar chart
+alt.Chart(gender_by_year).mark_bar(
+    size=12,
+    opacity=0.8
+).encode(
+    color=alt.Color('gender'),
+    x=alt.X(
+        'year:Q',
+        title='',
+        axis=alt.Axis(format='d', tickCount=10)
+    ),
+    y=alt.Y('percentage:Q',
+            title='',
+            stack='normalize',
+            axis=alt.Axis(format='.0f')),
+    tooltip=[
+        alt.Tooltip('year:Q', title='Year', format='d'),
+        alt.Tooltip('gender:N', title='Gender'),
+        alt.Tooltip('count:Q', title='Books Read'),
+        alt.Tooltip('percentage:Q', title='Percentage', format='.1f')
+    ]
+).properties(
+    width=600,
+    height=400,
+    title="Books by author's gender and year"
+).interactive()
+
+```
+
+#### Area
+
+```{python}
+#| label: fig-authors-gender-area
+
+
 # Create normalized stacked area chart
 chart = alt.Chart(gender_by_year).mark_area(
     opacity=0.8,
-    interpolate='monotone'
+    #interpolate='monotone'
 ).encode(
     x=alt.X('year:Q', 
-            title='Year',
+            title='',
             axis=alt.Axis(format='d', tickCount=5)),
     y=alt.Y('percentage:Q',
-            title='Percentage of Authors (%)',
+            title='',
             stack='normalize',
             axis=alt.Axis(format='.0f')),
     color=alt.Color('gender:N',
@@ -682,54 +927,39 @@ chart = alt.Chart(gender_by_year).mark_area(
 chart
 
 ```
+:::
+
+### Cultural diversity
+
+Books give a great opportunity to being exposed to world views from peoples and cultures that are very different from ours and would be very difficult to . Therefore, an important story to be told is how culturally rich is someone's reading history. This is something that would be extremely appreciated for anyone interested in decolonising their libraries, or simply acknowledge how diverse (or not) their readings are.
+
+One way to approach diversity is based on someone's country of birth. This is an assumption that comes with several caveats, as it does not necessarily reflect the culture of the author, nor the fact that some countries are more multi-cultural than others, or the countries where authors were born may not exist anymore. In any case, I believe it is a good starting point.
+
+The obvious thing to do would be to simply count the number of authors per country and present them in a visualisation (ideally, a map). This is exactly what I did in @fig-authors-map, but this assumes that all authors are equally important, which could be contested. A possible way to overcome that is to weight authors by how influencial for the reader have been, either by number of pages or books in the library.
+
 
 ```{python}
 
-alt.Chart(gender_by_year).mark_bar().encode(
-    color=alt.Color('gender'),
-    x=alt.X(
-        'year',
-        title='',
-        axis = alt.Axis(format='d', tickCount=10)
-    ),
-    y=alt.Y('percentage:Q',
-            title='',
-            stack='normalize',
-            axis=alt.Axis(format='.0f')),
-    tooltip=[
-        alt.Tooltip('year:Q', title='Year', format='d'),
-        alt.Tooltip('gender:N', title='Gender'),
-        alt.Tooltip('count:Q', title='Books Read'),
-        alt.Tooltip('percentage:Q', title='Percentage', format='.1f')
-    ]
-).properties(
-    width=600,
-    height=400,
-    title="Books by author's gender and year"
-).interactive()
 
-```
-
-
-### Authors by country
-
-```{python}
-#| label: fig-authors-map
-
-import geopandas as gpd
-
-gdf = gpd.read_file('posts/2024-01_bookwyrm-vis/data/ne_110m_admin_0_countries.zip')
-
+# Aggregate authors by country, weighting by `pages_total`.
+# Resulting dataframe has one row per `country_of_birth` with:
+#  - total_pages: sum of pages_total for authors from that country
+#  - total_books: sum of `n` (books) for authors from that country
+#  - n_authors: number of unique authors from that country
 authors_country = (
-    books_metadata_df[['author_text', 'country_of_birth']]
-    .dropna()
-    .copy()
-    .groupby('country_of_birth')
+    authors_summary[authors_summary['shelf'] == 'read']
+    .merge(wikidata_props_df, on='author_text', how='left')
+    # Remove empty values in country_of_birth
+    .loc[lambda df: df['country_of_birth'].notna()]
+    .groupby('country_of_birth', as_index=True)
     .agg(
-        n=('country_of_birth', 'size')            # number of rows = books
+        total_pages=('pages_total', 'sum'),
+        total_books=('n', 'sum'),
+        n_authors=('author_text', 'nunique')
     )
+    .sort_values('total_pages', ascending=False)
     .reset_index()
-) 
+)
 
 gdf = gdf.merge(
     authors_country,
@@ -738,32 +968,108 @@ gdf = gdf.merge(
     how='left'
 )
 
+# Creating a basemap for all the other options
 basemap = alt.Chart(gdf).mark_geoshape(
     fill='lightgray',
     stroke='white'
 ).project(
     "equirectangular"
 ).properties(
-    width=700,
+    width=600,
     height=400
 )
 
-choro = alt.Chart(gdf).mark_geoshape(stroke='white').encode(
-    alt.Color('n:Q', 
+
+```
+
+
+
+::: panel-tabset
+#### Weighted by number of books
+
+```{python}
+#| label: fig-authors-map-books
+
+choro_books = alt.Chart(gdf).mark_geoshape(stroke='white').encode(
+    alt.Color('total_books:Q', 
               type='quantitative', 
               scale=alt.Scale(scheme='greens'),
-              title = "Number of Authors"),
-    tooltip=['NAME_LONG', 'n:Q']
+              title = "# of Books"),
+    tooltip=[
+        alt.Tooltip('NAME_LONG', title='Country'),
+        alt.Tooltip('n_authors:Q', title='Number of Authors'),
+        alt.Tooltip('total_books:Q', title='Number of Books'),
+        alt.Tooltip('total_pages:Q', title='Total Pages Read')
+    ]
 ).project(
     "equirectangular"
 ).properties(
-    width=700,
+    width=600,
     height=400,
-    title='Number of Authors by Country (country_of_birth)'
-)
+    title='Total Books per Author\'s country of birth'
+).interactive()
 
-basemap + choro
+basemap + choro_books
+
 ```
+
+#### Weighted by number of pages
+
+```{python}
+#| label: fig-authors-map-pages
+
+choro_pages = alt.Chart(gdf).mark_geoshape(stroke='white').encode(
+    alt.Color('total_pages:Q', 
+              type='quantitative', 
+              scale=alt.Scale(scheme='greens'),
+              title = "# of pages"),
+    tooltip=[
+        alt.Tooltip('NAME_LONG', title='Country'),
+        alt.Tooltip('n_authors:Q', title='Number of Authors'),
+        alt.Tooltip('total_books:Q', title='Number of Books'),
+        alt.Tooltip('total_pages:Q', title='Total Pages Read')
+    ]
+).project(
+    "equirectangular"
+).properties(
+    width=600,
+    height=400,
+    title='Total Pages per Author\'s country of birth'
+).interactive()
+
+basemap + choro_pages
+```
+
+
+#### By authors (not weighted)
+
+```{python}
+#| label: fig-authors-map
+
+choro_authors = alt.Chart(gdf).mark_geoshape(stroke='white').encode(
+    alt.Color('n_authors:Q', 
+              type='quantitative', 
+              scale=alt.Scale(scheme='greens'),
+              title = "# of authors"),
+    tooltip=[
+        alt.Tooltip('NAME_LONG', title='Country'),
+        alt.Tooltip('n_authors:Q', title='Number of Authors'),
+        alt.Tooltip('total_books:Q', title='Number of Books'),
+        alt.Tooltip('total_pages:Q', title='Total Pages Read')
+    ]
+).project(
+    "equirectangular"
+).properties(
+    width=600,
+    height=400,
+    title='Total Authors per country of birth'
+).interactive()
+
+basemap + choro_authors
+```
+
+:::
+
 
 I should now multiply authors by number of books read from each author to get a better estimate of countries.
 
@@ -779,7 +1085,6 @@ alt.Chart(books_df[books_df['shelf'] == 'read']).mark_bar(color=col_bw_green).en
     title='Read Books by language'
 )
 ```
-
 
 ## Some considerations about bookwyrm data
 
