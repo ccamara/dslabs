@@ -39,7 +39,7 @@ Can we characterise the migration from Twitter to Mastodon?
 
 List of instances/servers from the Fediverse.
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 -   Data collection: servers' admin voluntarily submit information.
 
@@ -58,7 +58,7 @@ List of instances/servers from the Fediverse.
 
 -   Code: <https://github.com/TheKinrar/instances>
 :::
-:::
+:::::
 
 ## Example dataset {.smaller}
 
@@ -69,7 +69,7 @@ This is how data retreived from the API works
 library(tidyverse)
 library(DT)
 
-instances_df <- read.csv("data/rtoot_instances.csv")
+instances_df <- read.csv("slides/2023-06-23_mastodon-research-symposium/data/rtoot_instances.csv")
 
 names(instances_df)
 
@@ -97,7 +97,7 @@ instances_df |>
 
 # FediDB
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 -   Historic data from the Fediverse (software and servers)
 
@@ -121,7 +121,7 @@ instances_df |>
 
 -   Git Repo: ???
 :::
-:::
+:::::
 
 ## Example dataset {.smaller .scrollable}
 
@@ -131,7 +131,7 @@ Servers
 
 ```{r}
 #| classes: small-text
-fedidb_servers <- read.csv("data/fedidb_servers.csv") 
+fedidb_servers <- read.csv("slides/2023-06-23_mastodon-research-symposium/data/fedidb_servers.csv") 
 
 colnames(fedidb_servers)
 
@@ -146,14 +146,14 @@ Software
 
 ```{r}
 #| classes: small-text
-read.csv("data/fedidb_software.csv") |> 
+read.csv("slides/2023-06-23_mastodon-research-symposium/data/fedidb_software.csv") |> 
   head(3) |> 
   datatable()
 ```
 
 ## But...
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 -   Limited API: max 20 entries
 
@@ -169,7 +169,7 @@ read.csv("data/fedidb_software.csv") |>
 ::: {.column width="50%"}
 ![](img/fedidb-crawler.png)
 :::
-:::
+:::::
 
 ## And...
 
@@ -208,7 +208,7 @@ Can we characterise the migration from Twitter to Mastodon?
 
 # Rtoot
 
-::: columns
+::::: columns
 ::: {.column width="60%"}
 Information about instances:
 
@@ -244,7 +244,7 @@ get_account_statuses()
 
 -   Repo: https://github.com/schochastics/rtoot
 :::
-:::
+:::::
 
 ## Some results
 
@@ -272,7 +272,7 @@ Tool to retrieve trending hashtags and popular posts, regenerated every hour.
 
 # Survey
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 -   820 responses
 
@@ -296,7 +296,7 @@ Tool to retrieve trending hashtags and popular posts, regenerated every hour.
 ::: {.column width="50%"}
 ![](img/survey_responses_country.png)
 :::
-:::
+:::::
 
 ------------------------------------------------------------------------
 
@@ -304,7 +304,7 @@ Tool to retrieve trending hashtags and popular posts, regenerated every hour.
 
 ## Results {.scrollable .hidden-title}
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 ![](img/survey_motivations.png)
 :::
@@ -312,11 +312,11 @@ Tool to retrieve trending hashtags and popular posts, regenerated every hour.
 ::: {.column width="50%"}
 ![](img/survey_experiences.png)
 :::
-:::
+:::::
 
 ## Dataset
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 ![](img/survey-dataset.png)
 :::
@@ -324,7 +324,7 @@ Tool to retrieve trending hashtags and popular posts, regenerated every hour.
 ::: {.column width="50%"}
 ![](img/osf-io-survey.png)
 :::
-:::
+:::::
 
 ## A Proof of concept tool
 

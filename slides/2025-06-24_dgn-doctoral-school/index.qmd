@@ -30,7 +30,7 @@ library(forcats)
 library(ggplot2)
 library(knitr)
 
-datasaurus <- read.csv("data/datasaurus.csv")
+datasaurus <- read.csv("slides/2025-06-24_dgn-doctoral-school/data/datasaurus.csv")
 ```
 
 # Outline {background-color="rgba(108,183,255,0.4)"}
@@ -754,15 +754,15 @@ You are invited!
 
 ## Tools
 
-[![RawGraphs (<https://www.rawgraphs.io/>)](assets/RAWGraphs.png)](https://www.rawgraphs.io/)
+[![RawGraphs (\<https://www.rawgraphs.io/\>)](assets/RAWGraphs.png)](https://www.rawgraphs.io/)
 
 ##  {data-menu-title="DataWrapper"}
 
-[![DataWrapper (<https://www.datawrapper.de/>)](assets/Datawrapper-Create-charts-maps-and-tables.png)](https://www.datawrapper.de/)
+[![DataWrapper (\<https://www.datawrapper.de/\>)](assets/Datawrapper-Create-charts-maps-and-tables.png)](https://www.datawrapper.de/)
 
 ##  {.smaller data-menu-title="Plotly"}
 
-[![Plotly's [Chart Studio](https://chart-studio.plotly.com/)](assets/Online-Graph-Maker-Plotly-Chart-Studio.png){height="600"}](https://chart-studio.plotly.com/)
+[![Plotly's \[Chart Studio\](https://chart-studio.plotly.com/)](assets/Online-Graph-Maker-Plotly-Chart-Studio.png){height="600"}](https://chart-studio.plotly.com/)
 
 Plotly is an opensource library for interactive visualisations using R and Python. Chart Studio provides an interface to generate visualisations and code for free.
 
